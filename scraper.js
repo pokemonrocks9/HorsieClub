@@ -53,7 +53,8 @@ async function testRaceId(raceId) {
     const $ = cheerio.load(html);
 
     // Debug: what's in the page?
-    console.log(`   Page title: ${$('title').text()}`);
+    const pageTitle = $('title').text();
+    console.log(`   Page title: ${pageTitle}`);
     console.log(`   H1 elements: ${$('h1').length}`);
     console.log(`   Tables: ${$('table').length}`);
     
@@ -69,38 +70,60 @@ async function testRaceId(raceId) {
     console.log(`   Has "entries": ${hasEntries}`);
     console.log(`   Has tables: ${hasTable}`);
 
-    // Try to extract horses
+    // Try to extract horses with detailed debugging
     let horseCount = 0;
     const foundHorses = [];
-    $('table tr').each((i, row) => {
-      const cells = $(row).find('td');
-      if (cells.length >= 4) {
-        const cellTexts = cells.map((i, el) => $(el).text().trim()).get();
-        // Look for post position (number) and horse name
-        for (let i = 0; i < Math.min(3, cellTexts.length); i++) {
-          const num = parseInt(cellTexts[i]);
-          if (!isNaN(num) && num >= 1 && num <= 20) {
-            horseCount++;
-            if (horseCount <= 3) {
-              foundHorses.push(`#${num}: ${cellTexts.slice(i+1, i+3).join(' / ')}`);
+    
+    console.log(`\n   📋 Analyzing table structure:`);
+    let tableNum = 0;
+    $('table').each((tIdx, table) => {
+      tableNum++;
+      const rows = $(table).find('tr');
+      console.log(`\n   Table ${tableNum}: ${rows.length} rows`);
+      
+      $(table).find('tr').slice(0, 3).each((rIdx, row) => {
+        const cells = $(row).find('td');
+        if (cells.length >= 4) {
+          const cellTexts = cells.map((i, el) => $(el).text().trim()).get();
+          console.log(`      Row ${rIdx}: [${cellTexts.slice(0, 6).join(' | ')}]`);
+          
+          // Look for post position and horse name
+          for (let i = 0; i < Math.min(2, cellTexts.length); i++) {
+            const num = parseInt(cellTexts[i]);
+            if (!isNaN(num) && num >= 1 && num <= 20 && cellTexts[i] === String(num)) {
+              horseCount++;
+              if (foundHorses.length < 3) {
+                const horseName = cellTexts.slice(i+1, i+4).find(t => 
+                  t && t.length >= 3 && /[a-zA-Z]/.test(t) && !t.match(/^\d+$/)
+                );
+                const jockey = cellTexts.slice(i+2, i+6).find(t => 
+                  t && t.length >= 4 && /[A-Za-z]/.test(t) && !t.match(/^\d+$/) && t !== horseName
+                );
+                foundHorses.push({
+                  pp: num,
+                  horse: horseName || '???',
+                  jockey: jockey || '???'
+                });
+              }
+              break;
             }
-            break;
           }
         }
-      }
+      });
     });
     console.log(`   Potential horses found: ${horseCount}`);
     if (foundHorses.length > 0) {
-      console.log(`   Sample entries:`);
-      foundHorses.forEach(h => console.log(`      ${h}`));
+      console.log(`\n   Sample entries:`);
+      foundHorses.forEach(h => console.log(`      #${h.pp}: ${h.horse} (J: ${h.jockey})`));
     }
 
     // Check if this looks like a valid entry page
-    if (h1Text && h1Text.length > 3 && horseCount >= 4) {
+    const title = pageTitle.split('|')[0].trim();
+    if (title && title.length > 3 && horseCount >= 5) {
       console.log(`   ✅ Looks like a valid entry page!`);
-      return { raceId, title: h1Text, horses: horseCount, valid: true };
+      return { raceId, title, horses: horseCount, valid: true };
     } else {
-      console.log(`   ❌ Doesn't look like a valid entry page`);
+      console.log(`   ❌ Doesn't look like valid (title: "${title}", horses: ${horseCount})`);
       return null;
     }
 
