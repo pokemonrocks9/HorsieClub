@@ -343,12 +343,15 @@
         <div id="setup" class="setup-section">
             <h2>Setup Session</h2>
             <div class="info-box">
-                🎯 <strong>Auto-loading races!</strong> This app automatically fetches graded stakes races (G1, G2, G3) from the past month.
+                🎯 <strong>Auto-loading races!</strong> This app automatically fetches all JRA races from the past month.
             </div>
-            
-            <div class="input-group">
-                <label for="workerUrl">Worker API URL (optional - defaults to demo):</label>
-                <input type="text" id="workerUrl" placeholder="https://netkeiba-scraper.YOUR_SUBDOMAIN.workers.dev">
+
+            <div style="margin: 20px 0; padding: 15px; background: #f5f5f5; border-radius: 8px;">
+                <h3 style="margin-bottom: 10px;">Active Sessions</h3>
+                <div id="activeSessions" style="max-height: 200px; overflow-y: auto;">
+                    <p style="color: #666;">Loading sessions...</p>
+                </div>
+                <button class="btn" onclick="refreshSessions()" id="refreshSessionsBtn" style="margin-top: 10px;">🔄 Refresh Sessions</button>
             </div>
             
             <div class="input-group">
