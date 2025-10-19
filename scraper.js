@@ -1,5 +1,5 @@
 /**
- * test-scraper.js - Debug version to test specific race IDs
+ * test-scraper.js - Debug version to test ENTRY pages (spoiler-free)
  * 
  * Run this locally to debug what's happening
  */
@@ -9,6 +9,7 @@ import * as cheerio from 'cheerio';
 import fs from 'fs';
 
 // Known race IDs from October 2025 (from web search)
+// Using ENTRY pages (shutuba) not results
 const KNOWN_RACE_IDS = [
   '202508030711', // Shuka Sho G1 - Oct 19
   '202508030911', // Kikuka Sho G1 - Oct 26
@@ -19,7 +20,8 @@ const KNOWN_RACE_IDS = [
 
 async function testRaceId(raceId) {
   console.log(`\n🔍 Testing race ID: ${raceId}`);
-  const url = `https://en.netkeiba.com/race/result.html?race_id=${raceId}`;
+  // IMPORTANT: Using shutuba.html (entries) NOT result.html
+  const url = `https://en.netkeiba.com/race/shutuba.html?race_id=${raceId}`;
   console.log(`   URL: ${url}`);
 
   try {
@@ -45,8 +47,8 @@ async function testRaceId(raceId) {
     console.log(`   HTML length: ${html.length} bytes`);
     
     // Save HTML to file for inspection
-    fs.writeFileSync(`race_${raceId}.html`, html);
-    console.log(`   💾 Saved HTML to race_${raceId}.html`);
+    fs.writeFileSync(`entry_${raceId}.html`, html);
+    console.log(`   💾 Saved HTML to entry_${raceId}.html`);
 
     const $ = cheerio.load(html);
 
@@ -58,38 +60,47 @@ async function testRaceId(raceId) {
     const h1Text = $('h1').first().text().trim();
     console.log(`   H1 text: "${h1Text}"`);
 
-    // Check for common patterns
-    const hasFullResult = html.includes('Full Result');
-    const hasRaceData = html.includes('RaceData');
-    const hasResultTable = $('table.race_table_01, table').length > 0;
+    // Check for entry page patterns
+    const hasField = html.includes('Field');
+    const hasEntries = html.includes('entries');
+    const hasTable = $('table').length > 0;
     
-    console.log(`   Has "Full Result": ${hasFullResult}`);
-    console.log(`   Has "RaceData": ${hasRaceData}`);
-    console.log(`   Has result table: ${hasResultTable}`);
+    console.log(`   Has "Field": ${hasField}`);
+    console.log(`   Has "entries": ${hasEntries}`);
+    console.log(`   Has tables: ${hasTable}`);
 
-    // Try to extract basic info
-    let title = h1Text;
-    if (!title || title.length < 3) {
-      title = $('title').text().split('|')[0].trim();
-    }
-    console.log(`   Extracted title: "${title}"`);
-
-    // Try to find horses
+    // Try to extract horses
     let horseCount = 0;
+    const foundHorses = [];
     $('table tr').each((i, row) => {
       const cells = $(row).find('td');
-      if (cells.length >= 5) {
-        horseCount++;
+      if (cells.length >= 4) {
+        const cellTexts = cells.map((i, el) => $(el).text().trim()).get();
+        // Look for post position (number) and horse name
+        for (let i = 0; i < Math.min(3, cellTexts.length); i++) {
+          const num = parseInt(cellTexts[i]);
+          if (!isNaN(num) && num >= 1 && num <= 20) {
+            horseCount++;
+            if (horseCount <= 3) {
+              foundHorses.push(`#${num}: ${cellTexts.slice(i+1, i+3).join(' / ')}`);
+            }
+            break;
+          }
+        }
       }
     });
-    console.log(`   Rows that might be horses: ${horseCount}`);
+    console.log(`   Potential horses found: ${horseCount}`);
+    if (foundHorses.length > 0) {
+      console.log(`   Sample entries:`);
+      foundHorses.forEach(h => console.log(`      ${h}`));
+    }
 
-    // Check if this looks like a valid race page
-    if (title && title.length > 3 && !title.toLowerCase().includes('netkeiba')) {
-      console.log(`   ✅ Looks like a valid race page!`);
-      return { raceId, title, valid: true };
+    // Check if this looks like a valid entry page
+    if (h1Text && h1Text.length > 3 && horseCount >= 4) {
+      console.log(`   ✅ Looks like a valid entry page!`);
+      return { raceId, title: h1Text, horses: horseCount, valid: true };
     } else {
-      console.log(`   ❌ Doesn't look like a valid race page`);
+      console.log(`   ❌ Doesn't look like a valid entry page`);
       return null;
     }
 
@@ -100,7 +111,7 @@ async function testRaceId(raceId) {
 }
 
 async function runTests() {
-  console.log('🧪 Testing known race IDs from October 2025\n');
+  console.log('🧪 Testing known race ENTRY pages from October 2025\n');
   console.log('='.repeat(60));
 
   const results = [];
@@ -117,28 +128,29 @@ async function runTests() {
 
   console.log('\n' + '='.repeat(60));
   console.log('\n📊 SUMMARY:');
-  console.log(`   Valid races found: ${results.length}/${KNOWN_RACE_IDS.length}`);
+  console.log(`   Valid entry pages found: ${results.length}/${KNOWN_RACE_IDS.length}`);
   
   if (results.length > 0) {
     console.log('\n   ✅ Valid races:');
     results.forEach(r => {
-      console.log(`      ${r.raceId}: ${r.title}`);
+      console.log(`      ${r.raceId}: ${r.title} (${r.horses} horses)`);
     });
-    console.log('\n   💡 The scraper CAN access race pages!');
-    console.log('      The issue is likely with race ID generation.');
+    console.log('\n   💡 The scraper CAN access entry pages!');
+    console.log('      Horse names and jockeys should be in the HTML files.');
   } else {
-    console.log('\n   ❌ NO valid races found!');
+    console.log('\n   ❌ NO valid entry pages found!');
     console.log('      Possible issues:');
     console.log('      - Netkeiba is blocking automated requests');
-    console.log('      - Race results not yet available (future races)');
+    console.log('      - Entry pages not available yet (too far in future)');
     console.log('      - Network/firewall blocking the requests');
     console.log('      - Check the saved HTML files to see what was returned');
   }
 
   console.log('\n💡 Next steps:');
-  console.log('   1. Check the saved HTML files (race_*.html)');
-  console.log('   2. Open them in a browser to see what they contain');
-  console.log('   3. Compare with the actual race page on netkeiba.com');
+  console.log('   1. Check the saved HTML files (entry_*.html)');
+  console.log('   2. Open them in a browser to see the entry lists');
+  console.log('   3. If you see horse names, the scraper should work!');
+  console.log('   4. If you see errors/blocks, we need a different approach');
 }
 
 runTests().catch(console.error);
