@@ -65,7 +65,9 @@ async function fetchRaceDetails(raceId) {
       },
     });
 
-    if (!response.ok) return null;
+    if (!response.ok) {
+      return null;
+    }
 
     const html = await response.text();
     const $ = cheerio.load(html);
@@ -77,6 +79,8 @@ async function fetchRaceDetails(raceId) {
 
     // Extract title
     let title = $('h1').first().text().trim();
+    if (!title) return null;
+    
     title = title.replace(/\(G[123]\)/g, '').trim();
 
     // Extract grade
@@ -129,6 +133,7 @@ async function fetchRaceDetails(raceId) {
     };
 
   } catch (error) {
+    console.error(`Error fetching ${raceId}: ${error.message}`);
     return null;
   }
 }
@@ -137,9 +142,12 @@ async function scrapeRaces() {
   console.log('Starting race scraper...');
   const raceIds = generateRaceIds();
   console.log(`Generated ${raceIds.length} possible race IDs`);
+  console.log(`First 5 IDs: ${raceIds.slice(0, 5).join(', ')}`);
 
   const races = [];
   let id = 1;
+  let successCount = 0;
+  let failCount = 0;
 
   // Process in batches to avoid overwhelming the server
   const BATCH_SIZE = 10;
@@ -155,7 +163,20 @@ async function scrapeRaces() {
       if (result.status === 'fulfilled' && result.value) {
         result.value.id = id++;
         races.push(result.value);
+        successCount++;
+      } else if (result.status === 'rejected') {
+        failCount++;
+        if (failCount <= 3) {
+          console.log(`Fetch failed: ${result.reason}`);
+        }
+      } else {
+        failCount++;
       }
+    }
+
+    // Log progress every 10 batches
+    if ((Math.floor(i / BATCH_SIZE) + 1) % 10 === 0) {
+      console.log(`Progress: ${successCount} races found, ${failCount} failed`);
     }
 
     // Small delay between batches
@@ -167,6 +188,7 @@ async function scrapeRaces() {
   races.sort((a, b) => new Date(b.date) - new Date(a.date));
 
   console.log(`Successfully scraped ${races.length} races`);
+  console.log(`Success: ${successCount}, Failed: ${failCount}`);
 
   // Save to JSON file
   fs.writeFileSync('races.json', JSON.stringify(races, null, 2));
