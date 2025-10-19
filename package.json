@@ -1,0 +1,13 @@
+{
+  "name": "jra-race-scraper",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Daily scraper for JRA races",
+  "scripts": {
+    "scrape": "node scraper.js"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2",
+    "cheerio": "^1.0.0-rc.12"
+  }
+}
