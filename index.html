@@ -301,8 +301,16 @@
         <div id="setup" class="setup-section">
             <h2>Setup Session</h2>
             <div class="info-box">
-                🎯 This app automatically loads graded stakes races (G1, G2, G3) from the past month from Netkeiba!
+                🎯 <strong>Note:</strong> Currently showing 1 race. Use the "Import Races" button below to add more races from Netkeiba!
             </div>
+            
+            <div class="input-group">
+                <label for="raceIds">Import Races from Netkeiba (paste race IDs, one per line):</label>
+                <textarea id="raceIds" placeholder="Example:&#10;202506040911&#10;202505051011&#10;202508051011&#10;&#10;Find race IDs at: https://en.netkeiba.com/race/schedule.html&#10;Click a race → Full Result → copy the race_id from URL" style="width: 100%; min-height: 120px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-family: monospace; font-size: 14px;"></textarea>
+            </div>
+            
+            <button class="btn" onclick="importRaces()">📥 Import Races</button>
+            <div id="importStatus" class="hidden" style="margin-top: 10px;"></div>
             
             <div class="input-group">
                 <label for="username">Your Name:</label>
@@ -319,9 +327,12 @@
 
         <!-- Race List -->
         <div id="raceList" class="race-list hidden">
-            <h2>Available Races (Past Month)</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Available Races (Past Month)</h2>
+                <button class="btn" onclick="refreshRaces()" id="refreshBtn">🔄 Refresh Races</button>
+            </div>
             <div id="loadingMessage" class="loading-box">
-                <span class="loading-spinner"></span>Loading graded stakes races from Netkeiba...
+                <span class="loading-spinner"></span>Loading graded stakes races...
             </div>
             <div id="errorMessage" class="error-box hidden"></div>
             <div id="races"></div>
@@ -358,9 +369,21 @@
         // CORS proxy for fetching from Netkeiba
         const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
 
+        // CORS proxy for fetching from Netkeiba
+        const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+
         // Hardcoded race data - updated as of October 2025
-        // Add new races manually from: https://en.netkeiba.com/race/schedule.html
+        // This will be expanded with imported races
         function getRecentRaces() {
+            const saved = localStorage.getItem('importedRaces');
+            if (saved) {
+                try {
+                    return JSON.parse(saved);
+                } catch (e) {
+                    console.error('Error loading saved races:', e);
+                }
+            }
+            
             return [
                 {
                     id: 1,
@@ -391,12 +414,60 @@
                     videoUrl: "https://japanracing.jp/en/",
                     resultsUrl: "https://en.netkeiba.com/race/race_result.html?race_id=202506040911"
                 }
-                // TO ADD MORE RACES:
-                // 1. Go to https://en.netkeiba.com/race/schedule.html
-                // 2. Find a graded stakes race (G1, G2, G3)
-                // 3. Click "Full Result" 
-                // 4. Copy the race_id from URL
-                // 5. Copy horse
+            ];
+        }
+
+        async function importRaces() {
+            const textarea = document.getElementById('raceIds');
+            const statusDiv = document.getElementById('importStatus');
+            const raceIds = textarea.value.trim().split('\n').map(id => id.trim()).filter(id => id.length > 0);
+            
+            if (raceIds.length === 0) {
+                alert('Please enter at least one race ID!');
+                return;
+            }
+            
+            statusDiv.classList.remove('hidden');
+            statusDiv.className = 'loading-box';
+            statusDiv.innerHTML = '<span class="loading-spinner"></span>Importing races...';
+            
+            const importedRaces = [];
+            const currentRaces = getRecentRaces();
+            let nextId = Math.max(...currentRaces.map(r => r.id), 0) + 1;
+            
+            for (let i = 0; i < raceIds.length; i++) {
+                const raceId = raceIds[i];
+                statusDiv.innerHTML = `<span class="loading-spinner"></span>Importing race ${i + 1}/${raceIds.length}: ${raceId}...`;
+                
+                try {
+                    const raceData = await fetchRaceDetails(raceId);
+                    if (raceData && raceData.horses && raceData.horses.length > 0) {
+                        raceData.id = nextId++;
+                        importedRaces.push(raceData);
+                    } else {
+                        console.error(`Failed to import race ${raceId}: No data returned`);
+                    }
+                } catch (e) {
+                    console.error(`Failed to import race ${raceId}:`, e);
+                }
+                
+                // Small delay to avoid overwhelming the server
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+            
+            if (importedRaces.length > 0) {
+                const allRaces = [...currentRaces, ...importedRaces];
+                localStorage.setItem('importedRaces', JSON.stringify(allRaces));
+                
+                statusDiv.className = 'info-box';
+                statusDiv.innerHTML = `✅ Successfully imported ${importedRaces.length} race(s)! The races will appear when you refresh.`;
+                
+                textarea.value = '';
+            } else {
+                statusDiv.className = 'error-box';
+                statusDiv.innerHTML = '❌ Failed to import any races. Make sure the race IDs are correct and the races have results available.';
+            }
+        }
 
         async function fetchRaceDetails(raceId) {
             // Extract race info from race ID
@@ -523,18 +594,22 @@
             const loadingMsg = document.getElementById('loadingMessage');
             const errorMsg = document.getElementById('errorMessage');
             const racesDiv = document.getElementById('races');
+            const refreshBtn = document.getElementById('refreshBtn');
             
             loadingMsg.classList.remove('hidden');
             errorMsg.classList.add('hidden');
             racesDiv.innerHTML = '';
+            if (refreshBtn) refreshBtn.disabled = true;
             
             try {
-                races = await fetchGradedStakesRaces();
+                // Get hardcoded races
+                races = getRecentRaces();
                 
                 loadingMsg.classList.add('hidden');
+                if (refreshBtn) refreshBtn.disabled = false;
                 
                 if (races.length === 0) {
-                    errorMsg.textContent = 'No races found. This might be due to CORS restrictions. Try using the manual data entry mode.';
+                    errorMsg.textContent = 'No races available. Please add race data.';
                     errorMsg.classList.remove('hidden');
                     return;
                 }
@@ -561,10 +636,15 @@
                 
             } catch (error) {
                 loadingMsg.classList.add('hidden');
-                errorMsg.textContent = `Error loading races: ${error.message}. The site may be blocking automated requests. Try refreshing or use manual data entry.`;
+                if (refreshBtn) refreshBtn.disabled = false;
+                errorMsg.textContent = `Error loading races: ${error.message}`;
                 errorMsg.classList.remove('hidden');
                 console.error('Error:', error);
             }
+        }
+
+        function refreshRaces() {
+            loadRaces();
         }
 
         function selectRace(race) {
