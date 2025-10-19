@@ -1,62 +1,110 @@
 /**
- * scraper.js - JRA Race Scraper for GitHub Actions
+ * scraper.js - JRA Race Scraper that Actually Works!
  * 
- * This script runs daily via GitHub Actions and scrapes
- * all JRA races from the past 14 days, saving to races.json
+ * This scrapes the English Netkeiba calendar to get real race IDs,
+ * then fetches details for each race.
  */
 
 import fetch from 'node-fetch';
 import * as cheerio from 'cheerio';
 import fs from 'fs';
 
-const DAYS_BACK = 14;
 const TRACK_MAP = {
   '01': 'Sapporo', '02': 'Hakodate', '03': 'Fukushima', '04': 'Niigata',
   '05': 'Tokyo', '06': 'Nakayama', '07': 'Chukyo', '08': 'Kyoto',
   '09': 'Hanshin', '10': 'Kokura'
 };
 
-// Generate race IDs for the past 14 days
-function generateRaceIds() {
-  const raceIds = [];
-  const now = new Date();
-  const startDate = new Date(now.getTime() - (DAYS_BACK * 24 * 60 * 60 * 1000));
+// Scrape race IDs from the main race list page
+async function scrapeRaceIds() {
+  console.log('Fetching race IDs from Netkeiba race calendar...');
+  const raceIds = new Set();
+  
+  // Try the main race list page
+  const url = 'https://en.netkeiba.com/race/';
+  
+  try {
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+      },
+    });
 
-  for (let d = new Date(startDate); d <= now; d.setDate(d.getDate() + 1)) {
-    const dayOfWeek = d.getDay();
-    
-    // Only weekends (0=Sun, 6=Sat) and Mondays (1) - JRA race days
-    if (dayOfWeek !== 0 && dayOfWeek !== 6 && dayOfWeek !== 1) {
-      continue;
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
     }
 
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    const dateStr = `${year}${month}${day}`;
+    const html = await response.text();
+    const $ = cheerio.load(html);
 
-    // Check all tracks
-    for (let track = 1; track <= 10; track++) {
-      const trackStr = String(track).padStart(2, '0');
+    // Find all links with race_id parameter
+    $('a[href*="race_id="]').each((i, elem) => {
+      const href = $(elem).attr('href');
+      const match = href.match(/race_id=(\d{12})/);
+      if (match) {
+        raceIds.add(match[1]);
+      }
+    });
+
+    console.log(`Found ${raceIds.size} race IDs from main page`);
+    
+    // Also try to get recent dates
+    const today = new Date();
+    for (let daysBack = 0; daysBack < 30; daysBack++) {
+      const date = new Date(today);
+      date.setDate(date.getDate() - daysBack);
       
-      // Try 12 races per track per day
-      for (let raceNum = 1; raceNum <= 12; raceNum++) {
-        const raceStr = String(raceNum).padStart(2, '0');
-        raceIds.push(`${dateStr}${trackStr}${raceStr}`);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      
+      const dateUrl = `https://en.netkeiba.com/race/?year=${year}&month=${month}&day=${day}`;
+      
+      try {
+        console.log(`Checking date: ${year}-${month}-${day}`);
+        const dateResponse = await fetch(dateUrl, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          },
+        });
+
+        if (dateResponse.ok) {
+          const dateHtml = await dateResponse.text();
+          const $date = cheerio.load(dateHtml);
+          
+          let foundOnDate = 0;
+          $date('a[href*="race_id="]').each((i, elem) => {
+            const href = $date(elem).attr('href');
+            const match = href.match(/race_id=(\d{12})/);
+            if (match && !raceIds.has(match[1])) {
+              raceIds.add(match[1]);
+              foundOnDate++;
+            }
+          });
+          
+          if (foundOnDate > 0) {
+            console.log(`  → Found ${foundOnDate} new races`);
+          }
+        }
+        
+        // Small delay between requests
+        await new Promise(resolve => setTimeout(resolve, 200));
+        
+      } catch (error) {
+        console.error(`  → Error checking ${year}-${month}-${day}: ${error.message}`);
       }
     }
-  }
 
-  return raceIds;
+    return Array.from(raceIds);
+    
+  } catch (error) {
+    console.error('Error scraping race IDs:', error);
+    return [];
+  }
 }
 
 async function fetchRaceDetails(raceId) {
-  const year = raceId.substring(0, 4);
-  const month = raceId.substring(4, 6);
-  const day = raceId.substring(6, 8);
-  const trackCode = raceId.substring(8, 10);
-
-  const url = `https://en.netkeiba.com/race/race_result.html?race_id=${raceId}`;
+  const url = `https://en.netkeiba.com/race/result.html?race_id=${raceId}`;
 
   try {
     const response = await fetch(url, {
@@ -72,43 +120,101 @@ async function fetchRaceDetails(raceId) {
     const html = await response.text();
     const $ = cheerio.load(html);
 
-    // Check if this is a valid race result page
-    if (!html.includes('Full Result') && $('table').length === 0) {
-      return null;
-    }
-
-    // Extract title
+    // Extract title from the page
     let title = $('h1').first().text().trim();
-    if (!title) return null;
+    if (!title) {
+      title = $('.RaceName').first().text().trim();
+    }
+    if (!title) {
+      // Try to get it from the title tag
+      title = $('title').text().split('|')[0].trim();
+    }
+    if (!title || title === '') return null;
     
-    title = title.replace(/\(G[123]\)/g, '').trim();
+    // Clean up title - remove grade from title text
+    const cleanTitle = title.replace(/\(G[123]\)/g, '').replace(/\s+/g, ' ').trim();
 
     // Extract grade
-    const gradeMatch = $('h1').first().text().match(/\(G([123])\)/);
+    const gradeMatch = title.match(/\(G([123])\)/);
     const grade = gradeMatch ? `G${gradeMatch[1]}` : '';
+
+    // Extract date and track from race ID
+    const year = raceId.substring(0, 4);
+    const trackCode = raceId.substring(4, 6);
+    
+    // Try to find the actual date in the page
+    let raceDate = `${year}-01-01`; // fallback
+    const dateText = $('.RaceData01, .race_place').first().text();
+    const dateMatch = dateText.match(/(\d{4})\/(\d{1,2})\/(\d{1,2})/);
+    if (dateMatch) {
+      const [, y, m, d] = dateMatch;
+      raceDate = `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    }
 
     // Extract distance and surface
     const raceInfo = $('body').text();
-    const distanceMatch = raceInfo.match(/([TD])(\d+)m/);
-    const distance = distanceMatch ? `${distanceMatch[2]}m` : 'Unknown';
-    const surface = distanceMatch ? (distanceMatch[1] === 'T' ? 'Turf' : 'Dirt') : 'Turf';
+    let distance = 'Unknown';
+    let surface = 'Turf';
+    
+    // Look for patterns like "T1600m" or "D1800m"
+    const distanceMatch = raceInfo.match(/([TD])(\d{3,4})m/);
+    if (distanceMatch) {
+      distance = `${distanceMatch[2]}m`;
+      surface = distanceMatch[1] === 'T' ? 'Turf' : 'Dirt';
+    }
 
-    // Extract horses
+    // Extract horses from results table
     const horses = [];
     const seen = new Set();
 
+    // Look for the results table
     $('table tr').each((i, row) => {
       const cells = $(row).find('td');
-      if (cells.length >= 6) {
+      
+      if (cells.length >= 5) {
         try {
-          const ppText = $(cells[2]).text().trim();
-          const pp = parseInt(ppText);
-          const horseName = $(cells[3]).text().trim();
-          const jockey = $(cells[5]).text().trim();
+          // Typical table structure: Finish | Frame | Post | Horse | Age/Sex | ... | Jockey
+          // We need Post Position (usually 3rd column) and Horse Name (usually 4th column)
+          
+          let pp = null;
+          let horseName = null;
+          let jockey = null;
+          
+          // Try to find post position (number between 1-18)
+          for (let idx = 0; idx < Math.min(4, cells.length); idx++) {
+            const text = $(cells[idx]).text().trim();
+            const num = parseInt(text);
+            if (!isNaN(num) && num >= 1 && num <= 18) {
+              pp = num;
+              
+              // Horse name should be in the next non-numeric cell
+              for (let j = idx + 1; j < cells.length; j++) {
+                const candidateName = $(cells[j]).text().trim();
+                if (candidateName && candidateName.length > 1 && !/^\d+$/.test(candidateName)) {
+                  horseName = candidateName;
+                  break;
+                }
+              }
+              break;
+            }
+          }
+          
+          // Find jockey (usually in last few columns, contains letters)
+          for (let idx = cells.length - 1; idx >= Math.max(0, cells.length - 4); idx--) {
+            const text = $(cells[idx]).text().trim();
+            if (text && text.length > 2 && /[A-Za-z]/.test(text) && !/^\d+$/.test(text)) {
+              jockey = text;
+              break;
+            }
+          }
 
-          if (!isNaN(pp) && horseName && jockey && pp > 0 && !seen.has(pp)) {
+          if (pp && horseName && jockey && !seen.has(pp)) {
             seen.add(pp);
-            horses.push({ number: pp, name: horseName, jockey: jockey });
+            horses.push({ 
+              number: pp, 
+              name: horseName.substring(0, 50), // Limit length
+              jockey: jockey.substring(0, 30) 
+            });
           }
         } catch (e) {
           // Skip invalid rows
@@ -118,12 +224,15 @@ async function fetchRaceDetails(raceId) {
 
     horses.sort((a, b) => a.number - b.number);
 
-    if (horses.length === 0) return null;
+    if (horses.length < 3) {
+      // Not a valid race if less than 3 horses
+      return null;
+    }
 
     return {
-      title: title || 'Unknown Race',
+      title: cleanTitle,
       grade,
-      date: `${year}-${month}-${day}`,
+      date: raceDate,
       track: TRACK_MAP[trackCode] || 'Unknown',
       distance,
       surface,
@@ -139,21 +248,34 @@ async function fetchRaceDetails(raceId) {
 }
 
 async function scrapeRaces() {
-  console.log('Starting race scraper...');
-  const raceIds = generateRaceIds();
-  console.log(`Generated ${raceIds.length} possible race IDs`);
-  console.log(`First 5 IDs: ${raceIds.slice(0, 5).join(', ')}`);
-
+  console.log('🏇 Starting JRA Race Scraper...\n');
+  
+  // Step 1: Get all race IDs
+  const raceIds = await scrapeRaceIds();
+  
+  if (raceIds.length === 0) {
+    console.log('❌ No race IDs found. Check your internet connection and try again.');
+    return;
+  }
+  
+  console.log(`\n✅ Found ${raceIds.length} total race IDs`);
+  console.log(`📋 Sample IDs: ${raceIds.slice(0, 5).join(', ')}\n`);
+  
+  // Step 2: Fetch details for each race
   const races = [];
   let id = 1;
   let successCount = 0;
   let failCount = 0;
+  let gradedCount = 0;
 
-  // Process in batches to avoid overwhelming the server
-  const BATCH_SIZE = 10;
+  const BATCH_SIZE = 5;
+  const totalBatches = Math.ceil(raceIds.length / BATCH_SIZE);
+  
   for (let i = 0; i < raceIds.length; i += BATCH_SIZE) {
     const batch = raceIds.slice(i, i + BATCH_SIZE);
-    console.log(`Processing batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(raceIds.length / BATCH_SIZE)}...`);
+    const currentBatch = Math.floor(i / BATCH_SIZE) + 1;
+    
+    process.stdout.write(`\rProcessing batch ${currentBatch}/${totalBatches}... `);
 
     const results = await Promise.allSettled(
       batch.map(raceId => fetchRaceDetails(raceId))
@@ -164,35 +286,54 @@ async function scrapeRaces() {
         result.value.id = id++;
         races.push(result.value);
         successCount++;
-      } else if (result.status === 'rejected') {
-        failCount++;
-        if (failCount <= 3) {
-          console.log(`Fetch failed: ${result.reason}`);
+        if (result.value.grade) {
+          gradedCount++;
         }
       } else {
         failCount++;
       }
     }
 
-    // Log progress every 10 batches
-    if ((Math.floor(i / BATCH_SIZE) + 1) % 10 === 0) {
-      console.log(`Progress: ${successCount} races found, ${failCount} failed`);
-    }
-
-    // Small delay between batches
+    // Delay between batches to be respectful
     if (i + BATCH_SIZE < raceIds.length) {
       await new Promise(resolve => setTimeout(resolve, 500));
     }
   }
 
+  console.log(`\n\n✅ Scraping complete!`);
+  console.log(`   Total races: ${races.length}`);
+  console.log(`   Graded stakes: ${gradedCount}`);
+  console.log(`   Failed: ${failCount}\n`);
+
+  // Sort by date (most recent first)
   races.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  console.log(`Successfully scraped ${races.length} races`);
-  console.log(`Success: ${successCount}, Failed: ${failCount}`);
+  // Show sample of what we got
+  if (races.length > 0) {
+    console.log('📊 Sample races:');
+    races.slice(0, 5).forEach(race => {
+      const gradeStr = race.grade ? ` [${race.grade}]` : '';
+      console.log(`   ${race.date} - ${race.title}${gradeStr} (${race.horses.length} horses)`);
+    });
+  }
 
   // Save to JSON file
   fs.writeFileSync('races.json', JSON.stringify(races, null, 2));
-  console.log('Saved to races.json');
+  console.log(`\n💾 Saved to races.json`);
+  
+  // Also create a summary
+  const summary = {
+    lastUpdated: new Date().toISOString(),
+    totalRaces: races.length,
+    gradedStakes: gradedCount,
+    dateRange: races.length > 0 ? {
+      earliest: races[races.length - 1].date,
+      latest: races[0].date
+    } : null
+  };
+  
+  console.log('\n📈 Summary:');
+  console.log(JSON.stringify(summary, null, 2));
 }
 
 scrapeRaces().catch(console.error);
