@@ -61,6 +61,10 @@
             color: #333;
         }
 
+        input[type="text"], input[type="checkbox"] {
+            margin-right: 8px;
+        }
+
         input[type="text"] {
             width: 100%;
             padding: 12px;
@@ -287,6 +291,45 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        .race-checkbox-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .race-checkbox-item {
+            padding: 10px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+        }
+
+        .race-checkbox-item:last-child {
+            border-bottom: none;
+        }
+
+        .race-checkbox-item:hover {
+            background: #f5f5f5;
+        }
+
+        .race-info-text {
+            flex: 1;
+            margin-left: 10px;
+        }
+
+        .race-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .race-meta {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
     </style>
 </head>
 <body>
@@ -297,20 +340,16 @@
             <p class="subtitle">Watch past races spoiler-free with your racing buddy!</p>
         </div>
 
-        <!-- Setup Section -->
         <div id="setup" class="setup-section">
             <h2>Setup Session</h2>
             <div class="info-box">
-                🎯 <strong>Note:</strong> Currently showing 1 race. Use the "Import Races" button below to add more races from Netkeiba!
+                🎯 <strong>Auto-loading races!</strong> This app automatically fetches graded stakes races (G1, G2, G3) from the past month.
             </div>
             
             <div class="input-group">
-                <label for="raceIds">Import Races from Netkeiba (paste race IDs, one per line):</label>
-                <textarea id="raceIds" placeholder="Example:&#10;202506040911&#10;202505051011&#10;202508051011&#10;&#10;Find race IDs at: https://en.netkeiba.com/race/schedule.html&#10;Click a race → Full Result → copy the race_id from URL" style="width: 100%; min-height: 120px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-family: monospace; font-size: 14px;"></textarea>
+                <label for="workerUrl">Worker API URL (optional - defaults to demo):</label>
+                <input type="text" id="workerUrl" placeholder="https://netkeiba-scraper.YOUR_SUBDOMAIN.workers.dev">
             </div>
-            
-            <button class="btn" onclick="importRaces()">📥 Import Races</button>
-            <div id="importStatus" class="hidden" style="margin-top: 10px;"></div>
             
             <div class="input-group">
                 <label for="username">Your Name:</label>
@@ -324,461 +363,3 @@
             
             <button class="btn" onclick="joinSession()">Join Session & Load Races</button>
         </div>
-
-        <!-- Race List -->
-        <div id="raceList" class="race-list hidden">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>Available Races (Past Month)</h2>
-                <button class="btn" onclick="refreshRaces()" id="refreshBtn">🔄 Refresh Races</button>
-            </div>
-            <div id="loadingMessage" class="loading-box">
-                <span class="loading-spinner"></span>Loading graded stakes races...
-            </div>
-            <div id="errorMessage" class="error-box hidden"></div>
-            <div id="races"></div>
-        </div>
-
-        <!-- Race Detail -->
-        <div id="raceDetail" class="race-detail hidden">
-            <button class="btn back-btn" onclick="backToRaces()">← Back to Races</button>
-            
-            <h2 id="selectedRaceTitle"></h2>
-            <p id="selectedRaceInfo"></p>
-            
-            <div class="info-box">
-                Pick your horse(s) below. You'll see your partner's picks in real-time! Horses are shown in randomized order to avoid spoilers.
-            </div>
-            
-            <div class="horse-list" id="horseList"></div>
-            
-            <div class="action-buttons">
-                <button class="btn" id="confirmPickBtn" onclick="confirmPicks()" disabled>Confirm My Picks</button>
-                <button class="btn" id="watchBtn" onclick="watchRace()" disabled>Watch Race</button>
-                <button class="btn" id="resultsBtn" onclick="showResults()" disabled>Show Results</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let currentUser = '';
-        let currentSession = '';
-        let selectedRace = null;
-        let myPicks = new Set();
-        let races = [];
-
-        // CORS proxy for fetching from Netkeiba
-        const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
-
-        // CORS proxy for fetching from Netkeiba
-        const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
-
-        // Hardcoded race data - updated as of October 2025
-        // This will be expanded with imported races
-        function getRecentRaces() {
-            const saved = localStorage.getItem('importedRaces');
-            if (saved) {
-                try {
-                    return JSON.parse(saved);
-                } catch (e) {
-                    console.error('Error loading saved races:', e);
-                }
-            }
-            
-            return [
-                {
-                    id: 1,
-                    title: "Sprinters Stakes",
-                    grade: "G1",
-                    date: "2025-09-28",
-                    track: "Nakayama",
-                    distance: "1200m",
-                    surface: "Turf",
-                    horses: [
-                        {number: 1, name: "Puro Magic", jockey: "K.Matsuyama"},
-                        {number: 2, name: "Yoshino Easter", jockey: "H.Uchida"},
-                        {number: 3, name: "Danon McKinley", jockey: "N.Yokoyama"},
-                        {number: 4, name: "Mama Cocha", jockey: "M.Iwata"},
-                        {number: 5, name: "Kangchenjunga", jockey: "R.Sakai"},
-                        {number: 6, name: "Namura Clair", jockey: "C.Lemaire"},
-                        {number: 7, name: "Satono Reve", jockey: "J.Moreira"},
-                        {number: 8, name: "Pair Pollux", jockey: "F.Matsuwaka"},
-                        {number: 9, name: "Drop of Light", jockey: "Y.Tannai"},
-                        {number: 10, name: "Lucky Sweynesse", jockey: "K.ChunLeung"},
-                        {number: 11, name: "Toshin Macau", jockey: "T.Yokoyama"},
-                        {number: 12, name: "Yamanin al Rihla", jockey: "T.Danno"},
-                        {number: 13, name: "June Blair", jockey: "Y.Take"},
-                        {number: 14, name: "Ka Pilina", jockey: "K.Tosaki"},
-                        {number: 15, name: "Lugal", jockey: "Y.Kawada"},
-                        {number: 16, name: "Win Carnelian", jockey: "K.Miura"}
-                    ],
-                    videoUrl: "https://japanracing.jp/en/",
-                    resultsUrl: "https://en.netkeiba.com/race/race_result.html?race_id=202506040911"
-                }
-            ];
-        }
-
-        async function importRaces() {
-            const textarea = document.getElementById('raceIds');
-            const statusDiv = document.getElementById('importStatus');
-            const raceIds = textarea.value.trim().split('\n').map(id => id.trim()).filter(id => id.length > 0);
-            
-            if (raceIds.length === 0) {
-                alert('Please enter at least one race ID!');
-                return;
-            }
-            
-            statusDiv.classList.remove('hidden');
-            statusDiv.className = 'loading-box';
-            statusDiv.innerHTML = '<span class="loading-spinner"></span>Importing races...';
-            
-            const importedRaces = [];
-            const currentRaces = getRecentRaces();
-            let nextId = Math.max(...currentRaces.map(r => r.id), 0) + 1;
-            
-            for (let i = 0; i < raceIds.length; i++) {
-                const raceId = raceIds[i];
-                statusDiv.innerHTML = `<span class="loading-spinner"></span>Importing race ${i + 1}/${raceIds.length}: ${raceId}...`;
-                
-                try {
-                    const raceData = await fetchRaceDetails(raceId);
-                    if (raceData && raceData.horses && raceData.horses.length > 0) {
-                        raceData.id = nextId++;
-                        importedRaces.push(raceData);
-                    } else {
-                        console.error(`Failed to import race ${raceId}: No data returned`);
-                    }
-                } catch (e) {
-                    console.error(`Failed to import race ${raceId}:`, e);
-                }
-                
-                // Small delay to avoid overwhelming the server
-                await new Promise(resolve => setTimeout(resolve, 1000));
-            }
-            
-            if (importedRaces.length > 0) {
-                const allRaces = [...currentRaces, ...importedRaces];
-                localStorage.setItem('importedRaces', JSON.stringify(allRaces));
-                
-                statusDiv.className = 'info-box';
-                statusDiv.innerHTML = `✅ Successfully imported ${importedRaces.length} race(s)! The races will appear when you refresh.`;
-                
-                textarea.value = '';
-            } else {
-                statusDiv.className = 'error-box';
-                statusDiv.innerHTML = '❌ Failed to import any races. Make sure the race IDs are correct and the races have results available.';
-            }
-        }
-
-        async function fetchRaceDetails(raceId) {
-            // Extract race info from race ID
-            // Format: YYYYMMDDRRNN where YYYY=year, MM=month, DD=day, RR=track, NN=race number
-            const year = raceId.substring(0, 4);
-            const month = raceId.substring(4, 6);
-            const day = raceId.substring(6, 8);
-            const trackCode = raceId.substring(8, 10);
-            
-            const trackMap = {
-                '01': 'Sapporo', '02': 'Hakodate', '03': 'Fukushima',
-                '04': 'Niigata', '05': 'Tokyo', '06': 'Nakayama',
-                '07': 'Chukyo', '08': 'Kyoto', '09': 'Hanshin', '10': 'Kokura'
-            };
-
-            const url = `${CORS_PROXY}${encodeURIComponent(`https://en.netkeiba.com/race/race_result.html?race_id=${raceId}`)}`;
-            
-            try {
-                const response = await fetch(url);
-                const html = await response.text();
-                
-                // Parse HTML
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                
-                // Get race title
-                const titleElem = doc.querySelector('h1');
-                let title = titleElem ? titleElem.textContent.trim() : 'Unknown Race';
-                
-                // Extract grade
-                let grade = '';
-                if (title.includes('(G1)')) {
-                    grade = 'G1';
-                    title = title.replace('(G1)', '').trim();
-                } else if (title.includes('(G2)')) {
-                    grade = 'G2';
-                    title = title.replace('(G2)', '').trim();
-                } else if (title.includes('(G3)')) {
-                    grade = 'G3';
-                    title = title.replace('(G3)', '').trim();
-                }
-                
-                // Get race conditions
-                let distance = 'Unknown';
-                let surface = 'Turf';
-                const raceDataText = doc.body.textContent;
-                const distanceMatch = raceDataText.match(/([TD])(\d+)m/);
-                if (distanceMatch) {
-                    surface = distanceMatch[1] === 'T' ? 'Turf' : 'Dirt';
-                    distance = distanceMatch[2] + 'm';
-                }
-                
-                // Get horses from table
-                const horses = [];
-                const rows = doc.querySelectorAll('table tr');
-                
-                for (let row of rows) {
-                    const cells = row.querySelectorAll('td');
-                    if (cells.length >= 6) {
-                        try {
-                            // Column 2 is PP (post position)
-                            const ppText = cells[2].textContent.trim();
-                            const pp = parseInt(ppText);
-                            
-                            // Column 3 is horse name
-                            const horseName = cells[3].textContent.trim();
-                            
-                            // Column 5 is jockey
-                            const jockey = cells[5].textContent.trim();
-                            
-                            if (!isNaN(pp) && horseName && jockey) {
-                                horses.push({
-                                    number: pp,
-                                    name: horseName,
-                                    jockey: jockey
-                                });
-                            }
-                        } catch (e) {
-                            // Skip invalid rows
-                        }
-                    }
-                }
-                
-                // Sort horses by number
-                horses.sort((a, b) => a.number - b.number);
-                
-                return {
-                    title: title,
-                    grade: grade,
-                    date: `${year}-${month}-${day}`,
-                    track: trackMap[trackCode] || 'Unknown',
-                    distance: distance,
-                    surface: surface,
-                    horses: horses,
-                    videoUrl: 'https://japanracing.jp/en/',
-                    resultsUrl: `https://en.netkeiba.com/race/race_result.html?race_id=${raceId}`
-                };
-            } catch (error) {
-                console.error(`Error fetching race ${raceId}:`, error);
-                return null;
-            }
-        }
-
-        async function joinSession() {
-            const username = document.getElementById('username').value.trim();
-            const sessionCode = document.getElementById('sessionCode').value.trim();
-            
-            if (!username || !sessionCode) {
-                alert('Please enter both your name and a session code!');
-                return;
-            }
-            
-            currentUser = username;
-            currentSession = sessionCode;
-            
-            document.getElementById('setup').classList.add('hidden');
-            document.getElementById('raceList').classList.remove('hidden');
-            
-            // Load races
-            await loadRaces();
-        }
-
-        async function loadRaces() {
-            const loadingMsg = document.getElementById('loadingMessage');
-            const errorMsg = document.getElementById('errorMessage');
-            const racesDiv = document.getElementById('races');
-            const refreshBtn = document.getElementById('refreshBtn');
-            
-            loadingMsg.classList.remove('hidden');
-            errorMsg.classList.add('hidden');
-            racesDiv.innerHTML = '';
-            if (refreshBtn) refreshBtn.disabled = true;
-            
-            try {
-                // Get hardcoded races
-                races = getRecentRaces();
-                
-                loadingMsg.classList.add('hidden');
-                if (refreshBtn) refreshBtn.disabled = false;
-                
-                if (races.length === 0) {
-                    errorMsg.textContent = 'No races available. Please add race data.';
-                    errorMsg.classList.remove('hidden');
-                    return;
-                }
-                
-                // Sort races by date (newest first)
-                races.sort((a, b) => new Date(b.date) - new Date(a.date));
-                
-                races.forEach(race => {
-                    const raceCard = document.createElement('div');
-                    raceCard.className = 'race-card';
-                    raceCard.onclick = () => selectRace(race);
-                    
-                    const gradeBadge = race.grade ? `<span class="grade-badge">${race.grade}</span>` : '';
-                    
-                    raceCard.innerHTML = `
-                        <div class="race-header">
-                            <div class="race-title">${race.title} ${gradeBadge}</div>
-                            <div class="race-date">${new Date(race.date).toLocaleDateString()}</div>
-                        </div>
-                        <div>${race.track} - ${race.distance} ${race.surface} - ${race.horses.length} horses</div>
-                    `;
-                    racesDiv.appendChild(raceCard);
-                });
-                
-            } catch (error) {
-                loadingMsg.classList.add('hidden');
-                if (refreshBtn) refreshBtn.disabled = false;
-                errorMsg.textContent = `Error loading races: ${error.message}`;
-                errorMsg.classList.remove('hidden');
-                console.error('Error:', error);
-            }
-        }
-
-        function refreshRaces() {
-            loadRaces();
-        }
-
-        function selectRace(race) {
-            selectedRace = race;
-            myPicks.clear();
-            
-            document.getElementById('raceList').classList.add('hidden');
-            document.getElementById('raceDetail').classList.remove('hidden');
-            
-            const gradeBadge = race.grade ? `<span class="grade-badge">${race.grade}</span>` : '';
-            document.getElementById('selectedRaceTitle').innerHTML = `${race.title} ${gradeBadge}`;
-            document.getElementById('selectedRaceInfo').textContent = 
-                `${race.track} - ${race.distance} ${race.surface} - ${new Date(race.date).toLocaleDateString()}`;
-            
-            loadHorses(race);
-        }
-
-        function loadHorses(race) {
-            const horseList = document.getElementById('horseList');
-            horseList.innerHTML = '';
-            
-            // Randomize horse display order to prevent spoilers
-            const shuffledHorses = [...race.horses].sort(() => Math.random() - 0.5);
-            
-            shuffledHorses.forEach(horse => {
-                const horseCard = document.createElement('div');
-                horseCard.className = 'horse-card';
-                horseCard.onclick = () => togglePick(horse.number, horseCard);
-                horseCard.innerHTML = `
-                    <div class="horse-number">#${horse.number}</div>
-                    <div class="horse-name">${horse.name}</div>
-                    <div class="horse-jockey">J: ${horse.jockey}</div>
-                `;
-                horseCard.dataset.horseNumber = horse.number;
-                horseList.appendChild(horseCard);
-            });
-            
-            loadExistingPicks();
-        }
-
-        function togglePick(horseNumber, cardElement) {
-            if (myPicks.has(horseNumber)) {
-                myPicks.delete(horseNumber);
-                cardElement.classList.remove('selected');
-            } else {
-                myPicks.add(horseNumber);
-                cardElement.classList.add('selected');
-            }
-            
-            updateButtons();
-        }
-
-        function updateButtons() {
-            const confirmBtn = document.getElementById('confirmPickBtn');
-            const watchBtn = document.getElementById('watchBtn');
-            const resultsBtn = document.getElementById('resultsBtn');
-            
-            confirmBtn.disabled = myPicks.size === 0;
-            
-            const picksConfirmed = localStorage.getItem(`${currentSession}_${selectedRace.id}_confirmed`) === 'true';
-            watchBtn.disabled = !picksConfirmed;
-            resultsBtn.disabled = !picksConfirmed;
-        }
-
-        function confirmPicks() {
-            if (myPicks.size === 0) return;
-            
-            const picks = {
-                user: currentUser,
-                raceId: selectedRace.id,
-                horses: Array.from(myPicks),
-                timestamp: new Date().toISOString()
-            };
-            
-            localStorage.setItem(`${currentSession}_${selectedRace.id}_${currentUser}`, JSON.stringify(picks));
-            localStorage.setItem(`${currentSession}_${selectedRace.id}_confirmed`, 'true');
-            
-            const horseNames = Array.from(myPicks)
-                .map(n => {
-                    const horse = selectedRace.horses.find(h => h.number === n);
-                    return `#${n} ${horse.name}`;
-                })
-                .join(', ');
-            
-            alert(`Picks confirmed! You chose: ${horseNames}`);
-            
-            loadExistingPicks();
-            updateButtons();
-        }
-
-        function loadExistingPicks() {
-            const allPicks = {};
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key.startsWith(`${currentSession}_${selectedRace.id}_`) && !key.endsWith('_confirmed')) {
-                    const username = key.split('_').pop();
-                    const data = JSON.parse(localStorage.getItem(key));
-                    allPicks[username] = data.horses;
-                }
-            }
-            
-            Object.entries(allPicks).forEach(([username, horses]) => {
-                horses.forEach(horseNum => {
-                    const card = document.querySelector(`[data-horse-number="${horseNum}"]`);
-                    if (card) {
-                        const existingBadge = card.querySelector('.picker-badge');
-                        if (existingBadge) existingBadge.remove();
-                        
-                        const badge = document.createElement('div');
-                        badge.className = `picker-badge ${username === currentUser ? 'user1' : 'user2'}`;
-                        badge.textContent = username;
-                        card.appendChild(badge);
-                        
-                        if (username !== currentUser) {
-                            card.classList.add('picked-by-user2');
-                        }
-                    }
-                });
-            });
-        }
-
-        function watchRace() {
-            window.open(selectedRace.videoUrl, '_blank');
-        }
-
-        function showResults() {
-            window.open(selectedRace.resultsUrl, '_blank');
-        }
-
-        function backToRaces() {
-            document.getElementById('raceDetail').classList.add('hidden');
-            document.getElementById('raceList').classList.remove('hidden');
-            myPicks.clear();
-        }
-    </script>
-</body>
-</html>
