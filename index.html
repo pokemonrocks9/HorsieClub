@@ -61,10 +61,6 @@
             color: #333;
         }
 
-        input[type="text"], input[type="checkbox"] {
-            margin-right: 8px;
-        }
-
         input[type="text"] {
             width: 100%;
             padding: 12px;
@@ -291,50 +287,10 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        .race-checkbox-list {
-            max-height: 400px;
-            overflow-y: auto;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 15px;
-        }
-
-        .race-checkbox-item {
-            padding: 10px;
-            border-bottom: 1px solid #f0f0f0;
-            display: flex;
-            align-items: center;
-        }
-
-        .race-checkbox-item:last-child {
-            border-bottom: none;
-        }
-
-        .race-checkbox-item:hover {
-            background: #f5f5f5;
-        }
-
-        .race-info-text {
-            flex: 1;
-            margin-left: 10px;
-        }
-
-        .race-name {
-            font-weight: 600;
-            color: #333;
-        }
-
-        .race-meta {
-            font-size: 12px;
-            color: #666;
-            margin-top: 4px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <div class="header">
             <h1>🏇 JRA Race Picker</h1>
             <p class="subtitle">Watch past races spoiler-free with your racing buddy!</p>
@@ -366,3 +322,422 @@
             
             <button class="btn" onclick="joinSession()">Join Session & Load Races</button>
         </div>
+
+        <div id="raceList" class="race-list hidden">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Available Races (Past Month)</h2>
+                <button class="btn" onclick="refreshRaces()" id="refreshBtn">🔄 Refresh Races</button>
+            </div>
+            <div id="loadingMessage" class="loading-box">
+                <span class="loading-spinner"></span>Loading graded stakes races...
+            </div>
+            <div id="errorMessage" class="error-box hidden"></div>
+            <div id="races"></div>
+        </div>
+
+        <div id="raceDetail" class="race-detail hidden">
+            <button class="btn back-btn" onclick="backToRaces()">← Back to Races</button>
+            
+            <h2 id="selectedRaceTitle"></h2>
+            <p id="selectedRaceInfo"></p>
+            
+            <div class="info-box">
+                Pick your horse(s) below. You'll see your partner's picks in real-time! Horses are shown in randomized order to avoid spoilers.
+            </div>
+            
+            <div class="horse-list" id="horseList"></div>
+            
+            <div class="action-buttons">
+                <button class="btn" id="confirmPickBtn" onclick="confirmPicks()" disabled>Confirm My Picks</button>
+                <button class="btn" id="watchBtn" onclick="watchRace()" disabled>Watch Race</button>
+                <button class="btn" id="resultsBtn" onclick="showResults()" disabled>Show Results</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = '';
+        let currentSession = '';
+        let selectedRace = null;
+        let myPicks = new Set();
+        let races = [];
+        let supabase = null;
+        
+        const SUPABASE_URL = 'https://wrazhxrevnkupzhylieu.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndyYXpoeHJldm5rdXB6aHlsaWV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4MDkwNjAsImV4cCI6MjA3NjM4NTA2MH0.jZ5_uqijFFaBhij_hpYz6RZsCdyF79ChLBbY_MNSSmw';
+        const DEFAULT_WORKER_URL = 'https://horsie.tytygoins.workers.dev';
+
+        function initSupabase() {
+            try {
+                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                console.log('Supabase initialized');
+                refreshSessions();
+                return true;
+            } catch (error) {
+                console.error('Error initializing Supabase:', error);
+                return false;
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initSupabase();
+        });
+
+        function setupRealtimeSubscription() {
+            if (!supabase || !currentSession) return;
+            
+            supabase
+                .channel('picks')
+                .on('postgres_changes', 
+                    { 
+                        event: '*', 
+                        schema: 'public', 
+                        table: 'picks',
+                        filter: `session_code=eq.${currentSession}`
+                    }, 
+                    (payload) => {
+                        console.log('Real-time update:', payload);
+                        if (selectedRace) {
+                            loadExistingPicks();
+                        }
+                    }
+                )
+                .subscribe();
+        }
+
+        async function refreshSessions() {
+            if (!supabase) {
+                console.error('Supabase not initialized');
+                document.getElementById('activeSessions').innerHTML = '<p style="color: #666;">No active sessions available</p>';
+                return;
+            }
+
+            const sessionsDiv = document.getElementById('activeSessions');
+            sessionsDiv.innerHTML = '<p style="color: #666;">Loading sessions...</p>';
+
+            try {
+                const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+                const { data, error } = await supabase
+                    .from('picks')
+                    .select('session_code, user_name, created_at')
+                    .gte('created_at', oneDayAgo)
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    console.error('Supabase error details:', JSON.stringify(error));
+                    sessionsDiv.innerHTML = '<p style="color: #666;">No active sessions available</p>';
+                    return;
+                }
+
+                const sessions = {};
+                (data || []).forEach(pick => {
+                    if (!sessions[pick.session_code]) {
+                        sessions[pick.session_code] = {
+                            users: new Set(),
+                            lastActivity: pick.created_at
+                        };
+                    }
+                    sessions[pick.session_code].users.add(pick.user_name);
+                });
+
+                if (Object.keys(sessions).length === 0) {
+                    sessionsDiv.innerHTML = '<p style="color: #666;">No active sessions in the last 24 hours</p>';
+                } else {
+                    let html = '<div style="display: flex; flex-direction: column; gap: 10px;">';
+                    for (const [code, info] of Object.entries(sessions)) {
+                        const userList = Array.from(info.users).join(', ');
+                        const timeAgo = getTimeAgo(new Date(info.lastActivity));
+                        html += `
+                            <div style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 5px; cursor: pointer;" 
+                                 onmouseover="this.style.background='#f5f5f5'" 
+                                 onmouseout="this.style.background='white'"
+                                 onclick="document.getElementById('sessionCode').value='${code}'">
+                                <strong>${code}</strong><br>
+                                <small style="color: #666;">Users: ${userList} • ${timeAgo}</small>
+                            </div>
+                        `;
+                    }
+                    html += '</div>';
+                    sessionsDiv.innerHTML = html;
+                }
+            } catch (error) {
+                console.error('Error loading sessions:', error);
+                sessionsDiv.innerHTML = '<p style="color: #666;">No active sessions available</p>';
+            }
+        }
+
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            if (seconds < 60) return 'just now';
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return `${minutes}m ago`;
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `${hours}h ago`;
+            const days = Math.floor(hours / 24);
+            return `${days}d ago`;
+        }
+
+        async function fetchRacesFromWorker(workerUrl) {
+            try {
+                const response = await fetch(workerUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching from worker:', error);
+                throw error;
+            }
+        }
+
+        async function joinSession() {
+            const username = document.getElementById('username').value.trim();
+            const sessionCode = document.getElementById('sessionCode').value.trim();
+            
+            if (!username || !sessionCode) {
+                alert('Please enter both your name and a session code!');
+                return;
+            }
+            
+            currentUser = username;
+            currentSession = sessionCode;
+            
+            setupRealtimeSubscription();
+            
+            document.getElementById('setup').classList.add('hidden');
+            document.getElementById('raceList').classList.remove('hidden');
+            
+            await loadRaces();
+        }
+
+        async function loadRaces() {
+            const loadingMsg = document.getElementById('loadingMessage');
+            const errorMsg = document.getElementById('errorMessage');
+            const racesDiv = document.getElementById('races');
+            const refreshBtn = document.getElementById('refreshBtn');
+            
+            loadingMsg.classList.remove('hidden');
+            errorMsg.classList.add('hidden');
+            racesDiv.innerHTML = '';
+            if (refreshBtn) refreshBtn.disabled = true;
+            
+            try {
+                races = await fetchRacesFromWorker(DEFAULT_WORKER_URL);
+                
+                loadingMsg.classList.add('hidden');
+                if (refreshBtn) refreshBtn.disabled = false;
+                
+                if (!races || races.length === 0) {
+                    errorMsg.textContent = 'No races available. The worker may need to be deployed or the race list updated.';
+                    errorMsg.classList.remove('hidden');
+                    return;
+                }
+                
+                races.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                races.forEach(race => {
+                    const raceCard = document.createElement('div');
+                    raceCard.className = 'race-card';
+                    raceCard.onclick = () => selectRace(race);
+                    
+                    const gradeBadge = race.grade ? `<span class="grade-badge">${race.grade}</span>` : '';
+                    
+                    raceCard.innerHTML = `
+                        <div class="race-header">
+                            <div class="race-title">${race.title} ${gradeBadge}</div>
+                            <div class="race-date">${new Date(race.date).toLocaleDateString()}</div>
+                        </div>
+                        <div>${race.track} - ${race.distance} ${race.surface} - ${race.horses.length} horses</div>
+                    `;
+                    racesDiv.appendChild(raceCard);
+                });
+                
+            } catch (error) {
+                loadingMsg.classList.add('hidden');
+                if (refreshBtn) refreshBtn.disabled = false;
+                errorMsg.innerHTML = `Error loading races: ${error.message}<br><br>Make sure the Cloudflare Worker is deployed at: ${DEFAULT_WORKER_URL}`;
+                errorMsg.classList.remove('hidden');
+                console.error('Error:', error);
+            }
+        }
+
+        function refreshRaces() {
+            loadRaces();
+        }
+
+        function selectRace(race) {
+            selectedRace = race;
+            myPicks.clear();
+            
+            document.getElementById('raceList').classList.add('hidden');
+            document.getElementById('raceDetail').classList.remove('hidden');
+            
+            const gradeBadge = race.grade ? `<span class="grade-badge">${race.grade}</span>` : '';
+            document.getElementById('selectedRaceTitle').innerHTML = `${race.title} ${gradeBadge}`;
+            document.getElementById('selectedRaceInfo').textContent = 
+                `${race.track} - ${race.distance} ${race.surface} - ${new Date(race.date).toLocaleDateString()}`;
+            
+            loadHorses(race);
+        }
+
+        function loadHorses(race) {
+            const horseList = document.getElementById('horseList');
+            horseList.innerHTML = '';
+            
+            const shuffledHorses = [...race.horses].sort(() => Math.random() - 0.5);
+            
+            shuffledHorses.forEach(horse => {
+                const horseCard = document.createElement('div');
+                horseCard.className = 'horse-card';
+                horseCard.onclick = () => togglePick(horse.number, horseCard);
+                horseCard.innerHTML = `
+                    <div class="horse-number">#${horse.number}</div>
+                    <div class="horse-name">${horse.name}</div>
+                    <div class="horse-jockey">J: ${horse.jockey}</div>
+                `;
+                horseCard.dataset.horseNumber = horse.number;
+                horseList.appendChild(horseCard);
+            });
+            
+            loadExistingPicks();
+        }
+
+        function togglePick(horseNumber, cardElement) {
+            if (myPicks.has(horseNumber)) {
+                myPicks.delete(horseNumber);
+                cardElement.classList.remove('selected');
+            } else {
+                myPicks.add(horseNumber);
+                cardElement.classList.add('selected');
+            }
+            
+            updateButtons();
+        }
+
+        function updateButtons() {
+            const confirmBtn = document.getElementById('confirmPickBtn');
+            const watchBtn = document.getElementById('watchBtn');
+            const resultsBtn = document.getElementById('resultsBtn');
+            
+            confirmBtn.disabled = myPicks.size === 0;
+            
+            const picksConfirmed = localStorage.getItem(`${currentSession}_${selectedRace.id}_confirmed`) === 'true';
+            watchBtn.disabled = !picksConfirmed;
+            resultsBtn.disabled = !picksConfirmed;
+        }
+
+        async function confirmPicks() {
+            if (myPicks.size === 0) return;
+            
+            const picks = {
+                user: currentUser,
+                raceId: selectedRace.id,
+                horses: Array.from(myPicks),
+                timestamp: new Date().toISOString()
+            };
+            
+            if (supabase) {
+                try {
+                    const { error } = await supabase
+                        .from('picks')
+                        .insert({
+                            session_code: currentSession,
+                            race_id: selectedRace.id,
+                            user_name: currentUser,
+                            horse_numbers: Array.from(myPicks),
+                            created_at: new Date().toISOString()
+                        });
+                    
+                    if (error) throw error;
+                } catch (error) {
+                    console.error('Error saving to Supabase:', error);
+                }
+            }
+            
+            localStorage.setItem(`${currentSession}_${selectedRace.id}_${currentUser}`, JSON.stringify(picks));
+            localStorage.setItem(`${currentSession}_${selectedRace.id}_confirmed`, 'true');
+            
+            const horseNames = Array.from(myPicks)
+                .map(n => {
+                    const horse = selectedRace.horses.find(h => h.number === n);
+                    return `#${n} ${horse.name}`;
+                })
+                .join(', ');
+            
+            alert(`Picks confirmed! You chose: ${horseNames}`);
+            
+            loadExistingPicks();
+            updateButtons();
+        }
+
+        async function loadExistingPicks() {
+            const allPicks = {};
+            
+            if (supabase && currentSession && selectedRace) {
+                try {
+                    const { data, error } = await supabase
+                        .from('picks')
+                        .select('*')
+                        .eq('session_code', currentSession)
+                        .eq('race_id', selectedRace.id);
+                    
+                    if (!error && data) {
+                        data.forEach(pick => {
+                            allPicks[pick.user_name] = pick.horse_numbers;
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error loading from Supabase:', error);
+                }
+            }
+            
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith(`${currentSession}_${selectedRace.id}_`) && !key.endsWith('_confirmed')) {
+                    const username = key.split('_').pop();
+                    if (!allPicks[username]) {
+                        const data = JSON.parse(localStorage.getItem(key));
+                        allPicks[username] = data.horses;
+                    }
+                }
+            }
+            
+            document.querySelectorAll('.picker-badge').forEach(badge => badge.remove());
+            document.querySelectorAll('.picked-by-user2').forEach(card => {
+                card.classList.remove('picked-by-user2');
+            });
+            
+            Object.entries(allPicks).forEach(([username, horses]) => {
+                horses.forEach(horseNum => {
+                    const card = document.querySelector(`[data-horse-number="${horseNum}"]`);
+                    if (card) {
+                        const badge = document.createElement('div');
+                        badge.className = `picker-badge ${username === currentUser ? 'user1' : 'user2'}`;
+                        badge.textContent = username;
+                        card.appendChild(badge);
+                        
+                        if (username !== currentUser) {
+                            card.classList.add('picked-by-user2');
+                        }
+                    }
+                });
+            });
+        }
+
+        function watchRace() {
+            window.open(selectedRace.videoUrl, '_blank');
+        }
+
+        function showResults() {
+            window.open(selectedRace.resultsUrl, '_blank');
+        }
+
+        function backToRaces() {
+            document.getElementById('raceDetail').classList.add('hidden');
+            document.getElementById('raceList').classList.remove('hidden');
+            myPicks.clear();
+        }
+    </script>
+</body>
+</html>
