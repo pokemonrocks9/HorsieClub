@@ -19,13 +19,19 @@
         .btn { background: #667eea; color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
         .btn:hover { background: #5568d3; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
         .btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
-        .selector-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
-        .selector-card { border: 2px solid #e0e0e0; border-radius: 10px; padding: 20px; cursor: pointer; transition: all 0.3s; text-align: center; }
-        .selector-card:hover { border-color: #667eea; box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2); transform: translateY(-2px); }
-        .date-badge { font-size: 18px; font-weight: 600; color: #333; margin-bottom: 5px; }
-        .day-name { font-size: 14px; color: #666; }
+        .selector-grid { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
+        .selector-card { border: 2px solid #e0e0e0; border-radius: 10px; padding: 15px 20px; cursor: pointer; transition: all 0.3s; display: flex; justify-content: space-between; align-items: center; }
+        .selector-card:hover { border-color: #667eea; box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2); transform: translateX(5px); }
+        .date-info { display: flex; align-items: center; gap: 15px; }
+        .date-badge { font-size: 20px; font-weight: 600; color: #333; min-width: 80px; }
+        .day-name { font-size: 16px; color: #666; min-width: 50px; }
         .track-name { font-size: 20px; font-weight: 600; color: #667eea; }
-        .race-count { font-size: 12px; color: #666; margin-top: 5px; }
+        .race-count { font-size: 14px; color: #666; }
+        .color-picker-section { margin: 20px 0; padding: 20px; background: #f5f5f5; border-radius: 10px; }
+        .color-options { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+        .color-option { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: all 0.2s; }
+        .color-option:hover { transform: scale(1.1); }
+        .color-option.selected { border-color: #333; box-shadow: 0 0 0 2px white, 0 0 0 4px #333; }
         .race-list { display: grid; gap: 15px; margin: 20px 0; }
         .race-card { border: 2px solid #e0e0e0; border-radius: 10px; padding: 20px; cursor: pointer; transition: all 0.3s; display: flex; justify-content: space-between; align-items: center; }
         .race-card:hover { border-color: #667eea; box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2); }
@@ -34,17 +40,18 @@
         .race-title { font-size: 18px; font-weight: 600; color: #333; margin-bottom: 5px; }
         .race-details { font-size: 14px; color: #666; }
         .grade-badge { display: inline-block; background: #ffd700; color: #333; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 700; margin-left: 10px; }
-        .horse-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; margin: 20px 0; }
-        .horse-card { border: 2px solid #e0e0e0; border-radius: 8px; padding: 15px; cursor: pointer; transition: all 0.3s; position: relative; }
-        .horse-card:hover { border-color: #667eea; }
+        .horse-list { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
+        .horse-card { border: 2px solid #e0e0e0; border-radius: 8px; padding: 12px 15px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 15px; position: relative; }
+        .horse-card:hover { border-color: #667eea; transform: translateX(5px); }
         .horse-card.selected { border-color: #667eea; background: #f0f3ff; }
         .horse-card.picked-by-user2 { border-color: #ff9800; background: #fff3e0; }
-        .horse-number { font-size: 24px; font-weight: bold; color: #667eea; margin-bottom: 5px; }
-        .horse-name { font-size: 16px; font-weight: 600; margin-bottom: 5px; }
-        .horse-jockey { font-size: 12px; color: #666; }
-        .picker-badge { position: absolute; top: 10px; right: 10px; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; color: white; }
+        .horse-number { font-size: 20px; font-weight: bold; color: #667eea; min-width: 40px; }
+        .horse-name { font-size: 16px; font-weight: 600; flex: 1; }
+        .horse-jockey { font-size: 13px; color: #666; min-width: 120px; }
+        .picker-badge { position: static; padding: 6px 12px; border-radius: 4px; font-size: 11px; font-weight: 600; color: white; display: flex; align-items: center; gap: 5px; }
         .picker-badge.user1 { background: #4caf50; }
         .picker-badge.user2 { background: #ff9800; }
+        .user-initial { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; color: white; }
         .action-buttons { display: flex; gap: 15px; margin-top: 20px; }
         .back-btn { background: #666; }
         .back-btn:hover { background: #555; }
@@ -65,6 +72,23 @@
         <div id="setup" class="setup-section">
             <h2>Setup Session</h2>
             <div class="info-box">🎯 Enter your details to get started!</div>
+            
+            <div class="color-picker-section">
+                <h3 style="margin-bottom: 10px;">Choose Your Color</h3>
+                <div class="color-options" id="colorOptions">
+                    <div class="color-option selected" style="background: #f44336;" data-color="#f44336" onclick="selectColor('#f44336')"></div>
+                    <div class="color-option" style="background: #ff5722;" data-color="#ff5722" onclick="selectColor('#ff5722')"></div>
+                    <div class="color-option" style="background: #ff9800;" data-color="#ff9800" onclick="selectColor('#ff9800')"></div>
+                    <div class="color-option" style="background: #ffc107;" data-color="#ffc107" onclick="selectColor('#ffc107')"></div>
+                    <div class="color-option" style="background: #4caf50;" data-color="#4caf50" onclick="selectColor('#4caf50')"></div>
+                    <div class="color-option" style="background: #2196f3;" data-color="#2196f3" onclick="selectColor('#2196f3')"></div>
+                    <div class="color-option" style="background: #3f51b5;" data-color="#3f51b5" onclick="selectColor('#3f51b5')"></div>
+                    <div class="color-option" style="background: #9c27b0;" data-color="#9c27b0" onclick="selectColor('#9c27b0')"></div>
+                    <div class="color-option" style="background: #e91e63;" data-color="#e91e63" onclick="selectColor('#e91e63')"></div>
+                    <div class="color-option" style="background: #795548;" data-color="#795548" onclick="selectColor('#795548')"></div>
+                </div>
+            </div>
+            
             <div style="margin: 20px 0; padding: 15px; background: #f5f5f5; border-radius: 8px;">
                 <h3 style="margin-bottom: 10px;">Active Sessions</h3>
                 <div id="activeSessions" style="max-height: 200px; overflow-y: auto;">
@@ -123,7 +147,6 @@
             <div class="action-buttons">
                 <button class="btn" id="confirmPickBtn" onclick="confirmPicks()" disabled>Confirm My Picks</button>
                 <button class="btn" id="watchBtn" onclick="watchRace()" disabled>Watch Race</button>
-                <button class="btn" id="resultsBtn" onclick="showResults()" disabled>Show Results</button>
             </div>
         </div>
     </div>
@@ -132,6 +155,7 @@
 // Global variables
 let currentUser = '';
 let currentSession = '';
+let currentUserColor = '#f44336'; // Default red (first in rainbow)
 let selectedDate = '';
 let selectedTrack = '';
 let selectedRace = null;
@@ -142,8 +166,28 @@ let races = [];
 const API_URL = 'https://horsie.tytygoins.workers.dev';
 const GITHUB_RACES_URL = 'https://raw.githubusercontent.com/pokemonrocks9/HorsieClub/main/races.json';
 
+// Select color
+function selectColor(color) {
+    currentUserColor = color;
+    document.querySelectorAll('.color-option').forEach(opt => {
+        opt.classList.remove('selected');
+        if (opt.dataset.color === color) {
+            opt.classList.add('selected');
+        }
+    });
+    
+    // Save to localStorage
+    localStorage.setItem('userColor', color);
+}
+
 // Initialize on page load
 window.addEventListener('DOMContentLoaded', async () => {
+    // Load saved color
+    const savedColor = localStorage.getItem('userColor');
+    if (savedColor) {
+        selectColor(savedColor);
+    }
+    
     await autoCleanupOldSessions();
     refreshSessions();
 });
@@ -374,7 +418,7 @@ async function refreshRaces() {
     alert(`Refreshed! Loaded ${races.length} races.`);
 }
 
-// Show date selector
+// Show date selector - LIST FORMAT
 function showDateSelector() {
     const racesByDate = {};
     races.forEach(race => {
@@ -388,7 +432,8 @@ function showDateSelector() {
     const grid = document.getElementById('dateGrid');
     grid.innerHTML = '';
     
-    const dates = Object.keys(racesByDate).sort((a, b) => new Date(b) - new Date(a));
+    // Sort dates from oldest to newest (ascending)
+    const dates = Object.keys(racesByDate).sort((a, b) => new Date(a) - new Date(b));
     
     dates.forEach(date => {
         const dateObj = new Date(date + 'T00:00:00');
@@ -399,8 +444,10 @@ function showDateSelector() {
         card.className = 'selector-card';
         card.onclick = () => selectDate(date);
         card.innerHTML = `
-            <div class="date-badge">${dateStr}</div>
-            <div class="day-name">${dayName}</div>
+            <div class="date-info">
+                <div class="date-badge">${dateStr}</div>
+                <div class="day-name">${dayName}</div>
+            </div>
             <div class="race-count">${racesByDate[date].length} races</div>
         `;
         grid.appendChild(card);
@@ -508,7 +555,7 @@ function selectRace(race) {
     document.getElementById('raceDetail').classList.remove('hidden');
 }
 
-// Load horses
+// Load horses - LIST FORMAT with user initials/colors
 function loadHorses(race) {
     const list = document.getElementById('horseList');
     list.innerHTML = '';
@@ -547,16 +594,14 @@ function togglePick(number, card) {
 function updateButtons() {
     const confirmBtn = document.getElementById('confirmPickBtn');
     const watchBtn = document.getElementById('watchBtn');
-    const resultsBtn = document.getElementById('resultsBtn');
     
     confirmBtn.disabled = myPicks.size === 0;
     
     const confirmed = localStorage.getItem(`${currentSession}_${selectedRace.id}_confirmed`) === 'true';
     watchBtn.disabled = !confirmed;
-    resultsBtn.disabled = !confirmed;
 }
 
-// Confirm picks
+// Confirm picks - save color too
 async function confirmPicks() {
     if (myPicks.size === 0) return;
     
@@ -564,6 +609,7 @@ async function confirmPicks() {
         user: currentUser,
         raceId: selectedRace.id,
         horses: Array.from(myPicks),
+        color: currentUserColor,
         timestamp: new Date().toISOString()
     };
     
@@ -587,7 +633,7 @@ async function confirmPicks() {
         console.error('Save error:', e);
     }
     
-    // Save to localStorage as backup
+    // Save to localStorage as backup (with color)
     localStorage.setItem(`${currentSession}_${selectedRace.id}_${currentUser}`, JSON.stringify(pickData));
     localStorage.setItem(`${currentSession}_${selectedRace.id}_confirmed`, 'true');
     
@@ -602,9 +648,10 @@ async function confirmPicks() {
     updateButtons();
 }
 
-// Load existing picks
+// Load existing picks - with colored initials
 async function loadExistingPicks() {
     const allPicks = {};
+    const userColors = {};
     
     // Load from API
     try {
@@ -621,7 +668,7 @@ async function loadExistingPicks() {
         console.error('Load picks error:', e);
     }
     
-    // Also check localStorage
+    // Also check localStorage for colors
     for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         if (key && key.startsWith(`${currentSession}_${selectedRace.id}_`) && !key.endsWith('_confirmed')) {
@@ -629,9 +676,13 @@ async function loadExistingPicks() {
             if (!allPicks[username]) {
                 const data = JSON.parse(localStorage.getItem(key));
                 allPicks[username] = data.horses;
+                if (data.color) userColors[username] = data.color;
             }
         }
     }
+    
+    // Set current user's color
+    userColors[currentUser] = currentUserColor;
     
     // Clear existing badges
     document.querySelectorAll('.picker-badge').forEach(badge => badge.remove());
@@ -639,12 +690,19 @@ async function loadExistingPicks() {
     
     // Add badges for all picks
     Object.entries(allPicks).forEach(([username, horses]) => {
+        const userColor = userColors[username] || (username === currentUser ? currentUserColor : '#ff9800');
+        const initial = username.charAt(0).toUpperCase();
+        
         horses.forEach(horseNum => {
             const card = document.querySelector(`[data-horse-number="${horseNum}"]`);
             if (card) {
                 const badge = document.createElement('div');
-                badge.className = `picker-badge ${username === currentUser ? 'user1' : 'user2'}`;
-                badge.textContent = username;
+                badge.className = 'picker-badge';
+                badge.style.background = userColor;
+                badge.innerHTML = `
+                    <div class="user-initial" style="background: ${userColor};">${initial}</div>
+                    <span>${username}</span>
+                `;
                 card.appendChild(badge);
                 
                 if (username !== currentUser) {
@@ -658,11 +716,6 @@ async function loadExistingPicks() {
 // Watch race
 function watchRace() {
     window.open(selectedRace.videoUrl, '_blank');
-}
-
-// Show results
-function showResults() {
-    window.open(selectedRace.resultsUrl, '_blank');
 }
 
 // Navigation functions
