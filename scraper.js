@@ -20,12 +20,30 @@ function generateRecentRaceIds() {
   const raceIds = [];
   const currentYear = 2025;
   
-  // Focus on active tracks and recent meetings
-  const tracks = ['05', '06', '07', '08', '09', '04']; // Tokyo, Nakayama, Chukyo, Kyoto, Hanshin, Niigata
-  const meetings = ['08', '07', '06', '05', '04', '03']; // Recent meetings (reverse order)
-  const days = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-  const races = ['11', '10', '09', '08', '07', '06', '05', '04', '03', '02', '01']; // Main races first
+  // ALL JRA tracks - make sure we're checking all of them
+  const tracks = [
+    '01', // Sapporo
+    '02', // Hakodate
+    '03', // Fukushima
+    '04', // Niigata
+    '05', // Tokyo
+    '06', // Nakayama
+    '07', // Chukyo
+    '08', // Kyoto
+    '09', // Hanshin
+    '10'  // Kokura
+  ];
   
+  // Recent meetings - check more meeting numbers to catch recent races
+  const meetings = ['09', '08', '07', '06', '05', '04', '03', '02', '01'];
+  
+  // Days in meeting
+  const days = ['12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02', '01'];
+  
+  // Race numbers (reverse order to prioritize feature races)
+  const races = ['12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02', '01'];
+  
+  // Generate ALL combinations
   for (const track of tracks) {
     for (const meeting of meetings) {
       for (const day of days) {
@@ -37,6 +55,7 @@ function generateRecentRaceIds() {
     }
   }
   
+  console.log(`Generated ${raceIds.length} race IDs across all ${tracks.length} tracks`);
   return raceIds;
 }
 
@@ -235,12 +254,12 @@ async function scrapeRaces() {
   let gradedCount = 0;
   let checkedCount = 0;
 
-  const BATCH_SIZE = 10;
-  const TOTAL_TO_CHECK = 800; // Check 800 IDs (faster for testing)
+  const BATCH_SIZE = 15;
+  const TOTAL_TO_CHECK = 2000; // Check 2000 IDs to cover all tracks
   const idsToCheck = raceIds.slice(0, TOTAL_TO_CHECK);
   const totalBatches = Math.ceil(idsToCheck.length / BATCH_SIZE);
   
-  console.log(`🔍 Checking ${TOTAL_TO_CHECK} race IDs for entries...\n`);
+  console.log(`🔍 Checking ${TOTAL_TO_CHECK} race IDs for entries across all tracks...\n`);
   
   let firstSuccess = null;
   
