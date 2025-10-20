@@ -559,7 +559,9 @@
 
         async function loadRaces() {
             try {
-                const response = await fetch(DEFAULT_WORKER_URL);
+                // Add timestamp to bypass cache
+                const url = `${DEFAULT_WORKER_URL}?t=${Date.now()}`;
+                const response = await fetch(url);
                 const allRaces = await response.json();
                 
                 // Don't filter - use all races
