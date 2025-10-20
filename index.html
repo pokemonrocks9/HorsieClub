@@ -400,7 +400,7 @@
             <p id="selectedRaceInfo"></p>
             
             <div class="info-box">
-                Pick your horse(s) below. You'll see your partner's picks in real-time! Horses are shown in randomized order to avoid spoilers.
+                Pick your horse(s) below. You'll see your partner's picks in real-time! Horses are listed in post position order.
             </div>
             
             <div class="horse-list" id="horseList"></div>
@@ -698,9 +698,10 @@
             const horseList = document.getElementById('horseList');
             horseList.innerHTML = '';
             
-            const shuffledHorses = [...race.horses].sort(() => Math.random() - 0.5);
+            // Sort by post position instead of randomizing
+            const sortedHorses = [...race.horses].sort((a, b) => a.number - b.number);
             
-            shuffledHorses.forEach(horse => {
+            sortedHorses.forEach(horse => {
                 const horseCard = document.createElement('div');
                 horseCard.className = 'horse-card';
                 horseCard.onclick = () => togglePick(horse.number, horseCard);
