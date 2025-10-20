@@ -428,7 +428,7 @@ function selectTrack(track) {
     showRaceSelector();
 }
 
-// Show race selector - FIXED SORTING
+// Show race selector - FIXED SORTING BY RACE NUMBER
 function showRaceSelector() {
     const racesForTrack = races.filter(r => r.date === selectedDate && r.track === selectedTrack);
     
@@ -457,7 +457,7 @@ function showRaceSelector() {
         card.innerHTML = `
             <div class="race-number">R${raceNum}</div>
             <div class="race-info">
-                <div class="race-title">${race.title} ${gradebadge}</div>
+                <div class="race-title">${race.title} ${gradeBadge}</div>
                 <div class="race-details">${race.distance} ${race.surface} - ${race.horses.length} horses</div>
             </div>
         `;
