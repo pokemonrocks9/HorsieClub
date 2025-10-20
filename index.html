@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JRA Race Picker</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
@@ -138,70 +137,46 @@ let selectedTrack = '';
 let selectedRace = null;
 let myPicks = new Set();
 let races = [];
-let supabase = null;
 
-// Supabase configuration
-const SUPABASE_URL = 'https://wrazhxrevnkupzhylieu.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndyYXpoeHJldm5rdXB6aHlsaWV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4MDkwNjAsImV4cCI6MjA3NjM4NTA2MH0.jZ5_uqijFFaBhij_hpYz6RZsCdyF79ChLBbY_MNSSmw';
+// Cloudflare Workers API
+const API_URL = 'https://horsie.tytygoins.workers.dev';
 const GITHUB_RACES_URL = 'https://raw.githubusercontent.com/pokemonrocks9/HorsieClub/main/races.json';
-
-// Initialize Supabase
-function initSupabase() {
-    try {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        return true;
-    } catch (e) {
-        console.error('Supabase init error:', e);
-        return false;
-    }
-}
 
 // Initialize on page load
 window.addEventListener('DOMContentLoaded', async () => {
-    initSupabase();
     await autoCleanupOldSessions();
     refreshSessions();
 });
 
 // Automatic cleanup of sessions older than 24 hours
 async function autoCleanupOldSessions() {
-    const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-    
-    // Clean Supabase
-    if (supabase) {
-        try {
-            const { data, error } = await supabase
-                .from('picks')
-                .delete()
-                .lt('created_at', oneDayAgo);
-            
-            if (!error) {
-                console.log('Auto-cleaned old Supabase sessions');
-            }
-        } catch (e) {
-            console.error('Auto-cleanup error:', e);
-        }
+    try {
+        await fetch(`${API_URL}/picks/old`, { method: 'DELETE' });
+        console.log('✅ Auto-cleaned old sessions');
+    } catch (e) {
+        console.error('Auto-cleanup error:', e);
     }
     
-    // Clean localStorage - remove entries older than 24 hours
+    // Clean localStorage
     const keysToDelete = [];
+    const cutoffTime = Date.now() - (24 * 60 * 60 * 1000);
+    
     for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
-        if (key && key.includes('_') && !key.endsWith('_confirmed')) {
+        if (key && key.includes('_')) {
             try {
                 const data = localStorage.getItem(key);
                 if (data) {
                     const parsed = JSON.parse(data);
                     if (parsed.timestamp) {
-                        const itemDate = new Date(parsed.timestamp);
-                        const hoursOld = (Date.now() - itemDate.getTime()) / (1000 * 60 * 60);
-                        if (hoursOld > 24) {
+                        const itemTime = new Date(parsed.timestamp).getTime();
+                        if (itemTime < cutoffTime) {
                             keysToDelete.push(key);
                         }
                     }
                 }
             } catch (e) {
-                // Invalid JSON, skip
+                // Invalid, skip
             }
         }
     }
@@ -209,27 +184,8 @@ async function autoCleanupOldSessions() {
     keysToDelete.forEach(key => localStorage.removeItem(key));
     
     if (keysToDelete.length > 0) {
-        console.log(`Auto-cleaned ${keysToDelete.length} old localStorage entries`);
+        console.log(`✅ Auto-cleaned ${keysToDelete.length} old localStorage entries`);
     }
-}
-
-// Setup realtime subscription for picks
-function setupRealtimeSubscription() {
-    if (!supabase || !currentSession) return;
-    
-    supabase
-        .channel('picks')
-        .on('postgres_changes', {
-            event: '*',
-            schema: 'public',
-            table: 'picks',
-            filter: `session_code=eq.${currentSession}`
-        }, (payload) => {
-            if (selectedRace) {
-                loadExistingPicks();
-            }
-        })
-        .subscribe();
 }
 
 // Refresh active sessions
@@ -237,29 +193,19 @@ async function refreshSessions() {
     const container = document.getElementById('activeSessions');
     container.innerHTML = '<p style="color:#666;">Loading...</p>';
     
-    if (!supabase) {
-        container.innerHTML = '<p style="color:#666;">Database unavailable</p>';
-        return;
-    }
-    
     try {
-        const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-        const { data, error } = await supabase
-            .from('picks')
-            .select('session_code, user_name, created_at')
-            .gte('created_at', oneDayAgo)
-            .order('created_at', { ascending: false });
+        const response = await fetch(`${API_URL}/picks/sessions`);
         
-        if (error) {
-            console.error('Refresh error:', error);
-            container.innerHTML = '<p style="color:#666;">Database unavailable</p>';
+        if (!response.ok) {
+            container.innerHTML = '<p style="color:#666;">API unavailable</p>';
             return;
         }
         
-        console.log(`Found ${data?.length || 0} picks in last 24 hours`);
+        const data = await response.json();
+        console.log(`Found ${data.length} picks in last 24 hours`);
         
         const sessions = {};
-        (data || []).forEach(pick => {
+        data.forEach(pick => {
             if (!sessions[pick.session_code]) {
                 sessions[pick.session_code] = {
                     users: new Set(),
@@ -298,7 +244,7 @@ async function refreshSessions() {
         }
     } catch (e) {
         console.error('Refresh exception:', e);
-        container.innerHTML = '<p style="color:#666;">Database unavailable</p>';
+        container.innerHTML = '<p style="color:#666;">API unavailable</p>';
     }
 }
 
@@ -314,165 +260,78 @@ function getTimeAgo(date) {
     return `${days}d ago`;
 }
 
-// Delete a session - FIXED WITH LONGER DELAY
+// Delete a session
 async function deleteSession(code) {
     if (!confirm(`Delete session "${code}" and all its picks?`)) return;
     
     console.log(`🗑️ Starting delete for session: ${code}`);
     
-    let deletedFromSupabase = 0;
-    let deletedFromLocal = 0;
-    
-    // Delete from Supabase
-    if (supabase) {
-        try {
-            // First, check what exists
-            const { data: existingData, error: checkError } = await supabase
-                .from('picks')
-                .select('id, session_code, user_name')
-                .eq('session_code', code);
-            
-            if (checkError) {
-                console.error('❌ Check error:', checkError);
-            } else {
-                console.log(`📊 Found ${existingData?.length || 0} picks to delete`);
-                deletedFromSupabase = existingData?.length || 0;
-            }
-            
-            // Now delete
-            const { error } = await supabase
-                .from('picks')
-                .delete()
-                .eq('session_code', code);
-            
-            if (error) {
-                console.error('❌ Supabase delete error:', error);
-                alert(`Error deleting from database: ${error.message}`);
-                return;
-            } else {
-                console.log('✅ Deleted from Supabase');
-            }
-            
-            // Wait for Supabase to process the delete
-            console.log('⏳ Waiting for Supabase to process...');
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            
-        } catch (e) {
-            console.error('❌ Delete exception:', e);
-            alert(`Error: ${e.message}`);
+    try {
+        const response = await fetch(`${API_URL}/picks/${code}`, { method: 'DELETE' });
+        
+        if (!response.ok) {
+            alert('Error deleting session from API');
             return;
         }
-    } else {
-        console.log('⚠️ Supabase not available');
-    }
-    
-    // Delete from localStorage
-    const keysToDelete = [];
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key && key.startsWith(`${code}_`)) {
-            keysToDelete.push(key);
+        
+        console.log('✅ Deleted from API');
+        
+        // Also delete from localStorage
+        const keysToDelete = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith(`${code}_`)) {
+                keysToDelete.push(key);
+            }
         }
+        
+        keysToDelete.forEach(key => localStorage.removeItem(key));
+        console.log(`✅ Deleted ${keysToDelete.length} localStorage keys`);
+        
+        alert(`✅ Deleted session "${code}"!`);
+        
+        // Refresh
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await refreshSessions();
+        
+    } catch (e) {
+        console.error('❌ Delete exception:', e);
+        alert(`Error: ${e.message}`);
     }
-    
-    deletedFromLocal = keysToDelete.length;
-    console.log(`🗑️ Deleting ${deletedFromLocal} localStorage keys`);
-    keysToDelete.forEach(key => {
-        console.log(`  Removing: ${key}`);
-        localStorage.removeItem(key);
-    });
-    
-    // Show result
-    alert(`✅ Deleted session "${code}"!\n\nDatabase: ${deletedFromSupabase} picks\nLocal: ${deletedFromLocal} entries`);
-    
-    // Refresh the session list with extra delay
-    console.log('🔄 Refreshing session list...');
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    await refreshSessions();
 }
 
-// Clear old sessions - FIXED WITH BETTER LOGGING
-async function clearOldSessions() {
-    if (!confirm('Delete all sessions older than 24 hours?')) return;
+// Clear ALL sessions
+async function clearAllSessions() {
+    if (!confirm('⚠️ Delete ALL sessions? This cannot be undone!')) return;
+    if (!confirm('Are you REALLY sure? This will delete everything!')) return;
     
-    const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    console.log('🗑️💥 Clearing ALL sessions...');
     
-    console.log('🕒 Clearing sessions older than:', oneDayAgo);
-    
-    let deletedFromSupabase = 0;
-    let deletedFromLocal = 0;
-    
-    // Clear from Supabase
-    if (supabase) {
-        try {
-            // First check what exists
-            const { data: existingData, error: checkError } = await supabase
-                .from('picks')
-                .select('id, session_code, created_at')
-                .lt('created_at', oneDayAgo);
-            
-            if (checkError) {
-                console.error('❌ Check error:', checkError);
-            } else {
-                console.log(`📊 Found ${existingData?.length || 0} old picks to delete`);
-                deletedFromSupabase = existingData?.length || 0;
-            }
-            
-            // Now delete
-            const { data, error } = await supabase
-                .from('picks')
-                .delete()
-                .lt('created_at', oneDayAgo);
-            
-            if (error) {
-                console.error('❌ Supabase clear error:', error);
-                alert(`Error clearing database: ${error.message}`);
-            } else {
-                console.log('✅ Cleared old sessions from Supabase');
-            }
-        } catch (e) {
-            console.error('❌ Clear exception:', e);
-            alert(`Error: ${e.message}`);
+    try {
+        const response = await fetch(`${API_URL}/picks/all`, { method: 'DELETE' });
+        
+        if (!response.ok) {
+            alert('Error clearing all sessions');
+            return;
         }
-    } else {
-        console.log('⚠️ Supabase not available');
+        
+        console.log('✅ Cleared ALL sessions from API');
+        
+        // Clear ALL localStorage
+        const localCount = localStorage.length;
+        localStorage.clear();
+        console.log(`✅ Cleared ALL localStorage (${localCount} entries)`);
+        
+        alert(`✅ ALL sessions deleted!`);
+        
+        // Refresh
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await refreshSessions();
+        
+    } catch (e) {
+        console.error('❌ Clear all exception:', e);
+        alert(`Error: ${e.message}`);
     }
-    
-    // Clear old entries from localStorage
-    const keysToDelete = [];
-    const cutoffTime = Date.now() - (24 * 60 * 60 * 1000);
-    
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key && key.includes('_')) {
-            try {
-                const data = localStorage.getItem(key);
-                if (data) {
-                    const parsed = JSON.parse(data);
-                    if (parsed.timestamp) {
-                        const itemTime = new Date(parsed.timestamp).getTime();
-                        if (itemTime < cutoffTime) {
-                            keysToDelete.push(key);
-                        }
-                    }
-                }
-            } catch (e) {
-                // Invalid JSON or no timestamp - delete if old format
-                console.log(`⚠️ Skipping invalid key: ${key}`);
-            }
-        }
-    }
-    
-    deletedFromLocal = keysToDelete.length;
-    console.log(`🗑️ Clearing ${deletedFromLocal} old localStorage entries`);
-    keysToDelete.forEach(key => localStorage.removeItem(key));
-    
-    alert(`✅ Cleared old sessions!\n\nDatabase: ${deletedFromSupabase} picks\nLocal: ${deletedFromLocal} entries`);
-    
-    // Refresh the session list
-    console.log('🔄 Refreshing session list...');
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    await refreshSessions();
 }
 
 // Join session
@@ -487,8 +346,6 @@ async function joinSession() {
     
     currentUser = username;
     currentSession = sessionCode;
-    
-    setupRealtimeSubscription();
     
     document.getElementById('setup').classList.add('hidden');
     await loadRaces();
@@ -605,7 +462,6 @@ function showRaceSelector() {
     
     // Sort by race number (ascending: R1, R2, R3...)
     racesForTrack.sort((a, b) => {
-        // Use raceNumber if available, otherwise fall back to id
         const aNum = a.raceNumber || a.id;
         const bNum = b.raceNumber || b.id;
         return aNum - bNum;
@@ -711,19 +567,24 @@ async function confirmPicks() {
         timestamp: new Date().toISOString()
     };
     
-    // Save to Supabase
-    if (supabase) {
-        try {
-            await supabase.from('picks').insert({
+    // Save to API
+    try {
+        const response = await fetch(`${API_URL}/picks`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
                 session_code: currentSession,
                 race_id: selectedRace.id,
                 user_name: currentUser,
-                horse_numbers: Array.from(myPicks),
-                created_at: new Date().toISOString()
-            });
-        } catch (e) {
-            console.error('Save error:', e);
+                horse_numbers: Array.from(myPicks)
+            })
+        });
+        
+        if (response.ok) {
+            console.log('✅ Saved to API');
         }
+    } catch (e) {
+        console.error('Save error:', e);
     }
     
     // Save to localStorage as backup
@@ -745,29 +606,25 @@ async function confirmPicks() {
 async function loadExistingPicks() {
     const allPicks = {};
     
-    // Load from Supabase first
-    if (supabase && currentSession && selectedRace) {
-        try {
-            const { data, error } = await supabase
-                .from('picks')
-                .select('*')
-                .eq('session_code', currentSession)
-                .eq('race_id', selectedRace.id);
-            
-            if (!error && data) {
-                data.forEach(pick => {
-                    allPicks[pick.user_name] = pick.horse_numbers;
-                });
-            }
-        } catch (e) {
-            console.error('Load error:', e);
+    // Load from API
+    try {
+        const response = await fetch(`${API_URL}/picks?session=${currentSession}&race=${selectedRace.id}`);
+        
+        if (response.ok) {
+            const data = await response.json();
+            data.forEach(pick => {
+                const horses = JSON.parse(pick.horse_numbers);
+                allPicks[pick.user_name] = horses;
+            });
         }
+    } catch (e) {
+        console.error('Load picks error:', e);
     }
     
     // Also check localStorage
     for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
-        if (key.startsWith(`${currentSession}_${selectedRace.id}_`) && !key.endsWith('_confirmed')) {
+        if (key && key.startsWith(`${currentSession}_${selectedRace.id}_`) && !key.endsWith('_confirmed')) {
             const username = key.split('_').pop();
             if (!allPicks[username]) {
                 const data = JSON.parse(localStorage.getItem(key));
@@ -806,72 +663,6 @@ function watchRace() {
 // Show results
 function showResults() {
     window.open(selectedRace.resultsUrl, '_blank');
-}
-
-// Clear ALL sessions (nuclear option) - FIXED WITH LONGER DELAY
-async function clearAllSessions() {
-    if (!confirm('⚠️ Delete ALL sessions? This cannot be undone!')) return;
-    if (!confirm('Are you REALLY sure? This will delete everything!')) return;
-    
-    console.log('🗑️💥 Clearing ALL sessions...');
-    
-    let deletedFromSupabase = 0;
-    
-    // Clear ALL from Supabase
-    if (supabase) {
-        try {
-            // First check what exists
-            const { data: existingData, error: checkError } = await supabase
-                .from('picks')
-                .select('id');
-            
-            if (checkError) {
-                console.error('❌ Check error:', checkError);
-            } else {
-                console.log(`📊 Found ${existingData?.length || 0} total picks`);
-                deletedFromSupabase = existingData?.length || 0;
-            }
-            
-            // Delete ALL - using a condition that's always true
-            const { error } = await supabase
-                .from('picks')
-                .delete()
-                .gte('id', 0); // Delete all rows where id >= 0 (which is everything)
-            
-            if (error) {
-                console.error('❌ Supabase clear all error:', error);
-                alert(`Error clearing database: ${error.message}`);
-                return;
-            } else {
-                console.log('✅ Cleared ALL sessions from Supabase');
-            }
-            
-            // Wait for Supabase to process the delete
-            console.log('⏳ Waiting for Supabase to process...');
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            
-        } catch (e) {
-            console.error('❌ Clear all exception:', e);
-            alert(`Error: ${e.message}`);
-            return;
-        }
-    } else {
-        console.log('⚠️ Supabase not available');
-    }
-    
-    // Count localStorage before clearing
-    const localCount = localStorage.length;
-    
-    // Clear ALL localStorage
-    localStorage.clear();
-    console.log(`✅ Cleared ALL localStorage (${localCount} entries)`);
-    
-    alert(`✅ ALL sessions deleted!\n\nDatabase: ${deletedFromSupabase} picks\nLocal: ${localCount} entries`);
-    
-    // Refresh the session list with extra delay
-    console.log('🔄 Refreshing session list...');
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    await refreshSessions();
 }
 
 // Navigation functions
