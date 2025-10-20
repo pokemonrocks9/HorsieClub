@@ -174,6 +174,7 @@ async function fetchRaceEntries(raceId) {
     $('table tr').each((i, row) => {
       const cells = $(row).find('td');
       
+      // Need at least 5 cells for a valid horse row
       if (cells.length >= 5) {
         const cellTexts = cells.map((i, el) => $(el).text().trim()).get();
         
@@ -181,44 +182,70 @@ async function fetchRaceEntries(raceId) {
         let horseName = null;
         let jockey = null;
         
-        // Look in first 2 cells for post position
-        for (let idx = 0; idx <= 1; idx++) {
+        // Look in first 3 cells for post position
+        for (let idx = 0; idx <= 2; idx++) {
+          if (idx >= cellTexts.length) break;
+          
           const text = cellTexts[idx];
           const num = parseInt(text);
           // Must be clean number 1-20, exact match
           if (!isNaN(num) && num >= 1 && num <= 20 && text === String(num)) {
             pp = num;
             
-            // Horse name: next cell with letters, 2+ chars
-            for (let j = idx + 1; j <= idx + 3 && j < cellTexts.length; j++) {
+            // Horse name: next cell with letters, 2+ chars, not just numbers
+            for (let j = idx + 1; j <= idx + 4 && j < cellTexts.length; j++) {
               const candidate = cellTexts[j];
               if (candidate && 
                   candidate.length >= 2 && 
                   /[a-zA-Z]/.test(candidate) &&
                   !candidate.match(/^\d+$/) &&
                   !candidate.match(/^\d+kg$/) &&
-                  !candidate.match(/^[MFC]$/)) {  // Not sex indicators
+                  !candidate.match(/^[MFC]$/) &&
+                  !candidate.match(/^\d+\/\d+$/)) {  // Not odds like 3/1
                 horseName = candidate;
                 break;
               }
             }
             
-            // Jockey: usually 2-5 cells after post position
-            for (let j = idx + 3; j <= idx + 6 && j < cellTexts.length; j++) {
+            // Jockey: usually 3-7 cells after post position
+            // Look for names with spaces or periods (M. Demuro, C. Lemaire)
+            for (let j = idx + 3; j <= idx + 8 && j < cellTexts.length; j++) {
               const candidate = cellTexts[j];
               if (candidate && 
                   candidate.length >= 4 && 
                   candidate.length <= 30 &&
                   /[A-Za-z]/.test(candidate) &&
-                  /[.A-Z]/.test(candidate) &&  // Usually has capitals or dots (M. Demuro)
                   !candidate.match(/^\d+$/) &&
                   !candidate.includes('kg') &&
+                  !candidate.match(/^\d+\/\d+$/) &&
                   candidate !== horseName) {
-                jockey = candidate;
-                break;
+                // Jockey names often have dots or spaces
+                if (candidate.includes('.') || candidate.includes(' ') || 
+                    /^[A-Z]\./.test(candidate)) {
+                  jockey = candidate;
+                  break;
+                }
               }
             }
-            break;
+            
+            // If no jockey with dot/space, take any reasonable name
+            if (!jockey) {
+              for (let j = idx + 3; j <= idx + 8 && j < cellTexts.length; j++) {
+                const candidate = cellTexts[j];
+                if (candidate && 
+                    candidate.length >= 4 && 
+                    candidate.length <= 30 &&
+                    /[A-Za-z]/.test(candidate) &&
+                    !candidate.match(/^\d+$/) &&
+                    !candidate.includes('kg') &&
+                    candidate !== horseName) {
+                  jockey = candidate;
+                  break;
+                }
+              }
+            }
+            
+            break; // Found post position, stop looking
           }
         }
 
@@ -235,9 +262,17 @@ async function fetchRaceEntries(raceId) {
 
     horses.sort((a, b) => a.number - b.number);
 
-    // Need at least 5 horses for a valid race
-    if (horses.length < 5) {
+    // Need at least 4 horses for a valid race (some small races exist)
+    if (horses.length < 4) {
       return null;
+    }
+    
+    // Log warning if suspiciously low horse count
+    if (horses.length <= 8 && horses.length > 0) {
+      const maxPP = Math.max(...horses.map(h => h.number));
+      if (maxPP > horses.length) {
+        console.log(`⚠️  Race ${raceId}: Found ${horses.length} horses but highest PP is ${maxPP} - might be missing some`);
+      }
     }
 
     return {
