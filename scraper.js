@@ -168,6 +168,10 @@ async function fetchRaceEntries(raceId) {
     // Extract horses from ENTRY table
     const horses = [];
     const seen = new Set();
+    
+    let totalRowsWithEnoughCells = 0;
+    let rowsWithPostPosition = 0;
+    let rowsWithHorseAndJockey = 0;
 
     // Parse all table rows - Netkeiba format is usually:
     // Gate | Post | Horse | Age/Sex | Jockey | Weight | Trainer | etc.
@@ -176,6 +180,7 @@ async function fetchRaceEntries(raceId) {
       
       // Need at least 5 cells for a valid horse row
       if (cells.length >= 5) {
+        totalRowsWithEnoughCells++;
         const cellTexts = cells.map((i, el) => $(el).text().trim()).get();
         
         let pp = null;
@@ -191,6 +196,7 @@ async function fetchRaceEntries(raceId) {
           // Must be clean number 1-20, exact match
           if (!isNaN(num) && num >= 1 && num <= 20 && text === String(num)) {
             pp = num;
+            rowsWithPostPosition++;
             
             // Horse name: next cell with letters, 2+ chars, not just numbers
             for (let j = idx + 1; j <= idx + 4 && j < cellTexts.length; j++) {
@@ -251,6 +257,7 @@ async function fetchRaceEntries(raceId) {
 
         if (pp && horseName && jockey && !seen.has(pp)) {
           seen.add(pp);
+          rowsWithHorseAndJockey++;
           horses.push({ 
             number: pp, 
             name: horseName.substring(0, 50).trim(),
@@ -268,11 +275,10 @@ async function fetchRaceEntries(raceId) {
     }
     
     // Log warning if suspiciously low horse count
-    if (horses.length <= 8 && horses.length > 0) {
-      const maxPP = Math.max(...horses.map(h => h.number));
-      if (maxPP > horses.length) {
-        console.log(`⚠️  Race ${raceId}: Found ${horses.length} horses but highest PP is ${maxPP} - might be missing some`);
-      }
+    const maxPP = horses.length > 0 ? Math.max(...horses.map(h => h.number)) : 0;
+    if (horses.length === 8 && maxPP > 8) {
+      console.log(`⚠️  Race ${cleanTitle}: Found ${horses.length} horses, highest PP=${maxPP}`);
+      console.log(`    Rows: ${totalRowsWithEnoughCells} total, ${rowsWithPostPosition} with PP, ${rowsWithHorseAndJockey} complete`);
     }
 
     return {
