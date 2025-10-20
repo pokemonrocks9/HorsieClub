@@ -42,7 +42,7 @@
             font-size: 14px;
         }
 
-        .setup-section {
+        .setup-section, .selector-section, .race-detail {
             background: white;
             padding: 30px;
             border-radius: 15px;
@@ -61,7 +61,7 @@
             color: #333;
         }
 
-        input[type="text"] {
+        input[type="text"], select {
             width: 100%;
             padding: 12px;
             border: 2px solid #e0e0e0;
@@ -70,7 +70,7 @@
             transition: border-color 0.3s;
         }
 
-        input[type="text"]:focus {
+        input[type="text"]:focus, select:focus {
             outline: none;
             border-color: #667eea;
         }
@@ -99,21 +99,72 @@
             transform: none;
         }
 
+        .selector-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .selector-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .selector-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .selector-card.selected {
+            border-color: #667eea;
+            background: #f0f3ff;
+        }
+
+        .date-badge {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .day-name {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .track-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .race-count {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
         .race-list {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: grid;
+            gap: 15px;
+            margin: 20px 0;
         }
 
         .race-card {
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             padding: 20px;
-            margin-bottom: 15px;
             cursor: pointer;
             transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .race-card:hover {
@@ -121,29 +172,38 @@
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
         }
 
-        .race-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
+        .race-info {
+            flex: 1;
+        }
+
+        .race-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin-right: 15px;
         }
 
         .race-title {
             font-size: 18px;
             font-weight: 600;
             color: #333;
+            margin-bottom: 5px;
         }
 
-        .race-date {
-            color: #666;
+        .race-details {
             font-size: 14px;
+            color: #666;
         }
 
-        .race-detail {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        .grade-badge {
+            display: inline-block;
+            background: #ffd700;
+            color: #333;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-left: 10px;
         }
 
         .horse-list {
@@ -224,6 +284,14 @@
             margin-top: 20px;
         }
 
+        .back-btn {
+            background: #666;
+        }
+
+        .back-btn:hover {
+            background: #555;
+        }
+
         .hidden {
             display: none;
         }
@@ -236,56 +304,20 @@
             border-radius: 4px;
         }
 
-        .loading-box {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 4px;
+        .breadcrumb {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
         }
 
-        .error-box {
-            background: #f8d7da;
-            border-left: 4px solid #dc3545;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 4px;
+        .breadcrumb a {
+            color: #667eea;
+            text-decoration: none;
+            cursor: pointer;
         }
 
-        .back-btn {
-            background: #666;
-            margin-right: 10px;
-        }
-
-        .back-btn:hover {
-            background: #555;
-        }
-
-        .grade-badge {
-            display: inline-block;
-            background: #ffd700;
-            color: #333;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 700;
-            margin-left: 10px;
-        }
-
-        .loading-spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-right: 10px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .breadcrumb a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -296,18 +328,11 @@
             <p class="subtitle">Watch past races spoiler-free with your racing buddy!</p>
         </div>
 
+        <!-- Setup -->
         <div id="setup" class="setup-section">
             <h2>Setup Session</h2>
             <div class="info-box">
-                🎯 <strong>Auto-loading races!</strong> This app automatically fetches all JRA races from the past month.
-            </div>
-
-            <div style="margin: 20px 0; padding: 15px; background: #f5f5f5; border-radius: 8px;">
-                <h3 style="margin-bottom: 10px;">Active Sessions</h3>
-                <div id="activeSessions" style="max-height: 200px; overflow-y: auto;">
-                    <p style="color: #666;">Loading sessions...</p>
-                </div>
-                <button class="btn" onclick="refreshSessions()" id="refreshSessionsBtn" style="margin-top: 10px;">🔄 Refresh Sessions</button>
+                🎯 Enter your details to get started!
             </div>
             
             <div class="input-group">
@@ -320,23 +345,48 @@
                 <input type="text" id="sessionCode" placeholder="Create or join a session (e.g., 'race-night-123')">
             </div>
             
-            <button class="btn" onclick="joinSession()">Join Session & Load Races</button>
+            <button class="btn" onclick="joinSession()">Join Session</button>
         </div>
 
-        <div id="raceList" class="race-list hidden">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>Available Races (Past Month)</h2>
-                <button class="btn" onclick="refreshRaces()" id="refreshBtn">🔄 Refresh Races</button>
+        <!-- Step 1: Select Date -->
+        <div id="dateSelector" class="selector-section hidden">
+            <div class="breadcrumb">
+                <span>Select Date</span>
             </div>
-            <div id="loadingMessage" class="loading-box">
-                <span class="loading-spinner"></span>Loading graded stakes races...
-            </div>
-            <div id="errorMessage" class="error-box hidden"></div>
-            <div id="races"></div>
+            <h2>Select a Race Day</h2>
+            <div class="selector-grid" id="dateGrid"></div>
         </div>
 
+        <!-- Step 2: Select Track -->
+        <div id="trackSelector" class="selector-section hidden">
+            <div class="breadcrumb">
+                <a onclick="backToDateSelector()">Dates</a> → <span>Select Track</span>
+            </div>
+            <h2 id="selectedDateTitle"></h2>
+            <div class="selector-grid" id="trackGrid"></div>
+        </div>
+
+        <!-- Step 3: Select Race -->
+        <div id="raceSelector" class="selector-section hidden">
+            <div class="breadcrumb">
+                <a onclick="backToDateSelector()">Dates</a> → 
+                <a onclick="backToTrackSelector()">Tracks</a> → 
+                <span>Select Race</span>
+            </div>
+            <h2 id="selectedTrackTitle"></h2>
+            <div class="race-list" id="raceList"></div>
+        </div>
+
+        <!-- Step 4: Race Detail & Picking -->
         <div id="raceDetail" class="race-detail hidden">
-            <button class="btn back-btn" onclick="backToRaces()">← Back to Races</button>
+            <div class="breadcrumb">
+                <a onclick="backToDateSelector()">Dates</a> → 
+                <a onclick="backToTrackSelector()">Tracks</a> → 
+                <a onclick="backToRaceSelector()">Races</a> → 
+                <span>Pick Horses</span>
+            </div>
+            
+            <button class="btn back-btn" onclick="backToRaceSelector()">← Back to Races</button>
             
             <h2 id="selectedRaceTitle"></h2>
             <p id="selectedRaceInfo"></p>
@@ -358,6 +408,8 @@
     <script>
         let currentUser = '';
         let currentSession = '';
+        let selectedDate = '';
+        let selectedTrack = '';
         let selectedRace = null;
         let myPicks = new Set();
         let races = [];
@@ -370,8 +422,6 @@
         function initSupabase() {
             try {
                 supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-                console.log('Supabase initialized');
-                refreshSessions();
                 return true;
             } catch (error) {
                 console.error('Error initializing Supabase:', error);
@@ -382,114 +432,6 @@
         window.addEventListener('DOMContentLoaded', () => {
             initSupabase();
         });
-
-        function setupRealtimeSubscription() {
-            if (!supabase || !currentSession) return;
-            
-            supabase
-                .channel('picks')
-                .on('postgres_changes', 
-                    { 
-                        event: '*', 
-                        schema: 'public', 
-                        table: 'picks',
-                        filter: `session_code=eq.${currentSession}`
-                    }, 
-                    (payload) => {
-                        console.log('Real-time update:', payload);
-                        if (selectedRace) {
-                            loadExistingPicks();
-                        }
-                    }
-                )
-                .subscribe();
-        }
-
-        async function refreshSessions() {
-            if (!supabase) {
-                console.error('Supabase not initialized');
-                document.getElementById('activeSessions').innerHTML = '<p style="color: #666;">No active sessions available</p>';
-                return;
-            }
-
-            const sessionsDiv = document.getElementById('activeSessions');
-            sessionsDiv.innerHTML = '<p style="color: #666;">Loading sessions...</p>';
-
-            try {
-                const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-                const { data, error } = await supabase
-                    .from('picks')
-                    .select('session_code, user_name, created_at')
-                    .gte('created_at', oneDayAgo)
-                    .order('created_at', { ascending: false });
-
-                if (error) {
-                    console.error('Supabase error details:', JSON.stringify(error));
-                    sessionsDiv.innerHTML = '<p style="color: #666;">No active sessions available</p>';
-                    return;
-                }
-
-                const sessions = {};
-                (data || []).forEach(pick => {
-                    if (!sessions[pick.session_code]) {
-                        sessions[pick.session_code] = {
-                            users: new Set(),
-                            lastActivity: pick.created_at
-                        };
-                    }
-                    sessions[pick.session_code].users.add(pick.user_name);
-                });
-
-                if (Object.keys(sessions).length === 0) {
-                    sessionsDiv.innerHTML = '<p style="color: #666;">No active sessions in the last 24 hours</p>';
-                } else {
-                    let html = '<div style="display: flex; flex-direction: column; gap: 10px;">';
-                    for (const [code, info] of Object.entries(sessions)) {
-                        const userList = Array.from(info.users).join(', ');
-                        const timeAgo = getTimeAgo(new Date(info.lastActivity));
-                        html += `
-                            <div style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 5px; cursor: pointer;" 
-                                 onmouseover="this.style.background='#f5f5f5'" 
-                                 onmouseout="this.style.background='white'"
-                                 onclick="document.getElementById('sessionCode').value='${code}'">
-                                <strong>${code}</strong><br>
-                                <small style="color: #666;">Users: ${userList} • ${timeAgo}</small>
-                            </div>
-                        `;
-                    }
-                    html += '</div>';
-                    sessionsDiv.innerHTML = html;
-                }
-            } catch (error) {
-                console.error('Error loading sessions:', error);
-                sessionsDiv.innerHTML = '<p style="color: #666;">No active sessions available</p>';
-            }
-        }
-
-        function getTimeAgo(date) {
-            const seconds = Math.floor((new Date() - date) / 1000);
-            if (seconds < 60) return 'just now';
-            const minutes = Math.floor(seconds / 60);
-            if (minutes < 60) return `${minutes}m ago`;
-            const hours = Math.floor(minutes / 60);
-            if (hours < 24) return `${hours}h ago`;
-            const days = Math.floor(hours / 24);
-            return `${days}d ago`;
-        }
-
-        async function fetchRacesFromWorker(workerUrl) {
-            try {
-                const response = await fetch(workerUrl);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                return data;
-            } catch (error) {
-                console.error('Error fetching from worker:', error);
-                throw error;
-            }
-        }
 
         async function joinSession() {
             const username = document.getElementById('username').value.trim();
@@ -503,82 +445,149 @@
             currentUser = username;
             currentSession = sessionCode;
             
-            setupRealtimeSubscription();
-            
             document.getElementById('setup').classList.add('hidden');
-            document.getElementById('raceList').classList.remove('hidden');
-            
             await loadRaces();
+            showDateSelector();
         }
 
         async function loadRaces() {
-            const loadingMsg = document.getElementById('loadingMessage');
-            const errorMsg = document.getElementById('errorMessage');
-            const racesDiv = document.getElementById('races');
-            const refreshBtn = document.getElementById('refreshBtn');
-            
-            loadingMsg.classList.remove('hidden');
-            errorMsg.classList.add('hidden');
-            racesDiv.innerHTML = '';
-            if (refreshBtn) refreshBtn.disabled = true;
-            
             try {
-                races = await fetchRacesFromWorker(DEFAULT_WORKER_URL);
-                
-                loadingMsg.classList.add('hidden');
-                if (refreshBtn) refreshBtn.disabled = false;
-                
-                if (!races || races.length === 0) {
-                    errorMsg.textContent = 'No races available. The worker may need to be deployed or the race list updated.';
-                    errorMsg.classList.remove('hidden');
-                    return;
-                }
-                
-                races.sort((a, b) => new Date(b.date) - new Date(a.date));
-                
-                races.forEach(race => {
-                    const raceCard = document.createElement('div');
-                    raceCard.className = 'race-card';
-                    raceCard.onclick = () => selectRace(race);
-                    
-                    const gradeBadge = race.grade ? `<span class="grade-badge">${race.grade}</span>` : '';
-                    
-                    raceCard.innerHTML = `
-                        <div class="race-header">
-                            <div class="race-title">${race.title} ${gradeBadge}</div>
-                            <div class="race-date">${new Date(race.date).toLocaleDateString()}</div>
-                        </div>
-                        <div>${race.track} - ${race.distance} ${race.surface} - ${race.horses.length} horses</div>
-                    `;
-                    racesDiv.appendChild(raceCard);
-                });
-                
+                const response = await fetch(DEFAULT_WORKER_URL);
+                races = await response.json();
+                console.log(`Loaded ${races.length} races`);
             } catch (error) {
-                loadingMsg.classList.add('hidden');
-                if (refreshBtn) refreshBtn.disabled = false;
-                errorMsg.innerHTML = `Error loading races: ${error.message}<br><br>Make sure the Cloudflare Worker is deployed at: ${DEFAULT_WORKER_URL}`;
-                errorMsg.classList.remove('hidden');
-                console.error('Error:', error);
+                console.error('Error loading races:', error);
+                alert('Error loading races. Please try again.');
             }
         }
 
-        function refreshRaces() {
-            loadRaces();
+        function showDateSelector() {
+            // Group races by date
+            const racesByDate = {};
+            races.forEach(race => {
+                if (!racesByDate[race.date]) {
+                    racesByDate[race.date] = [];
+                }
+                racesByDate[race.date].push(race);
+            });
+
+            const dateGrid = document.getElementById('dateGrid');
+            dateGrid.innerHTML = '';
+
+            // Sort dates descending (most recent first)
+            const sortedDates = Object.keys(racesByDate).sort((a, b) => new Date(b) - new Date(a));
+
+            sortedDates.forEach(date => {
+                const dateObj = new Date(date);
+                const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'short' });
+                const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                
+                const card = document.createElement('div');
+                card.className = 'selector-card';
+                card.onclick = () => selectDate(date);
+                card.innerHTML = `
+                    <div class="date-badge">${dateStr}</div>
+                    <div class="day-name">${dayName}</div>
+                    <div class="race-count">${racesByDate[date].length} races</div>
+                `;
+                dateGrid.appendChild(card);
+            });
+
+            document.getElementById('dateSelector').classList.remove('hidden');
+        }
+
+        function selectDate(date) {
+            selectedDate = date;
+            document.getElementById('dateSelector').classList.add('hidden');
+            showTrackSelector();
+        }
+
+        function showTrackSelector() {
+            const racesOnDate = races.filter(r => r.date === selectedDate);
+            
+            // Group by track
+            const racesByTrack = {};
+            racesOnDate.forEach(race => {
+                if (!racesByTrack[race.track]) {
+                    racesByTrack[race.track] = [];
+                }
+                racesByTrack[race.track].push(race);
+            });
+
+            const dateObj = new Date(selectedDate);
+            document.getElementById('selectedDateTitle').textContent = 
+                dateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+
+            const trackGrid = document.getElementById('trackGrid');
+            trackGrid.innerHTML = '';
+
+            Object.keys(racesByTrack).sort().forEach(track => {
+                const card = document.createElement('div');
+                card.className = 'selector-card';
+                card.onclick = () => selectTrack(track);
+                card.innerHTML = `
+                    <div class="track-name">${track}</div>
+                    <div class="race-count">${racesByTrack[track].length} races</div>
+                `;
+                trackGrid.appendChild(card);
+            });
+
+            document.getElementById('trackSelector').classList.remove('hidden');
+        }
+
+        function selectTrack(track) {
+            selectedTrack = track;
+            document.getElementById('trackSelector').classList.add('hidden');
+            showRaceSelector();
+        }
+
+        function showRaceSelector() {
+            const racesForSelection = races.filter(r => 
+                r.date === selectedDate && r.track === selectedTrack
+            );
+
+            // Sort by race number (extract from title or use ID)
+            racesForSelection.sort((a, b) => a.id - b.id);
+
+            document.getElementById('selectedTrackTitle').textContent = 
+                `${selectedTrack} - ${new Date(selectedDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+
+            const raceList = document.getElementById('raceList');
+            raceList.innerHTML = '';
+
+            racesForSelection.forEach((race, index) => {
+                const card = document.createElement('div');
+                card.className = 'race-card';
+                card.onclick = () => selectRace(race);
+                
+                const gradeBadge = race.grade ? `<span class="grade-badge">${race.grade}</span>` : '';
+                
+                card.innerHTML = `
+                    <div class="race-number">R${index + 1}</div>
+                    <div class="race-info">
+                        <div class="race-title">${race.title} ${gradeBadge}</div>
+                        <div class="race-details">${race.distance} ${race.surface} - ${race.horses.length} horses</div>
+                    </div>
+                `;
+                raceList.appendChild(card);
+            });
+
+            document.getElementById('raceSelector').classList.remove('hidden');
         }
 
         function selectRace(race) {
             selectedRace = race;
             myPicks.clear();
             
-            document.getElementById('raceList').classList.add('hidden');
-            document.getElementById('raceDetail').classList.remove('hidden');
+            document.getElementById('raceSelector').classList.add('hidden');
             
             const gradeBadge = race.grade ? `<span class="grade-badge">${race.grade}</span>` : '';
             document.getElementById('selectedRaceTitle').innerHTML = `${race.title} ${gradeBadge}`;
             document.getElementById('selectedRaceInfo').textContent = 
-                `${race.track} - ${race.distance} ${race.surface} - ${new Date(race.date).toLocaleDateString()}`;
+                `${race.track} - ${race.distance} ${race.surface}`;
             
             loadHorses(race);
+            document.getElementById('raceDetail').classList.remove('hidden');
         }
 
         function loadHorses(race) {
@@ -639,7 +648,7 @@
             
             if (supabase) {
                 try {
-                    const { error } = await supabase
+                    await supabase
                         .from('picks')
                         .insert({
                             session_code: currentSession,
@@ -648,8 +657,6 @@
                             horse_numbers: Array.from(myPicks),
                             created_at: new Date().toISOString()
                         });
-                    
-                    if (error) throw error;
                 } catch (error) {
                     console.error('Error saving to Supabase:', error);
                 }
@@ -676,30 +683,19 @@
             
             if (supabase && currentSession && selectedRace) {
                 try {
-                    const { data, error } = await supabase
+                    const { data } = await supabase
                         .from('picks')
                         .select('*')
                         .eq('session_code', currentSession)
                         .eq('race_id', selectedRace.id);
                     
-                    if (!error && data) {
+                    if (data) {
                         data.forEach(pick => {
                             allPicks[pick.user_name] = pick.horse_numbers;
                         });
                     }
                 } catch (error) {
                     console.error('Error loading from Supabase:', error);
-                }
-            }
-            
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key.startsWith(`${currentSession}_${selectedRace.id}_`) && !key.endsWith('_confirmed')) {
-                    const username = key.split('_').pop();
-                    if (!allPicks[username]) {
-                        const data = JSON.parse(localStorage.getItem(key));
-                        allPicks[username] = data.horses;
-                    }
                 }
             }
             
@@ -733,10 +729,22 @@
             window.open(selectedRace.resultsUrl, '_blank');
         }
 
-        function backToRaces() {
+        function backToDateSelector() {
+            document.getElementById('trackSelector').classList.add('hidden');
+            document.getElementById('raceSelector').classList.add('hidden');
             document.getElementById('raceDetail').classList.add('hidden');
-            document.getElementById('raceList').classList.remove('hidden');
-            myPicks.clear();
+            showDateSelector();
+        }
+
+        function backToTrackSelector() {
+            document.getElementById('raceSelector').classList.add('hidden');
+            document.getElementById('raceDetail').classList.add('hidden');
+            showTrackSelector();
+        }
+
+        function backToRaceSelector() {
+            document.getElementById('raceDetail').classList.add('hidden');
+            showRaceSelector();
         }
     </script>
 </body>
