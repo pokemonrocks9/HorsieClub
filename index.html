@@ -314,7 +314,7 @@ function getTimeAgo(date) {
     return `${days}d ago`;
 }
 
-// Delete a session - FIXED WITH BETTER LOGGING
+// Delete a session - FIXED WITH LONGER DELAY
 async function deleteSession(code) {
     if (!confirm(`Delete session "${code}" and all its picks?`)) return;
     
@@ -340,7 +340,7 @@ async function deleteSession(code) {
             }
             
             // Now delete
-            const { data, error } = await supabase
+            const { error } = await supabase
                 .from('picks')
                 .delete()
                 .eq('session_code', code);
@@ -348,12 +348,19 @@ async function deleteSession(code) {
             if (error) {
                 console.error('❌ Supabase delete error:', error);
                 alert(`Error deleting from database: ${error.message}`);
+                return;
             } else {
                 console.log('✅ Deleted from Supabase');
             }
+            
+            // Wait for Supabase to process the delete
+            console.log('⏳ Waiting for Supabase to process...');
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
         } catch (e) {
             console.error('❌ Delete exception:', e);
             alert(`Error: ${e.message}`);
+            return;
         }
     } else {
         console.log('⚠️ Supabase not available');
@@ -378,7 +385,7 @@ async function deleteSession(code) {
     // Show result
     alert(`✅ Deleted session "${code}"!\n\nDatabase: ${deletedFromSupabase} picks\nLocal: ${deletedFromLocal} entries`);
     
-    // Refresh the session list
+    // Refresh the session list with extra delay
     console.log('🔄 Refreshing session list...');
     await new Promise(resolve => setTimeout(resolve, 1000));
     await refreshSessions();
@@ -801,7 +808,7 @@ function showResults() {
     window.open(selectedRace.resultsUrl, '_blank');
 }
 
-// Clear ALL sessions (nuclear option) - FIXED WITH BETTER LOGGING
+// Clear ALL sessions (nuclear option) - FIXED WITH LONGER DELAY
 async function clearAllSessions() {
     if (!confirm('⚠️ Delete ALL sessions? This cannot be undone!')) return;
     if (!confirm('Are you REALLY sure? This will delete everything!')) return;
@@ -826,7 +833,7 @@ async function clearAllSessions() {
             }
             
             // Delete ALL - using a condition that's always true
-            const { data, error } = await supabase
+            const { error } = await supabase
                 .from('picks')
                 .delete()
                 .gte('id', 0); // Delete all rows where id >= 0 (which is everything)
@@ -834,12 +841,19 @@ async function clearAllSessions() {
             if (error) {
                 console.error('❌ Supabase clear all error:', error);
                 alert(`Error clearing database: ${error.message}`);
+                return;
             } else {
                 console.log('✅ Cleared ALL sessions from Supabase');
             }
+            
+            // Wait for Supabase to process the delete
+            console.log('⏳ Waiting for Supabase to process...');
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
         } catch (e) {
             console.error('❌ Clear all exception:', e);
             alert(`Error: ${e.message}`);
+            return;
         }
     } else {
         console.log('⚠️ Supabase not available');
@@ -854,7 +868,7 @@ async function clearAllSessions() {
     
     alert(`✅ ALL sessions deleted!\n\nDatabase: ${deletedFromSupabase} picks\nLocal: ${localCount} entries`);
     
-    // Refresh the session list
+    // Refresh the session list with extra delay
     console.log('🔄 Refreshing session list...');
     await new Promise(resolve => setTimeout(resolve, 1000));
     await refreshSessions();
