@@ -114,6 +114,9 @@ async function fetchRaceEntries(raceId) {
     const year = raceId.substring(0, 4);
     const trackCode = raceId.substring(4, 6);
     
+    // EXTRACT RACE NUMBER from race ID (last 2 digits)
+    const raceNumber = parseInt(raceId.substring(10, 12));
+    
     // Find date in page title - format: "RACE NAME | DD MMM YYYY"
     let raceDate = null;
     
@@ -211,6 +214,7 @@ async function fetchRaceEntries(raceId) {
 
     return {
       title: cleanTitle,
+      raceNumber, // ADD RACE NUMBER HERE
       grade,
       date: raceDate,
       track: TRACK_MAP[trackCode] || 'Unknown',
@@ -241,7 +245,7 @@ async function scrapeRaces() {
   let checkedCount = 0;
 
   const BATCH_SIZE = 15;
-  const TOTAL_TO_CHECK = 3000; // Check more IDs since we narrowed meeting range
+  const TOTAL_TO_CHECK = 3000;
   const idsToCheck = raceIds.slice(0, TOTAL_TO_CHECK);
   const totalBatches = Math.ceil(idsToCheck.length / BATCH_SIZE);
   
@@ -291,6 +295,7 @@ async function scrapeRaces() {
           firstSuccess = result.value;
           console.log(`\n\n🎉 First race found: ${result.value.title}`);
           console.log(`   Race ID: ${raceId}`);
+          console.log(`   Race Number: ${result.value.raceNumber}`);
           console.log(`   Date: ${result.value.date}`);
           console.log(`   Horses: ${result.value.horses.length}`);
           console.log(`   Sample: #${result.value.horses[0].number} ${result.value.horses[0].name} (${result.value.horses[0].jockey})\n`);
@@ -346,7 +351,7 @@ async function scrapeRaces() {
     console.log('\n📊 Recent races found:');
     races.slice(0, 15).forEach(race => {
       const gradeStr = race.grade ? ` [${race.grade}]` : '';
-      console.log(`   ${race.date} - ${race.title}${gradeStr} (${race.horses.length} horses)`);
+      console.log(`   ${race.date} - R${race.raceNumber} ${race.title}${gradeStr} (${race.horses.length} horses)`);
     });
   }
 
