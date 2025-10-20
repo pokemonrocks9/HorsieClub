@@ -130,34 +130,531 @@
     </div>
 
     <script>
-let currentUser='',currentSession='',selectedDate='',selectedTrack='',selectedRace=null,myPicks=new Set(),races=[],supabase=null;
-const SUPABASE_URL='https://wrazhxrevnkupzhylieu.supabase.co',SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndyYXpoeHJldm5rdXB6aHlsaWV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4MDkwNjAsImV4cCI6MjA3NjM4NTA2MH0.jZ5_uqijFFaBhij_hpYz6RZsCdyF79ChLBbY_MNSSmw',GITHUB_RACES_URL='https://raw.githubusercontent.com/pokemonrocks9/HorsieClub/main/races.json';
-function initSupabase(){try{supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);return true}catch(e){console.error('Error:',e);return false}}
-window.addEventListener('DOMContentLoaded',()=>{initSupabase();refreshSessions()});
-function setupRealtimeSubscription(){if(!supabase||!currentSession)return;supabase.channel('picks').on('postgres_changes',{event:'*',schema:'public',table:'picks',filter:`session_code=eq.${currentSession}`},(p)=>{if(selectedRace)loadExistingPicks()}).subscribe()}
-async function refreshSessions(){const d=document.getElementById('activeSessions');d.innerHTML='<p style="color:#666;">Loading...</p>';if(!supabase){d.innerHTML='<p style="color:#666;">Unavailable</p>';return}try{const oneDayAgo=new Date(Date.now()-86400000).toISOString(),{data,error}=await supabase.from('picks').select('session_code,user_name,created_at').gte('created_at',oneDayAgo).order('created_at',{ascending:false});if(error){d.innerHTML='<p style="color:#666;">Unavailable</p>';return}const s={};(data||[]).forEach(p=>{if(!s[p.session_code])s[p.session_code]={users:new Set(),lastActivity:p.created_at};s[p.session_code].users.add(p.user_name)});if(Object.keys(s).length===0)d.innerHTML='<p style="color:#666;">No active sessions</p>';else{let h='<div style="display:flex;flex-direction:column;gap:10px;">';for(const[c,i]of Object.entries(s)){const u=Array.from(i.users).join(', '),t=getTimeAgo(new Date(i.lastActivity));h+=`<div style="padding:10px;border:1px solid #e0e0e0;border-radius:5px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='white'"><div onclick="document.getElementById('sessionCode').value='${c}'" style="flex:1;"><strong>${c}</strong><br><small style="color:#666;">Users: ${u} • ${t}</small></div><button onclick="event.stopPropagation();deleteSession('${c}')" style="background:#f44336;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:12px;">Delete</button></div>`}h+='</div>';d.innerHTML=h}}catch(e){d.innerHTML='<p style="color:#666;">Unavailable</p>'}}
-function getTimeAgo(d){const s=Math.floor((new Date()-d)/1000);if(s<60)return'just now';const m=Math.floor(s/60);if(m<60)return`${m}m ago`;const h=Math.floor(m/60);if(h<24)return`${h}h ago`;return`${Math.floor(h/24)}d ago`}
-async function deleteSession(c){if(!confirm(`Delete "${c}"?`))return;if(supabase)try{await supabase.from('picks').delete().eq('session_code',c)}catch(e){console.error(e)}const k=[];for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(key.startsWith(`${c}_`))k.push(key)}k.forEach(key=>localStorage.removeItem(key));refreshSessions()}
-async function clearOldSessions(){if(!confirm('Delete all old sessions?'))return;const o=new Date(Date.now()-86400000).toISOString();if(supabase)try{await supabase.from('picks').delete().lt('created_at',o)}catch(e){console.error(e)}if(confirm('Also clear localStorage?'))localStorage.clear();alert('Cleared!');refreshSessions()}
-async function joinSession(){const u=document.getElementById('username').value.trim(),s=document.getElementById('sessionCode').value.trim();if(!u||!s){alert('Please enter both!');return}currentUser=u;currentSession=s;setupRealtimeSubscription();document.getElementById('setup').classList.add('hidden');await loadRaces();showDateSelector()}
-async function loadRaces(){try{const r=await fetch(GITHUB_RACES_URL);races=await r.json();console.log(`✅ Loaded ${races.length} races`)}catch(e){console.error(e);alert('Error loading races')}}
-async function refreshRaces(){await loadRaces();document.getElementById('trackSelector').classList.add('hidden');document.getElementById('raceSelector').classList.add('hidden');document.getElementById('raceDetail').classList.add('hidden');showDateSelector();alert(`Loaded ${races.length} races!`)}
-function showDateSelector(){const r={};races.forEach(race=>{if(!race.date)return;if(!r[race.date])r[race.date]=[];r[race.date].push(race)});const g=document.getElementById('dateGrid');g.innerHTML='';const d=Object.keys(r).sort((a,b)=>new Date(b)-new Date(a));d.forEach(date=>{const o=new Date(date+'T00:00:00'),day=o.toLocaleDateString('en-US',{weekday:'short'}),str=o.toLocaleDateString('en-US',{month:'short',day:'numeric'}),c=document.createElement('div');c.className='selector-card';c.onclick=()=>selectDate(date);c.innerHTML=`<div class="date-badge">${str}</div><div class="day-name">${day}</div><div class="race-count">${r[date].length} races</div>`;g.appendChild(c)});document.getElementById('dateSelector').classList.remove('hidden')}
-function selectDate(d){selectedDate=d;document.getElementById('dateSelector').classList.add('hidden');showTrackSelector()}
-function showTrackSelector(){const r=races.filter(r=>r.date===selectedDate),t={};r.forEach(race=>{if(!t[race.track])t[race.track]=[];t[race.track].push(race)});const o=new Date(selectedDate);document.getElementById('selectedDateTitle').textContent=o.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});const g=document.getElementById('trackGrid');g.innerHTML='';Object.keys(t).sort().forEach(track=>{const c=document.createElement('div');c.className='selector-card';c.onclick=()=>selectTrack(track);c.innerHTML=`<div class="track-name">${track}</div><div class="race-count">${t[track].length} races</div>`;g.appendChild(c)});document.getElementById('trackSelector').classList.remove('hidden')}
-function selectTrack(t){selectedTrack=t;document.getElementById('trackSelector').classList.add('hidden');showRaceSelector()}
-function showRaceSelector(){const r=races.filter(r=>r.date===selectedDate&&r.track===selectedTrack);r.sort((a,b)=>a.id-b.id);document.getElementById('selectedTrackTitle').textContent=`${selectedTrack} - ${new Date(selectedDate).toLocaleDateString('en-US',{month:'short',day:'numeric'})}`;const l=document.getElementById('raceList');l.innerHTML='';r.forEach((race,i)=>{const c=document.createElement('div');c.className='race-card';c.onclick=()=>selectRace(race);const g=race.grade?`<span class="grade-badge">${race.grade}</span>`:'';c.innerHTML=`<div class="race-number">R${i+1}</div><div class="race-info"><div class="race-title">${race.title} ${g}</div><div class="race-details">${race.distance} ${race.surface} - ${race.horses.length} horses</div></div>`;l.appendChild(c)});document.getElementById('raceSelector').classList.remove('hidden')}
-function selectRace(r){selectedRace=r;myPicks.clear();document.getElementById('raceSelector').classList.add('hidden');const g=r.grade?`<span class="grade-badge">${r.grade}</span>`:'';document.getElementById('selectedRaceTitle').innerHTML=`${r.title} ${g}`;document.getElementById('selectedRaceInfo').textContent=`${r.track} - ${r.distance} ${r.surface}`;loadHorses(r);document.getElementById('raceDetail').classList.remove('hidden')}
-function loadHorses(r){const l=document.getElementById('horseList');l.innerHTML='';const h=[...r.horses].sort((a,b)=>a.number-b.number);h.forEach(horse=>{const c=document.createElement('div');c.className='horse-card';c.onclick=()=>togglePick(horse.number,c);c.innerHTML=`<div class="horse-number">#${horse.number}</div><div class="horse-name">${horse.name}</div><div class="horse-jockey">J: ${horse.jockey}</div>`;c.dataset.horseNumber=horse.number;l.appendChild(c)});loadExistingPicks()}
-function togglePick(n,c){if(myPicks.has(n)){myPicks.delete(n);c.classList.remove('selected')}else{myPicks.add(n);c.classList.add('selected')}updateButtons()}
-function updateButtons(){const c=document.getElementById('confirmPickBtn'),w=document.getElementById('watchBtn'),r=document.getElementById('resultsBtn');c.disabled=myPicks.size===0;const p=localStorage.getItem(`${currentSession}_${selectedRace.id}_confirmed`)==='true';w.disabled=!p;r.disabled=!p}
-async function confirmPicks(){if(myPicks.size===0)return;const p={user:currentUser,raceId:selectedRace.id,horses:Array.from(myPicks),timestamp:new Date().toISOString()};if(supabase)try{await supabase.from('picks').insert({session_code:currentSession,race_id:selectedRace.id,user_name:currentUser,horse_numbers:Array.from(myPicks),created_at:new Date().toISOString()})}catch(e){}localStorage.setItem(`${currentSession}_${selectedRace.id}_${currentUser}`,JSON.stringify(p));localStorage.setItem(`${currentSession}_${selectedRace.id}_confirmed`,'true');const n=Array.from(myPicks).map(n=>{const h=selectedRace.horses.find(h=>h.number===n);return`#${n} ${h.name}`}).join(', ');alert(`Picks confirmed! You chose: ${n}`);loadExistingPicks();updateButtons()}
-async function loadExistingPicks(){const a={};if(supabase&&currentSession&&selectedRace)try{const{data,error}=await supabase.from('picks').select('*').eq('session_code',currentSession).eq('race_id',selectedRace.id);if(!error&&data)data.forEach(p=>a[p.user_name]=p.horse_numbers)}catch(e){}for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k.startsWith(`${currentSession}_${selectedRace.id}_`)&&!k.endsWith('_confirmed')){const u=k.split('_').pop();if(!a[u]){const d=JSON.parse(localStorage.getItem(k));a[u]=d.horses}}}document.querySelectorAll('.picker-badge').forEach(b=>b.remove());document.querySelectorAll('.picked-by-user2').forEach(c=>c.classList.remove('picked-by-user2'));Object.entries(a).forEach(([u,h])=>{h.forEach(n=>{const c=document.querySelector(`[data-horse-number="${n}"]`);if(c){const b=document.createElement('div');b.className=`picker-badge ${u===currentUser?'user1':'user2'}`;b.textContent=u;c.appendChild(b);if(u!==currentUser)c.classList.add('picked-by-user2')}})})}
-function watchRace(){window.open(selectedRace.videoUrl,'_blank')}
-function showResults(){window.open(selectedRace.resultsUrl,'_blank')}
-function backToDateSelector(){document.getElementById('trackSelector').classList.add('hidden');document.getElementById('raceSelector').classList.add('hidden');document.getElementById('raceDetail').classList.add('hidden');showDateSelector()}
-function backToTrackSelector(){document.getElementById('raceSelector').classList.add('hidden');document.getElementById('raceDetail').classList.add('hidden');showTrackSelector()}
-function backToRaceSelector(){document.getElementById('raceDetail').classList.add('hidden');showRaceSelector()}
+// Global variables
+let currentUser = '';
+let currentSession = '';
+let selectedDate = '';
+let selectedTrack = '';
+let selectedRace = null;
+let myPicks = new Set();
+let races = [];
+let supabase = null;
+
+// Supabase configuration
+const SUPABASE_URL = 'https://wrazhxrevnkupzhylieu.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndyYXpoeHJldm5rdXB6aHlsaWV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4MDkwNjAsImV4cCI6MjA3NjM4NTA2MH0.jZ5_uqijFFaBhij_hpYz6RZsCdyF79ChLBbY_MNSSmw';
+const GITHUB_RACES_URL = 'https://raw.githubusercontent.com/pokemonrocks9/HorsieClub/main/races.json';
+
+// Initialize Supabase
+function initSupabase() {
+    try {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        return true;
+    } catch (e) {
+        console.error('Supabase init error:', e);
+        return false;
+    }
+}
+
+// Initialize on page load
+window.addEventListener('DOMContentLoaded', () => {
+    initSupabase();
+    refreshSessions();
+});
+
+// Setup realtime subscription for picks
+function setupRealtimeSubscription() {
+    if (!supabase || !currentSession) return;
+    
+    supabase
+        .channel('picks')
+        .on('postgres_changes', {
+            event: '*',
+            schema: 'public',
+            table: 'picks',
+            filter: `session_code=eq.${currentSession}`
+        }, (payload) => {
+            if (selectedRace) {
+                loadExistingPicks();
+            }
+        })
+        .subscribe();
+}
+
+// Refresh active sessions
+async function refreshSessions() {
+    const container = document.getElementById('activeSessions');
+    container.innerHTML = '<p style="color:#666;">Loading...</p>';
+    
+    if (!supabase) {
+        container.innerHTML = '<p style="color:#666;">Database unavailable</p>';
+        return;
+    }
+    
+    try {
+        const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+        const { data, error } = await supabase
+            .from('picks')
+            .select('session_code, user_name, created_at')
+            .gte('created_at', oneDayAgo)
+            .order('created_at', { ascending: false });
+        
+        if (error) {
+            container.innerHTML = '<p style="color:#666;">Database unavailable</p>';
+            return;
+        }
+        
+        const sessions = {};
+        (data || []).forEach(pick => {
+            if (!sessions[pick.session_code]) {
+                sessions[pick.session_code] = {
+                    users: new Set(),
+                    lastActivity: pick.created_at
+                };
+            }
+            sessions[pick.session_code].users.add(pick.user_name);
+        });
+        
+        if (Object.keys(sessions).length === 0) {
+            container.innerHTML = '<p style="color:#666;">No active sessions in the last 24 hours</p>';
+        } else {
+            let html = '<div style="display:flex;flex-direction:column;gap:10px;">';
+            for (const [code, info] of Object.entries(sessions)) {
+                const userList = Array.from(info.users).join(', ');
+                const timeAgo = getTimeAgo(new Date(info.lastActivity));
+                html += `
+                    <div style="padding:10px;border:1px solid #e0e0e0;border-radius:5px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;" 
+                         onmouseover="this.style.background='#f5f5f5'" 
+                         onmouseout="this.style.background='white'">
+                        <div onclick="document.getElementById('sessionCode').value='${code}'" style="flex:1;">
+                            <strong>${code}</strong><br>
+                            <small style="color:#666;">Users: ${userList} • ${timeAgo}</small>
+                        </div>
+                        <button onclick="event.stopPropagation();deleteSession('${code}')" 
+                                style="background:#f44336;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:12px;">
+                            Delete
+                        </button>
+                    </div>
+                `;
+            }
+            html += '</div>';
+            container.innerHTML = html;
+        }
+    } catch (e) {
+        container.innerHTML = '<p style="color:#666;">Database unavailable</p>';
+    }
+}
+
+// Get time ago string
+function getTimeAgo(date) {
+    const seconds = Math.floor((new Date() - date) / 1000);
+    if (seconds < 60) return 'just now';
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}m ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}h ago`;
+    const days = Math.floor(hours / 24);
+    return `${days}d ago`;
+}
+
+// Delete a session
+async function deleteSession(code) {
+    if (!confirm(`Delete session "${code}" and all its picks?`)) return;
+    
+    if (supabase) {
+        try {
+            await supabase.from('picks').delete().eq('session_code', code);
+        } catch (e) {
+            console.error('Delete error:', e);
+        }
+    }
+    
+    // Also clear from localStorage
+    const keysToDelete = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith(`${code}_`)) {
+            keysToDelete.push(key);
+        }
+    }
+    keysToDelete.forEach(key => localStorage.removeItem(key));
+    
+    refreshSessions();
+}
+
+// Clear old sessions
+async function clearOldSessions() {
+    if (!confirm('Delete all sessions older than 24 hours?')) return;
+    
+    const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    
+    if (supabase) {
+        try {
+            await supabase.from('picks').delete().lt('created_at', oneDayAgo);
+        } catch (e) {
+            console.error('Clear error:', e);
+        }
+    }
+    
+    if (confirm('Also clear all localStorage data?')) {
+        localStorage.clear();
+    }
+    
+    alert('Old sessions cleared!');
+    refreshSessions();
+}
+
+// Join session
+async function joinSession() {
+    const username = document.getElementById('username').value.trim();
+    const sessionCode = document.getElementById('sessionCode').value.trim();
+    
+    if (!username || !sessionCode) {
+        alert('Please enter both your name and a session code!');
+        return;
+    }
+    
+    currentUser = username;
+    currentSession = sessionCode;
+    
+    setupRealtimeSubscription();
+    
+    document.getElementById('setup').classList.add('hidden');
+    await loadRaces();
+    showDateSelector();
+}
+
+// Load races from GitHub
+async function loadRaces() {
+    try {
+        const response = await fetch(GITHUB_RACES_URL);
+        races = await response.json();
+        console.log(`✅ Loaded ${races.length} races`);
+    } catch (e) {
+        console.error('Race load error:', e);
+        alert('Error loading races. Please try again.');
+    }
+}
+
+// Refresh races
+async function refreshRaces() {
+    await loadRaces();
+    document.getElementById('trackSelector').classList.add('hidden');
+    document.getElementById('raceSelector').classList.add('hidden');
+    document.getElementById('raceDetail').classList.add('hidden');
+    showDateSelector();
+    alert(`Refreshed! Loaded ${races.length} races.`);
+}
+
+// Show date selector
+function showDateSelector() {
+    const racesByDate = {};
+    races.forEach(race => {
+        if (!race.date) return;
+        if (!racesByDate[race.date]) {
+            racesByDate[race.date] = [];
+        }
+        racesByDate[race.date].push(race);
+    });
+    
+    const grid = document.getElementById('dateGrid');
+    grid.innerHTML = '';
+    
+    const dates = Object.keys(racesByDate).sort((a, b) => new Date(b) - new Date(a));
+    
+    dates.forEach(date => {
+        const dateObj = new Date(date + 'T00:00:00');
+        const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'short' });
+        const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        
+        const card = document.createElement('div');
+        card.className = 'selector-card';
+        card.onclick = () => selectDate(date);
+        card.innerHTML = `
+            <div class="date-badge">${dateStr}</div>
+            <div class="day-name">${dayName}</div>
+            <div class="race-count">${racesByDate[date].length} races</div>
+        `;
+        grid.appendChild(card);
+    });
+    
+    document.getElementById('dateSelector').classList.remove('hidden');
+}
+
+// Select date
+function selectDate(date) {
+    selectedDate = date;
+    document.getElementById('dateSelector').classList.add('hidden');
+    showTrackSelector();
+}
+
+// Show track selector
+function showTrackSelector() {
+    const racesForDate = races.filter(r => r.date === selectedDate);
+    const racesByTrack = {};
+    
+    racesForDate.forEach(race => {
+        if (!racesByTrack[race.track]) {
+            racesByTrack[race.track] = [];
+        }
+        racesByTrack[race.track].push(race);
+    });
+    
+    const dateObj = new Date(selectedDate);
+    document.getElementById('selectedDateTitle').textContent = 
+        dateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+    
+    const grid = document.getElementById('trackGrid');
+    grid.innerHTML = '';
+    
+    Object.keys(racesByTrack).sort().forEach(track => {
+        const card = document.createElement('div');
+        card.className = 'selector-card';
+        card.onclick = () => selectTrack(track);
+        card.innerHTML = `
+            <div class="track-name">${track}</div>
+            <div class="race-count">${racesByTrack[track].length} races</div>
+        `;
+        grid.appendChild(card);
+    });
+    
+    document.getElementById('trackSelector').classList.remove('hidden');
+}
+
+// Select track
+function selectTrack(track) {
+    selectedTrack = track;
+    document.getElementById('trackSelector').classList.add('hidden');
+    showRaceSelector();
+}
+
+// Show race selector - FIXED SORTING
+function showRaceSelector() {
+    const racesForTrack = races.filter(r => r.date === selectedDate && r.track === selectedTrack);
+    
+    // Sort by race number (ascending: R1, R2, R3...)
+    racesForTrack.sort((a, b) => {
+        // Use raceNumber if available, otherwise fall back to id
+        const aNum = a.raceNumber || a.id;
+        const bNum = b.raceNumber || b.id;
+        return aNum - bNum;
+    });
+    
+    document.getElementById('selectedTrackTitle').textContent = 
+        `${selectedTrack} - ${new Date(selectedDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+    
+    const list = document.getElementById('raceList');
+    list.innerHTML = '';
+    
+    racesForTrack.forEach((race) => {
+        const card = document.createElement('div');
+        card.className = 'race-card';
+        card.onclick = () => selectRace(race);
+        
+        const gradeBadge = race.grade ? `<span class="grade-badge">${race.grade}</span>` : '';
+        const raceNum = race.raceNumber || race.id;
+        
+        card.innerHTML = `
+            <div class="race-number">R${raceNum}</div>
+            <div class="race-info">
+                <div class="race-title">${race.title} ${gradebadge}</div>
+                <div class="race-details">${race.distance} ${race.surface} - ${race.horses.length} horses</div>
+            </div>
+        `;
+        list.appendChild(card);
+    });
+    
+    document.getElementById('raceSelector').classList.remove('hidden');
+}
+
+// Select race
+function selectRace(race) {
+    selectedRace = race;
+    myPicks.clear();
+    document.getElementById('raceSelector').classList.add('hidden');
+    
+    const gradeBadge = race.grade ? `<span class="grade-badge">${race.grade}</span>` : '';
+    document.getElementById('selectedRaceTitle').innerHTML = `${race.title} ${gradeBadge}`;
+    document.getElementById('selectedRaceInfo').textContent = `${race.track} - ${race.distance} ${race.surface}`;
+    
+    loadHorses(race);
+    document.getElementById('raceDetail').classList.remove('hidden');
+}
+
+// Load horses
+function loadHorses(race) {
+    const list = document.getElementById('horseList');
+    list.innerHTML = '';
+    
+    const horses = [...race.horses].sort((a, b) => a.number - b.number);
+    
+    horses.forEach(horse => {
+        const card = document.createElement('div');
+        card.className = 'horse-card';
+        card.onclick = () => togglePick(horse.number, card);
+        card.innerHTML = `
+            <div class="horse-number">#${horse.number}</div>
+            <div class="horse-name">${horse.name}</div>
+            <div class="horse-jockey">J: ${horse.jockey}</div>
+        `;
+        card.dataset.horseNumber = horse.number;
+        list.appendChild(card);
+    });
+    
+    loadExistingPicks();
+}
+
+// Toggle pick
+function togglePick(number, card) {
+    if (myPicks.has(number)) {
+        myPicks.delete(number);
+        card.classList.remove('selected');
+    } else {
+        myPicks.add(number);
+        card.classList.add('selected');
+    }
+    updateButtons();
+}
+
+// Update button states
+function updateButtons() {
+    const confirmBtn = document.getElementById('confirmPickBtn');
+    const watchBtn = document.getElementById('watchBtn');
+    const resultsBtn = document.getElementById('resultsBtn');
+    
+    confirmBtn.disabled = myPicks.size === 0;
+    
+    const confirmed = localStorage.getItem(`${currentSession}_${selectedRace.id}_confirmed`) === 'true';
+    watchBtn.disabled = !confirmed;
+    resultsBtn.disabled = !confirmed;
+}
+
+// Confirm picks
+async function confirmPicks() {
+    if (myPicks.size === 0) return;
+    
+    const pickData = {
+        user: currentUser,
+        raceId: selectedRace.id,
+        horses: Array.from(myPicks),
+        timestamp: new Date().toISOString()
+    };
+    
+    // Save to Supabase
+    if (supabase) {
+        try {
+            await supabase.from('picks').insert({
+                session_code: currentSession,
+                race_id: selectedRace.id,
+                user_name: currentUser,
+                horse_numbers: Array.from(myPicks),
+                created_at: new Date().toISOString()
+            });
+        } catch (e) {
+            console.error('Save error:', e);
+        }
+    }
+    
+    // Save to localStorage as backup
+    localStorage.setItem(`${currentSession}_${selectedRace.id}_${currentUser}`, JSON.stringify(pickData));
+    localStorage.setItem(`${currentSession}_${selectedRace.id}_confirmed`, 'true');
+    
+    const horseNames = Array.from(myPicks).map(num => {
+        const horse = selectedRace.horses.find(h => h.number === num);
+        return `#${num} ${horse.name}`;
+    }).join(', ');
+    
+    alert(`✅ Picks confirmed!\n\nYou chose: ${horseNames}`);
+    
+    loadExistingPicks();
+    updateButtons();
+}
+
+// Load existing picks
+async function loadExistingPicks() {
+    const allPicks = {};
+    
+    // Load from Supabase first
+    if (supabase && currentSession && selectedRace) {
+        try {
+            const { data, error } = await supabase
+                .from('picks')
+                .select('*')
+                .eq('session_code', currentSession)
+                .eq('race_id', selectedRace.id);
+            
+            if (!error && data) {
+                data.forEach(pick => {
+                    allPicks[pick.user_name] = pick.horse_numbers;
+                });
+            }
+        } catch (e) {
+            console.error('Load error:', e);
+        }
+    }
+    
+    // Also check localStorage
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith(`${currentSession}_${selectedRace.id}_`) && !key.endsWith('_confirmed')) {
+            const username = key.split('_').pop();
+            if (!allPicks[username]) {
+                const data = JSON.parse(localStorage.getItem(key));
+                allPicks[username] = data.horses;
+            }
+        }
+    }
+    
+    // Clear existing badges
+    document.querySelectorAll('.picker-badge').forEach(badge => badge.remove());
+    document.querySelectorAll('.picked-by-user2').forEach(card => card.classList.remove('picked-by-user2'));
+    
+    // Add badges for all picks
+    Object.entries(allPicks).forEach(([username, horses]) => {
+        horses.forEach(horseNum => {
+            const card = document.querySelector(`[data-horse-number="${horseNum}"]`);
+            if (card) {
+                const badge = document.createElement('div');
+                badge.className = `picker-badge ${username === currentUser ? 'user1' : 'user2'}`;
+                badge.textContent = username;
+                card.appendChild(badge);
+                
+                if (username !== currentUser) {
+                    card.classList.add('picked-by-user2');
+                }
+            }
+        });
+    });
+}
+
+// Watch race
+function watchRace() {
+    window.open(selectedRace.videoUrl, '_blank');
+}
+
+// Show results
+function showResults() {
+    window.open(selectedRace.resultsUrl, '_blank');
+}
+
+// Navigation functions
+function backToDateSelector() {
+    document.getElementById('trackSelector').classList.add('hidden');
+    document.getElementById('raceSelector').classList.add('hidden');
+    document.getElementById('raceDetail').classList.add('hidden');
+    showDateSelector();
+}
+
+function backToTrackSelector() {
+    document.getElementById('raceSelector').classList.add('hidden');
+    document.getElementById('raceDetail').classList.add('hidden');
+    showTrackSelector();
+}
+
+function backToRaceSelector() {
+    document.getElementById('raceDetail').classList.add('hidden');
+    showRaceSelector();
+}
     </script>
 </body>
 </html>
