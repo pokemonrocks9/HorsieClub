@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horsie Picker</title>
+    <title>JRA Race Picker</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
@@ -25,6 +25,9 @@
         .date-info { display: flex; align-items: center; gap: 15px; }
         .date-badge { font-size: 20px; font-weight: 600; color: #333; min-width: 80px; }
         .day-name { font-size: 16px; color: #666; min-width: 50px; }
+        .track-selector-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+        .track-card { border: 2px solid #e0e0e0; border-radius: 10px; padding: 20px; cursor: pointer; transition: all 0.3s; text-align: center; }
+        .track-card:hover { border-color: #667eea; box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2); transform: translateY(-2px); }
         .track-name { font-size: 20px; font-weight: 600; color: #667eea; }
         .race-count { font-size: 14px; color: #666; }
         .color-picker-section { margin: 20px 0; padding: 20px; background: #f5f5f5; border-radius: 10px; }
@@ -48,10 +51,7 @@
         .horse-number { font-size: 20px; font-weight: bold; color: #667eea; min-width: 40px; }
         .horse-name { font-size: 16px; font-weight: 600; flex: 1; }
         .horse-jockey { font-size: 13px; color: #666; min-width: 120px; }
-        .picker-badge { position: static; padding: 6px 12px; border-radius: 4px; font-size: 11px; font-weight: 600; color: white; display: flex; align-items: center; gap: 5px; }
-        .picker-badge.user1 { background: #4caf50; }
-        .picker-badge.user2 { background: #ff9800; }
-        .user-initial { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; color: white; }
+        .picker-badge { position: static; padding: 0; border-radius: 50%; font-size: 14px; font-weight: 600; color: white; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; }
         .action-buttons { display: flex; gap: 15px; margin-top: 20px; }
         .back-btn { background: #666; }
         .back-btn:hover { background: #555; }
@@ -124,7 +124,7 @@
             <div class="breadcrumb"><a onclick="backToDateSelector()">Dates</a> → <span>Select Track</span></div>
             <button class="btn back-btn" onclick="backToDateSelector()">← Back to Dates</button>
             <h2 id="selectedDateTitle" style="margin-top: 15px;"></h2>
-            <div class="selector-grid" id="trackGrid"></div>
+            <div class="track-selector-grid" id="trackGrid"></div>
         </div>
 
         <div id="raceSelector" class="selector-section hidden">
@@ -491,7 +491,7 @@ function selectDate(date) {
     showTrackSelector();
 }
 
-// Show track selector
+// Show track selector - GRID FORMAT (side by side)
 function showTrackSelector() {
     const racesForDate = races.filter(r => r.date === selectedDate);
     const racesByTrack = {};
@@ -512,7 +512,7 @@ function showTrackSelector() {
     
     Object.keys(racesByTrack).sort().forEach(track => {
         const card = document.createElement('div');
-        card.className = 'selector-card';
+        card.className = 'track-card';
         card.onclick = () => selectTrack(track);
         card.innerHTML = `
             <div class="track-name">${track}</div>
@@ -596,174 +596,3 @@ function loadHorses(race) {
         card.onclick = () => togglePick(horse.number, card);
         card.innerHTML = `
             <div class="horse-number">#${horse.number}</div>
-            <div class="horse-name">${horse.name}</div>
-            <div class="horse-jockey">J: ${horse.jockey}</div>
-        `;
-        card.dataset.horseNumber = horse.number;
-        list.appendChild(card);
-    });
-    
-    loadExistingPicks();
-}
-
-// Toggle pick
-function togglePick(number, card) {
-    if (myPicks.has(number)) {
-        myPicks.delete(number);
-        card.classList.remove('selected');
-    } else {
-        myPicks.add(number);
-        card.classList.add('selected');
-    }
-    updateButtons();
-}
-
-// Update button states
-function updateButtons() {
-    const confirmBtn = document.getElementById('confirmPickBtn');
-    const watchBtn = document.getElementById('watchBtn');
-    
-    confirmBtn.disabled = myPicks.size === 0;
-    
-    const confirmed = localStorage.getItem(`${currentSession}_${selectedRace.id}_confirmed`) === 'true';
-    watchBtn.disabled = !confirmed;
-}
-
-// Confirm picks - save color too
-async function confirmPicks() {
-    if (myPicks.size === 0) return;
-    
-    const pickData = {
-        user: currentUser,
-        raceId: selectedRace.id,
-        horses: Array.from(myPicks),
-        color: currentUserColor,
-        timestamp: new Date().toISOString()
-    };
-    
-    // Save to API
-    try {
-        const response = await fetch(`${API_URL}/picks`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                session_code: currentSession,
-                race_id: selectedRace.id,
-                user_name: currentUser,
-                horse_numbers: Array.from(myPicks)
-            })
-        });
-        
-        if (response.ok) {
-            console.log('✅ Saved to API');
-        }
-    } catch (e) {
-        console.error('Save error:', e);
-    }
-    
-    // Save to localStorage as backup (with color)
-    localStorage.setItem(`${currentSession}_${selectedRace.id}_${currentUser}`, JSON.stringify(pickData));
-    localStorage.setItem(`${currentSession}_${selectedRace.id}_confirmed`, 'true');
-    
-    const horseNames = Array.from(myPicks).map(num => {
-        const horse = selectedRace.horses.find(h => h.number === num);
-        return `#${num} ${horse.name}`;
-    }).join(', ');
-    
-    alert(`✅ Picks confirmed!\n\nYou chose: ${horseNames}`);
-    
-    loadExistingPicks();
-    updateButtons();
-}
-
-// Load existing picks - with colored initials
-async function loadExistingPicks() {
-    const allPicks = {};
-    const userColors = {};
-    
-    // Load from API
-    try {
-        const response = await fetch(`${API_URL}/picks?session=${currentSession}&race=${selectedRace.id}`);
-        
-        if (response.ok) {
-            const data = await response.json();
-            data.forEach(pick => {
-                const horses = JSON.parse(pick.horse_numbers);
-                allPicks[pick.user_name] = horses;
-            });
-        }
-    } catch (e) {
-        console.error('Load picks error:', e);
-    }
-    
-    // Also check localStorage for colors
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key && key.startsWith(`${currentSession}_${selectedRace.id}_`) && !key.endsWith('_confirmed')) {
-            const username = key.split('_').pop();
-            if (!allPicks[username]) {
-                const data = JSON.parse(localStorage.getItem(key));
-                allPicks[username] = data.horses;
-                if (data.color) userColors[username] = data.color;
-            }
-        }
-    }
-    
-    // Set current user's color
-    userColors[currentUser] = currentUserColor;
-    
-    // Clear existing badges
-    document.querySelectorAll('.picker-badge').forEach(badge => badge.remove());
-    document.querySelectorAll('.picked-by-user2').forEach(card => card.classList.remove('picked-by-user2'));
-    
-    // Add badges for all picks
-    Object.entries(allPicks).forEach(([username, horses]) => {
-        const userColor = userColors[username] || (username === currentUser ? currentUserColor : '#ff9800');
-        const initial = username.charAt(0).toUpperCase();
-        
-        horses.forEach(horseNum => {
-            const card = document.querySelector(`[data-horse-number="${horseNum}"]`);
-            if (card) {
-                const badge = document.createElement('div');
-                badge.className = 'picker-badge';
-                badge.style.background = userColor;
-                badge.innerHTML = `
-                    <div class="user-initial" style="background: ${userColor};">${initial}</div>
-                    <span>${username}</span>
-                `;
-                card.appendChild(badge);
-                
-                if (username !== currentUser) {
-                    card.classList.add('picked-by-user2');
-                }
-            }
-        });
-    });
-}
-
-// Watch race
-function watchRace() {
-    window.open(selectedRace.videoUrl, '_blank');
-}
-
-// Navigation functions
-function backToDateSelector() {
-    document.getElementById('trackSelector').classList.add('hidden');
-    document.getElementById('raceSelector').classList.add('hidden');
-    document.getElementById('raceDetail').classList.add('hidden');
-    showDateSelector();
-}
-
-function backToTrackSelector() {
-    document.getElementById('raceSelector').classList.add('hidden');
-    document.getElementById('raceDetail').classList.add('hidden');
-    showTrackSelector();
-}
-
-function backToRaceSelector() {
-    document.getElementById('raceDetail').classList.add('hidden');
-    showRaceSelector();
-}
-    </script>
-</body>
-</html>
