@@ -20,39 +20,44 @@ function generateRecentRaceIds() {
   const raceIds = [];
   const currentYear = 2025;
   
-  // ALL JRA tracks
-  const tracks = {
-    '01': 'Sapporo',
-    '02': 'Hakodate', 
-    '03': 'Fukushima',
-    '04': 'Niigata',
-    '05': 'Tokyo',
-    '06': 'Nakayama',
-    '07': 'Chukyo',
-    '08': 'Kyoto',
-    '09': 'Hanshin',
-    '10': 'Kokura'
-  };
+  // ALL JRA tracks with priority order (most active tracks first)
+  const tracks = [
+    '05', // Tokyo
+    '08', // Kyoto  
+    '04', // Niigata
+    '06', // Nakayama
+    '09', // Hanshin
+    '07', // Chukyo
+    '10', // Kokura
+    '03', // Fukushima
+    '01', // Sapporo
+    '02', // Hakodate
+  ];
   
-  // Try a wider range of meeting/day combinations
-  // Most recent meetings are higher numbers (01-10)
-  const meetings = ['10', '09', '08', '07', '06', '05', '04', '03', '02', '01'];
+  // For October, meetings are typically 01-05 (not 10!)
+  // Lower numbers = more recent in the current season
+  const meetings = ['05', '04', '03', '02', '01'];
+  
+  // Days 01-12 (typical race meeting is 2-4 days)
   const days = ['12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02', '01'];
+  
+  // Races 01-12
   const races = ['12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02', '01'];
   
   // Generate IDs for all combinations
-  for (const [trackCode, trackName] of Object.entries(tracks)) {
+  for (const track of tracks) {
     for (const meeting of meetings) {
       for (const day of days) {
         for (const race of races) {
-          const raceId = `${currentYear}${trackCode}${meeting}${day}${race}`;
+          const raceId = `${currentYear}${track}${meeting}${day}${race}`;
           raceIds.push(raceId);
         }
       }
     }
   }
   
-  console.log(`Generated ${raceIds.length} race IDs across all ${Object.keys(tracks).length} tracks`);
+  console.log(`Generated ${raceIds.length} race IDs across all ${tracks.length} tracks`);
+  console.log(`Checking meetings 01-05 (current season)`);
   console.log(`Sample IDs: ${raceIds.slice(0, 5).join(', ')}`);
   
   return raceIds;
@@ -254,7 +259,7 @@ async function scrapeRaces() {
   let checkedCount = 0;
 
   const BATCH_SIZE = 15;
-  const TOTAL_TO_CHECK = 2000; // Check 2000 IDs to cover all tracks
+  const TOTAL_TO_CHECK = 3000; // Check more IDs since we narrowed meeting range
   const idsToCheck = raceIds.slice(0, TOTAL_TO_CHECK);
   const totalBatches = Math.ceil(idsToCheck.length / BATCH_SIZE);
   
