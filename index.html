@@ -428,7 +428,9 @@
         
         const SUPABASE_URL = 'https://wrazhxrevnkupzhylieu.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndyYXpoeHJldm5rdXB6aHlsaWV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4MDkwNjAsImV4cCI6MjA3NjM4NTA2MH0.jZ5_uqijFFaBhij_hpYz6RZsCdyF79ChLBbY_MNSSmw';
-        const DEFAULT_WORKER_URL = 'https://horsie.tytygoins.workers.dev';
+        
+        // Fetch directly from GitHub - no need for Cloudflare Worker!
+        const GITHUB_RACES_URL = 'https://raw.githubusercontent.com/pokemonrocks9/HorsieClub/main/races.json';
 
         function initSupabase() {
             try {
@@ -559,15 +561,14 @@
 
         async function loadRaces() {
             try {
-                // Add timestamp to bypass cache
-                const url = `${DEFAULT_WORKER_URL}?t=${Date.now()}`;
-                const response = await fetch(url);
+                // Fetch directly from GitHub - bypasses Cloudflare cache issues
+                const response = await fetch(GITHUB_RACES_URL);
                 const allRaces = await response.json();
                 
                 // Don't filter - use all races
                 races = allRaces;
                 
-                console.log(`✅ Loaded ${races.length} total races`);
+                console.log(`✅ Loaded ${races.length} total races from GitHub`);
                 
                 // Show breakdown
                 const trackCounts = {};
@@ -581,11 +582,11 @@
                 console.log('📅 Races by date:', dateCounts);
                 
                 if (races.length === 0) {
-                    alert('No races loaded. Check that the worker URL is correct.');
+                    alert('No races loaded. Check that the races.json file exists in your GitHub repo.');
                 }
             } catch (error) {
                 console.error('Error loading races:', error);
-                alert('Error loading races. Check console for details.');
+                alert('Error loading races from GitHub. Check console for details.');
             }
         }
 
