@@ -165,103 +165,38 @@ async function fetchRaceEntries(raceId) {
       surface = distanceMatch[1] === 'T' ? 'Turf' : 'Dirt';
     }
 
-    // Extract horses from ENTRY table
+    // Extract horses from ENTRY table - FIXED PARSING
     const horses = [];
     const seen = new Set();
-    
-    let totalRowsWithEnoughCells = 0;
-    let rowsWithPostPosition = 0;
-    let rowsWithHorseAndJockey = 0;
 
-    // Parse all table rows - Netkeiba format is usually:
-    // Gate | Post | Horse | Age/Sex | Jockey | Weight | Trainer | etc.
-    $('table tr').each((i, row) => {
-      const cells = $(row).find('td');
+    // Target rows with class "HorseList" - this is the key!
+    $('tr.HorseList').each((i, row) => {
+      const $row = $(row);
+      const cells = $row.find('td');
       
-      // Need at least 5 cells for a valid horse row
-      if (cells.length >= 5) {
-        totalRowsWithEnoughCells++;
-        const cellTexts = cells.map((i, el) => $(el).text().trim()).get();
+      if (cells.length >= 7) {
+        // Column 2 (index 1) = Post Position
+        const ppText = $(cells[1]).text().trim();
+        const pp = parseInt(ppText);
         
-        let pp = null;
-        let horseName = null;
-        let jockey = null;
+        // Column 4 (index 3) = Horse Info (contains horse name in <a> tag)
+        const horseName = $(cells[3]).find('a').first().text().trim()
+          .replace(/\s*\u00a0.*$/, '') // Remove nbsp and everything after
+          .trim();
         
-        // Look in first 3 cells for post position
-        for (let idx = 0; idx <= 2; idx++) {
-          if (idx >= cellTexts.length) break;
-          
-          const text = cellTexts[idx];
-          const num = parseInt(text);
-          // Must be clean number 1-20, exact match
-          if (!isNaN(num) && num >= 1 && num <= 20 && text === String(num)) {
-            pp = num;
-            rowsWithPostPosition++;
-            
-            // Horse name: next cell with letters, 2+ chars, not just numbers
-            for (let j = idx + 1; j <= idx + 4 && j < cellTexts.length; j++) {
-              const candidate = cellTexts[j];
-              if (candidate && 
-                  candidate.length >= 2 && 
-                  /[a-zA-Z]/.test(candidate) &&
-                  !candidate.match(/^\d+$/) &&
-                  !candidate.match(/^\d+kg$/) &&
-                  !candidate.match(/^[MFC]$/) &&
-                  !candidate.match(/^\d+\/\d+$/)) {  // Not odds like 3/1
-                horseName = candidate;
-                break;
-              }
-            }
-            
-            // Jockey: usually 3-7 cells after post position
-            // Look for names with spaces or periods (M. Demuro, C. Lemaire)
-            for (let j = idx + 3; j <= idx + 8 && j < cellTexts.length; j++) {
-              const candidate = cellTexts[j];
-              if (candidate && 
-                  candidate.length >= 4 && 
-                  candidate.length <= 30 &&
-                  /[A-Za-z]/.test(candidate) &&
-                  !candidate.match(/^\d+$/) &&
-                  !candidate.includes('kg') &&
-                  !candidate.match(/^\d+\/\d+$/) &&
-                  candidate !== horseName) {
-                // Jockey names often have dots or spaces
-                if (candidate.includes('.') || candidate.includes(' ') || 
-                    /^[A-Z]\./.test(candidate)) {
-                  jockey = candidate;
-                  break;
-                }
-              }
-            }
-            
-            // If no jockey with dot/space, take any reasonable name
-            if (!jockey) {
-              for (let j = idx + 3; j <= idx + 8 && j < cellTexts.length; j++) {
-                const candidate = cellTexts[j];
-                if (candidate && 
-                    candidate.length >= 4 && 
-                    candidate.length <= 30 &&
-                    /[A-Za-z]/.test(candidate) &&
-                    !candidate.match(/^\d+$/) &&
-                    !candidate.includes('kg') &&
-                    candidate !== horseName) {
-                  jockey = candidate;
-                  break;
-                }
-              }
-            }
-            
-            break; // Found post position, stop looking
-          }
-        }
-
-        if (pp && horseName && jockey && !seen.has(pp)) {
+        // Column 7 (index 6) = Jockey
+        const jockey = $(cells[6]).text().trim();
+        
+        // Validate
+        if (pp && pp >= 1 && pp <= 20 && 
+            horseName && horseName.length >= 2 && 
+            jockey && jockey.length >= 2 &&
+            !seen.has(pp)) {
           seen.add(pp);
-          rowsWithHorseAndJockey++;
           horses.push({ 
             number: pp, 
-            name: horseName.substring(0, 50).trim(),
-            jockey: jockey.substring(0, 30).trim()
+            name: horseName.substring(0, 50),
+            jockey: jockey.substring(0, 30)
           });
         }
       }
@@ -272,13 +207,6 @@ async function fetchRaceEntries(raceId) {
     // Need at least 4 horses for a valid race (some small races exist)
     if (horses.length < 4) {
       return null;
-    }
-    
-    // Log warning if suspiciously low horse count
-    const maxPP = horses.length > 0 ? Math.max(...horses.map(h => h.number)) : 0;
-    if (horses.length === 8 && maxPP > 8) {
-      console.log(`⚠️  Race ${cleanTitle}: Found ${horses.length} horses, highest PP=${maxPP}`);
-      console.log(`    Rows: ${totalRowsWithEnoughCells} total, ${rowsWithPostPosition} with PP, ${rowsWithHorseAndJockey} complete`);
     }
 
     return {
@@ -300,7 +228,7 @@ async function fetchRaceEntries(raceId) {
 }
 
 async function scrapeRaces() {
-  console.log('🏇 Spoiler-Free Race Scraper (Past 2 Weeks)\n');
+  console.log('🏇 Spoiler-Free Race Scraper (Past 3 Weeks)\n');
   console.log(`⏰ Run time: ${new Date().toISOString()}\n`);
   
   const raceIds = generateRecentRaceIds();
@@ -400,7 +328,7 @@ async function scrapeRaces() {
   });
   
   if (races.length === 0) {
-    console.log('::warning::No races found in the past 2 weeks');
+    console.log('::warning::No races found in the past 3 weeks');
     console.log('This could mean:');
     console.log('  - Race IDs need adjustment');
     console.log('  - Netkeiba is blocking requests');
@@ -415,7 +343,7 @@ async function scrapeRaces() {
 
   // Show sample
   if (races.length > 0) {
-    console.log('📊 Recent races found:');
+    console.log('\n📊 Recent races found:');
     races.slice(0, 15).forEach(race => {
       const gradeStr = race.grade ? ` [${race.grade}]` : '';
       console.log(`   ${race.date} - ${race.title}${gradeStr} (${race.horses.length} horses)`);
