@@ -117,10 +117,12 @@ async function fetchRaceEntries(raceId) {
     // Find date in page title - format: "RACE NAME | DD MMM YYYY"
     let raceDate = null;
     
+    // Get body text once for all date pattern checks
+    const bodyText = $('body').text();
+    
     // Try multiple date patterns
     const dateMatch1 = pageTitle.match(/(\d{1,2})\s+(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)\s+(\d{4})/i);
     const dateMatch2 = pageTitle.match(/(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
-    const bodyText = $('body').text();
     const dateMatch3 = bodyText.match(/(\d{4})\/(\d{1,2})\/(\d{1,2})/);
     
     if (dateMatch1) {
@@ -155,7 +157,6 @@ async function fetchRaceEntries(raceId) {
     }
 
     // Extract distance and surface from page
-    const bodyText = $('body').text();
     let distance = 'Unknown';
     let surface = 'Turf';
     const distanceMatch = bodyText.match(/([TD])(\d{3,4})m/);
