@@ -334,6 +334,14 @@
             <div class="info-box">
                 🎯 Enter your details to get started!
             </div>
+
+            <div style="margin: 20px 0; padding: 15px; background: #f5f5f5; border-radius: 8px;">
+                <h3 style="margin-bottom: 10px;">Active Sessions</h3>
+                <div id="activeSessions" style="max-height: 200px; overflow-y: auto;">
+                    <p style="color: #666;">Loading sessions...</p>
+                </div>
+                <button class="btn" onclick="refreshSessions()" id="refreshSessionsBtn" style="margin-top: 10px;">🔄 Refresh Sessions</button>
+            </div>
             
             <div class="input-group">
                 <label for="username">Your Name:</label>
@@ -431,7 +439,102 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             initSupabase();
+            refreshSessions();
         });
+
+        function setupRealtimeSubscription() {
+            if (!supabase || !currentSession) return;
+            
+            supabase
+                .channel('picks')
+                .on('postgres_changes', 
+                    { 
+                        event: '*', 
+                        schema: 'public', 
+                        table: 'picks',
+                        filter: `session_code=eq.${currentSession}`
+                    }, 
+                    (payload) => {
+                        console.log('Real-time update:', payload);
+                        if (selectedRace) {
+                            loadExistingPicks();
+                        }
+                    }
+                )
+                .subscribe();
+        }
+
+        async function refreshSessions() {
+            if (!supabase) {
+                console.error('Supabase not initialized');
+                document.getElementById('activeSessions').innerHTML = '<p style="color: #666;">No active sessions available</p>';
+                return;
+            }
+
+            const sessionsDiv = document.getElementById('activeSessions');
+            sessionsDiv.innerHTML = '<p style="color: #666;">Loading sessions...</p>';
+
+            try {
+                const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+                const { data, error } = await supabase
+                    .from('picks')
+                    .select('session_code, user_name, created_at')
+                    .gte('created_at', oneDayAgo)
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    console.error('Supabase error details:', JSON.stringify(error));
+                    sessionsDiv.innerHTML = '<p style="color: #666;">No active sessions available</p>';
+                    return;
+                }
+
+                const sessions = {};
+                (data || []).forEach(pick => {
+                    if (!sessions[pick.session_code]) {
+                        sessions[pick.session_code] = {
+                            users: new Set(),
+                            lastActivity: pick.created_at
+                        };
+                    }
+                    sessions[pick.session_code].users.add(pick.user_name);
+                });
+
+                if (Object.keys(sessions).length === 0) {
+                    sessionsDiv.innerHTML = '<p style="color: #666;">No active sessions in the last 24 hours</p>';
+                } else {
+                    let html = '<div style="display: flex; flex-direction: column; gap: 10px;">';
+                    for (const [code, info] of Object.entries(sessions)) {
+                        const userList = Array.from(info.users).join(', ');
+                        const timeAgo = getTimeAgo(new Date(info.lastActivity));
+                        html += `
+                            <div style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 5px; cursor: pointer;" 
+                                 onmouseover="this.style.background='#f5f5f5'" 
+                                 onmouseout="this.style.background='white'"
+                                 onclick="document.getElementById('sessionCode').value='${code}'">
+                                <strong>${code}</strong><br>
+                                <small style="color: #666;">Users: ${userList} • ${timeAgo}</small>
+                            </div>
+                        `;
+                    }
+                    html += '</div>';
+                    sessionsDiv.innerHTML = html;
+                }
+            } catch (error) {
+                console.error('Error loading sessions:', error);
+                sessionsDiv.innerHTML = '<p style="color: #666;">No active sessions available</p>';
+            }
+        }
+
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            if (seconds < 60) return 'just now';
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return `${minutes}m ago`;
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `${hours}h ago`;
+            const days = Math.floor(hours / 24);
+            return `${days}d ago`;
+        }
 
         async function joinSession() {
             const username = document.getElementById('username').value.trim();
@@ -444,6 +547,8 @@
             
             currentUser = username;
             currentSession = sessionCode;
+            
+            setupRealtimeSubscription();
             
             document.getElementById('setup').classList.add('hidden');
             await loadRaces();
