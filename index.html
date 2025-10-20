@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JRA Race Picker</title>
+    <title>Horsie Picker</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
@@ -73,6 +73,17 @@
             <h2>Setup Session</h2>
             <div class="info-box">🎯 Enter your details to get started!</div>
             
+            <div style="margin: 20px 0; padding: 15px; background: #f5f5f5; border-radius: 8px;">
+                <h3 style="margin-bottom: 10px;">Active Sessions</h3>
+                <div id="activeSessions" style="max-height: 200px; overflow-y: auto;">
+                    <p style="color: #666;">Loading sessions...</p>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button class="btn" onclick="refreshSessions()">🔄 Refresh</button>
+                    <button class="btn" onclick="clearAllSessions()" style="background: #f44336;">🗑️ Clear All</button>
+                </div>
+            </div>
+            
             <div class="color-picker-section">
                 <h3 style="margin-bottom: 10px;">Choose Your Color</h3>
                 <div class="color-options" id="colorOptions">
@@ -89,16 +100,6 @@
                 </div>
             </div>
             
-            <div style="margin: 20px 0; padding: 15px; background: #f5f5f5; border-radius: 8px;">
-                <h3 style="margin-bottom: 10px;">Active Sessions</h3>
-                <div id="activeSessions" style="max-height: 200px; overflow-y: auto;">
-                    <p style="color: #666;">Loading sessions...</p>
-                </div>
-                <div style="display: flex; gap: 10px; margin-top: 10px;">
-                    <button class="btn" onclick="refreshSessions()">🔄 Refresh</button>
-                    <button class="btn" onclick="clearAllSessions()" style="background: #f44336;">🗑️ Clear All</button>
-                </div>
-            </div>
             <div class="input-group">
                 <label for="username">Your Name:</label>
                 <input type="text" id="username" placeholder="Enter your name">
@@ -107,7 +108,7 @@
                 <label for="sessionCode">Session Code:</label>
                 <input type="text" id="sessionCode" placeholder="Create or join a session">
             </div>
-            <button class="btn" onclick="joinSession()">Join Session</button>
+            <button class="btn" id="sessionBtn" onclick="joinSession()">Create Session</button>
         </div>
 
         <div id="dateSelector" class="selector-section hidden">
@@ -190,6 +191,9 @@ window.addEventListener('DOMContentLoaded', async () => {
     
     await autoCleanupOldSessions();
     refreshSessions();
+    
+    // Add listener to session code input to update button text
+    document.getElementById('sessionCode').addEventListener('input', updateSessionButton);
 });
 
 // Automatic cleanup of sessions older than 24 hours
@@ -272,7 +276,7 @@ async function refreshSessions() {
                     <div style="padding:10px;border:1px solid #e0e0e0;border-radius:5px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;" 
                          onmouseover="this.style.background='#f5f5f5'" 
                          onmouseout="this.style.background='white'">
-                        <div onclick="document.getElementById('sessionCode').value='${code}'" style="flex:1;">
+                        <div onclick="joinExistingSession('${code}')" style="flex:1;">
                             <strong>${code}</strong><br>
                             <small style="color:#666;">Users: ${userList} • ${info.count} picks • ${timeAgo}</small>
                         </div>
@@ -290,6 +294,30 @@ async function refreshSessions() {
         console.error('Refresh exception:', e);
         container.innerHTML = '<p style="color:#666;">API unavailable</p>';
     }
+}
+
+// Join existing session (from clicking active session)
+function joinExistingSession(code) {
+    document.getElementById('sessionCode').value = code;
+    updateSessionButton();
+}
+
+// Update session button text based on input
+function updateSessionButton() {
+    const sessionCode = document.getElementById('sessionCode').value.trim();
+    const btn = document.getElementById('sessionBtn');
+    
+    // Check if this session exists in active sessions
+    const activeSessions = document.querySelectorAll('#activeSessions strong');
+    let isExisting = false;
+    
+    activeSessions.forEach(el => {
+        if (el.textContent === sessionCode) {
+            isExisting = true;
+        }
+    });
+    
+    btn.textContent = isExisting ? 'Join Session' : 'Create Session';
 }
 
 // Get time ago string
