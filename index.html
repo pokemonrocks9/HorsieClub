@@ -482,7 +482,7 @@
                     .order('created_at', { ascending: false });
 
                 if (error) {
-                    console.error('Supabase error:', error);
+                    // Silently fail - Supabase not available in artifact preview
                     sessionsDiv.innerHTML = '<p style="color: #666;">Sessions list unavailable (picks will still work via local storage)</p>';
                     return;
                 }
@@ -519,7 +519,7 @@
                     sessionsDiv.innerHTML = html;
                 }
             } catch (error) {
-                console.error('Error loading sessions:', error);
+                // Silently fail - Supabase not available
                 sessionsDiv.innerHTML = '<p style="color: #666;">Sessions list unavailable (picks will still work via local storage)</p>';
             }
         }
@@ -750,7 +750,7 @@
                 timestamp: new Date().toISOString()
             };
             
-            // Try Supabase but don't fail if it doesn't work
+            // Try Supabase but silently fail if it doesn't work (artifact mode)
             if (supabase) {
                 try {
                     await supabase
@@ -762,9 +762,8 @@
                             horse_numbers: Array.from(myPicks),
                             created_at: new Date().toISOString()
                         });
-                    console.log('Saved to Supabase successfully');
                 } catch (error) {
-                    console.log('Supabase save failed (using localStorage only):', error.message);
+                    // Silently fail - will use localStorage
                 }
             }
             
@@ -788,7 +787,7 @@
         async function loadExistingPicks() {
             const allPicks = {};
             
-            // Try to load from Supabase first
+            // Try to load from Supabase first (silently fail if unavailable)
             if (supabase && currentSession && selectedRace) {
                 try {
                     const { data, error } = await supabase
@@ -803,7 +802,7 @@
                         });
                     }
                 } catch (error) {
-                    console.log('Supabase load failed, using localStorage only:', error.message);
+                    // Silently fail - will use localStorage
                 }
             }
             
