@@ -15,47 +15,46 @@ const TRACK_MAP = {
   '09': 'Hanshin', '10': 'Kokura'
 };
 
-// Generate possible race IDs for the past week
+// Generate possible race IDs focusing on recent race meetings
 function generateRecentRaceIds() {
   const raceIds = [];
   const currentYear = 2025;
   
-  // ALL JRA tracks - make sure we're checking all of them
-  const tracks = [
-    '01', // Sapporo
-    '02', // Hakodate
-    '03', // Fukushima
-    '04', // Niigata
-    '05', // Tokyo
-    '06', // Nakayama
-    '07', // Chukyo
-    '08', // Kyoto
-    '09', // Hanshin
-    '10'  // Kokura
-  ];
+  // ALL JRA tracks
+  const tracks = {
+    '01': 'Sapporo',
+    '02': 'Hakodate', 
+    '03': 'Fukushima',
+    '04': 'Niigata',
+    '05': 'Tokyo',
+    '06': 'Nakayama',
+    '07': 'Chukyo',
+    '08': 'Kyoto',
+    '09': 'Hanshin',
+    '10': 'Kokura'
+  };
   
-  // Recent meetings - check more meeting numbers to catch recent races
-  const meetings = ['09', '08', '07', '06', '05', '04', '03', '02', '01'];
-  
-  // Days in meeting
+  // Try a wider range of meeting/day combinations
+  // Most recent meetings are higher numbers (01-10)
+  const meetings = ['10', '09', '08', '07', '06', '05', '04', '03', '02', '01'];
   const days = ['12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02', '01'];
-  
-  // Race numbers (reverse order to prioritize feature races)
   const races = ['12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02', '01'];
   
-  // Generate ALL combinations
-  for (const track of tracks) {
+  // Generate IDs for all combinations
+  for (const [trackCode, trackName] of Object.entries(tracks)) {
     for (const meeting of meetings) {
       for (const day of days) {
         for (const race of races) {
-          const raceId = `${currentYear}${track}${meeting}${day}${race}`;
+          const raceId = `${currentYear}${trackCode}${meeting}${day}${race}`;
           raceIds.push(raceId);
         }
       }
     }
   }
   
-  console.log(`Generated ${raceIds.length} race IDs across all ${tracks.length} tracks`);
+  console.log(`Generated ${raceIds.length} race IDs across all ${Object.keys(tracks).length} tracks`);
+  console.log(`Sample IDs: ${raceIds.slice(0, 5).join(', ')}`);
+  
   return raceIds;
 }
 
@@ -262,6 +261,7 @@ async function scrapeRaces() {
   console.log(`🔍 Checking ${TOTAL_TO_CHECK} race IDs for entries across all tracks...\n`);
   
   let firstSuccess = null;
+  let firstAttemptLogged = false;
   
   for (let i = 0; i < idsToCheck.length; i += BATCH_SIZE) {
     const batch = idsToCheck.slice(i, i + BATCH_SIZE);
@@ -273,8 +273,24 @@ async function scrapeRaces() {
       batch.map(raceId => fetchRaceEntries(raceId))
     );
 
-    for (const result of results) {
+    for (let idx = 0; idx < results.length; idx++) {
+      const result = results[idx];
+      const raceId = batch[idx];
+      
       checkedCount++;
+      
+      // Log first few attempts to see what's happening
+      if (!firstAttemptLogged && checkedCount <= 3) {
+        console.log(`\n\nDEBUG: Checked race ID ${raceId}`);
+        console.log(`  Result: ${result.status}`);
+        if (result.status === 'fulfilled' && result.value) {
+          console.log(`  Found: ${result.value.title}`);
+        } else {
+          console.log(`  Not found or invalid`);
+        }
+        if (checkedCount === 3) firstAttemptLogged = true;
+      }
+      
       if (result.status === 'fulfilled' && result.value) {
         result.value.id = id++;
         races.push(result.value);
@@ -287,6 +303,7 @@ async function scrapeRaces() {
         if (!firstSuccess) {
           firstSuccess = result.value;
           console.log(`\n\n🎉 First race found: ${result.value.title}`);
+          console.log(`   Race ID: ${raceId}`);
           console.log(`   Date: ${result.value.date}`);
           console.log(`   Horses: ${result.value.horses.length}`);
           console.log(`   Sample: #${result.value.horses[0].number} ${result.value.horses[0].name} (${result.value.horses[0].jockey})\n`);
