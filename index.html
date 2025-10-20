@@ -560,14 +560,26 @@
         async function loadRaces() {
             try {
                 const response = await fetch(DEFAULT_WORKER_URL);
-                races = await response.json();
-                console.log(`Loaded ${races.length} races`);
+                const allRaces = await response.json();
                 
-                // Show a message to user
+                // Don't filter - use all races
+                races = allRaces;
+                
+                console.log(`✅ Loaded ${races.length} total races`);
+                
+                // Show breakdown
+                const trackCounts = {};
+                const dateCounts = {};
+                races.forEach(race => {
+                    trackCounts[race.track] = (trackCounts[race.track] || 0) + 1;
+                    dateCounts[race.date] = (dateCounts[race.date] || 0) + 1;
+                });
+                
+                console.log('📊 Races by track:', trackCounts);
+                console.log('📅 Races by date:', dateCounts);
+                
                 if (races.length === 0) {
                     alert('No races loaded. Check that the worker URL is correct.');
-                } else {
-                    console.log(`✅ Loaded ${races.length} races from ${races[0].date} to ${races[races.length-1].date}`);
                 }
             } catch (error) {
                 console.error('Error loading races:', error);
@@ -590,14 +602,22 @@
         }
 
         function showDateSelector() {
+            console.log(`showDateSelector: Processing ${races.length} races`);
+            
             // Group races by date
             const racesByDate = {};
             races.forEach(race => {
+                if (!race.date) {
+                    console.warn('Race missing date:', race.title);
+                    return;
+                }
                 if (!racesByDate[race.date]) {
                     racesByDate[race.date] = [];
                 }
                 racesByDate[race.date].push(race);
             });
+
+            console.log(`Grouped into ${Object.keys(racesByDate).length} dates:`, Object.keys(racesByDate));
 
             const dateGrid = document.getElementById('dateGrid');
             dateGrid.innerHTML = '';
@@ -606,7 +626,7 @@
             const sortedDates = Object.keys(racesByDate).sort((a, b) => new Date(b) - new Date(a));
 
             sortedDates.forEach(date => {
-                const dateObj = new Date(date);
+                const dateObj = new Date(date + 'T00:00:00'); // Add time to avoid timezone issues
                 const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'short' });
                 const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                 
