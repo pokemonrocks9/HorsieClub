@@ -1,918 +1,375 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JRA Race Picker</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+/**
+ * scraper-entries.js - Spoiler-Free Race Scraper
+ * 
+ * This scrapes ENTRY LISTS (shutuba.html) NOT results,
+ * so you can see horses and pick winners without spoilers!
+ */
+
+import fetch from 'node-fetch';
+import * as cheerio from 'cheerio';
+import fs from 'fs';
+
+const TRACK_MAP = {
+  '01': 'Sapporo', '02': 'Hakodate', '03': 'Fukushima', '04': 'Niigata',
+  '05': 'Tokyo', '06': 'Nakayama', '07': 'Chukyo', '08': 'Kyoto',
+  '09': 'Hanshin', '10': 'Kokura'
+};
+
+// Generate possible race IDs focusing on recent race meetings
+function generateRecentRaceIds() {
+  const raceIds = [];
+  const currentYear = 2025;
+  
+  // ALL JRA tracks with priority order (most active tracks first)
+  const tracks = [
+    '05', // Tokyo
+    '08', // Kyoto  
+    '04', // Niigata
+    '06', // Nakayama
+    '09', // Hanshin
+    '07', // Chukyo
+    '10', // Kokura
+    '03', // Fukushima
+    '01', // Sapporo
+    '02', // Hakodate
+  ];
+  
+  // For October, meetings are typically 01-05 (not 10!)
+  // Lower numbers = more recent in the current season
+  const meetings = ['05', '04', '03', '02', '01'];
+  
+  // Days 01-12 (typical race meeting is 2-4 days)
+  const days = ['12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02', '01'];
+  
+  // Races 01-12
+  const races = ['12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02', '01'];
+  
+  // Generate IDs for all combinations
+  for (const track of tracks) {
+    for (const meeting of meetings) {
+      for (const day of days) {
+        for (const race of races) {
+          const raceId = `${currentYear}${track}${meeting}${day}${race}`;
+          raceIds.push(raceId);
         }
+      }
+    }
+  }
+  
+  console.log(`Generated ${raceIds.length} race IDs across all ${tracks.length} tracks`);
+  console.log(`Checking meetings 01-05 (current season)`);
+  console.log(`Sample IDs: ${raceIds.slice(0, 5).join(', ')}`);
+  
+  return raceIds;
+}
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
+async function fetchRaceEntries(raceId) {
+  // Use the ENTRIES page (shutuba.html) not results page
+  const url = `https://en.netkeiba.com/race/shutuba.html?race_id=${raceId}`;
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+  try {
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
+      },
+      timeout: 10000,
+    });
 
-        .header {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
+    if (!response.ok) {
+      return null;
+    }
 
-        h1 {
-            color: #667eea;
-            margin-bottom: 10px;
-        }
+    const html = await response.text();
+    
+    // Quick check - if page doesn't have field content, skip
+    if (!html.includes('Field') && html.length < 5000) {
+      return null;
+    }
 
-        .subtitle {
-            color: #666;
-            font-size: 14px;
-        }
+    const $ = cheerio.load(html);
 
-        .setup-section, .selector-section, .race-detail {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
+    // Extract title - from page title since H1 is often empty
+    const pageTitle = $('title').text();
+    let title = pageTitle.split('|')[0].trim();
+    
+    // Also check for race name in the page
+    if (!title || title.length < 3) {
+      title = $('h1').first().text().trim();
+    }
+    
+    // If still no title or it's generic, skip
+    if (!title || title.length < 3 || title.toLowerCase().includes('netkeiba')) {
+      return null;
+    }
+    
+    const cleanTitle = title.replace(/\(G[123]\)/g, '').replace(/\s+/g, ' ').trim();
 
-        .input-group {
-            margin-bottom: 20px;
-        }
+    // Extract grade
+    const gradeMatch = pageTitle.match(/\(G([123])\)/);
+    const grade = gradeMatch ? `G${gradeMatch[1]}` : '';
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-        }
+    // Extract date and track
+    const year = raceId.substring(0, 4);
+    const trackCode = raceId.substring(4, 6);
+    
+    // Find date in page title - format: "RACE NAME | DD MMM YYYY"
+    let raceDate = null;
+    
+    // Get body text once for all date pattern checks
+    const bodyText = $('body').text();
+    
+    // Try multiple date patterns
+    const dateMatch1 = pageTitle.match(/(\d{1,2})\s+(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)\s+(\d{4})/i);
+    const dateMatch2 = pageTitle.match(/(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
+    const dateMatch3 = bodyText.match(/(\d{4})\/(\d{1,2})\/(\d{1,2})/);
+    
+    if (dateMatch1) {
+      // Format: 19 OCT 2025
+      const monthMap = {
+        'JAN': '01', 'FEB': '02', 'MAR': '03', 'APR': '04',
+        'MAY': '05', 'JUN': '06', 'JUL': '07', 'AUG': '08',
+        'SEP': '09', 'OCT': '10', 'NOV': '11', 'DEC': '12'
+      };
+      const day = dateMatch1[1];
+      const month = monthMap[dateMatch1[2].toUpperCase()];
+      const year = dateMatch1[3];
+      raceDate = `${year}-${month}-${String(day).padStart(2, '0')}`;
+    } else if (dateMatch2) {
+      // Format: 2025-10-19 or 2025/10/19
+      raceDate = `${dateMatch2[1]}-${String(dateMatch2[2]).padStart(2, '0')}-${String(dateMatch2[3]).padStart(2, '0')}`;
+    } else if (dateMatch3) {
+      // Format: 2025/10/19 in body
+      raceDate = `${dateMatch3[1]}-${String(dateMatch3[2]).padStart(2, '0')}-${String(dateMatch3[3]).padStart(2, '0')}`;
+    }
+    
+    // Only keep races from the past 21 days (3 weeks instead of 2)
+    if (raceDate) {
+      const raceTime = new Date(raceDate).getTime();
+      const now = Date.now();
+      const daysAgo = (now - raceTime) / (1000 * 60 * 60 * 24);
+      if (daysAgo > 21 || daysAgo < -7) {  // Keep races up to 21 days old, 7 days in future
+        return null;
+      }
+    } else {
+      return null;
+    }
 
-        input[type="text"], select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
+    // Extract distance and surface from page
+    let distance = 'Unknown';
+    let surface = 'Turf';
+    const distanceMatch = bodyText.match(/([TD])(\d{3,4})m/);
+    if (distanceMatch) {
+      distance = `${distanceMatch[2]}m`;
+      surface = distanceMatch[1] === 'T' ? 'Turf' : 'Dirt';
+    }
 
-        input[type="text"]:focus, select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
+    // Extract horses from ENTRY table - FIXED PARSING
+    const horses = [];
+    const seen = new Set();
 
-        .btn {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn:hover {
-            background: #5568d3;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .selector-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .selector-card {
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-        }
-
-        .selector-card:hover {
-            border-color: #667eea;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .selector-card.selected {
-            border-color: #667eea;
-            background: #f0f3ff;
-        }
-
-        .date-badge {
-            font-size: 18px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .day-name {
-            font-size: 14px;
-            color: #666;
-        }
-
-        .track-name {
-            font-size: 20px;
-            font-weight: 600;
-            color: #667eea;
-        }
-
-        .race-count {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
-        }
-
-        .race-list {
-            display: grid;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .race-card {
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .race-card:hover {
-            border-color: #667eea;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
-        }
-
-        .race-info {
-            flex: 1;
-        }
-
-        .race-number {
-            font-size: 24px;
-            font-weight: bold;
-            color: #667eea;
-            margin-right: 15px;
-        }
-
-        .race-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .race-details {
-            font-size: 14px;
-            color: #666;
-        }
-
-        .grade-badge {
-            display: inline-block;
-            background: #ffd700;
-            color: #333;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 700;
-            margin-left: 10px;
-        }
-
-        .horse-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .horse-card {
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .horse-card:hover {
-            border-color: #667eea;
-        }
-
-        .horse-card.selected {
-            border-color: #667eea;
-            background: #f0f3ff;
-        }
-
-        .horse-card.picked-by-user1 {
-            border-color: #4caf50;
-            background: #e8f5e9;
-        }
-
-        .horse-card.picked-by-user2 {
-            border-color: #ff9800;
-            background: #fff3e0;
-        }
-
-        .horse-number {
-            font-size: 24px;
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 5px;
-        }
-
-        .horse-name {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .horse-jockey {
-            font-size: 12px;
-            color: #666;
-        }
-
-        .picker-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-            color: white;
-        }
-
-        .picker-badge.user1 {
-            background: #4caf50;
-        }
-
-        .picker-badge.user2 {
-            background: #ff9800;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .back-btn {
-            background: #666;
-        }
-
-        .back-btn:hover {
-            background: #555;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .info-box {
-            background: #e3f2fd;
-            border-left: 4px solid #2196f3;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 4px;
-        }
-
-        .breadcrumb {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        .breadcrumb a {
-            color: #667eea;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🏇 JRA Race Picker</h1>
-            <p class="subtitle">Watch past races spoiler-free with your racing buddy!</p>
-        </div>
-
-        <!-- Setup -->
-        <div id="setup" class="setup-section">
-            <h2>Setup Session</h2>
-            <div class="info-box">
-                🎯 Enter your details to get started!
-            </div>
-
-            <div style="margin: 20px 0; padding: 15px; background: #f5f5f5; border-radius: 8px;">
-                <h3 style="margin-bottom: 10px;">Active Sessions</h3>
-                <div id="activeSessions" style="max-height: 200px; overflow-y: auto;">
-                    <p style="color: #666;">Loading sessions...</p>
-                </div>
-                <button class="btn" onclick="refreshSessions()" id="refreshSessionsBtn" style="margin-top: 10px;">🔄 Refresh Sessions</button>
-            </div>
-            
-            <div class="input-group">
-                <label for="username">Your Name:</label>
-                <input type="text" id="username" placeholder="Enter your name">
-            </div>
-            
-            <div class="input-group">
-                <label for="sessionCode">Session Code:</label>
-                <input type="text" id="sessionCode" placeholder="Create or join a session (e.g., 'race-night-123')">
-            </div>
-            
-            <button class="btn" onclick="joinSession()">Join Session</button>
-        </div>
-
-        <!-- Step 1: Select Date -->
-        <div id="dateSelector" class="selector-section hidden">
-            <div class="breadcrumb">
-                <span>Select Date</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>Select a Race Day</h2>
-                <button class="btn" onclick="refreshRaces()">🔄 Refresh Races</button>
-            </div>
-            <div class="selector-grid" id="dateGrid"></div>
-        </div>
-
-        <!-- Step 2: Select Track -->
-        <div id="trackSelector" class="selector-section hidden">
-            <div class="breadcrumb">
-                <a onclick="backToDateSelector()">Dates</a> → <span>Select Track</span>
-            </div>
-            <h2 id="selectedDateTitle"></h2>
-            <div class="selector-grid" id="trackGrid"></div>
-        </div>
-
-        <!-- Step 3: Select Race -->
-        <div id="raceSelector" class="selector-section hidden">
-            <div class="breadcrumb">
-                <a onclick="backToDateSelector()">Dates</a> → 
-                <a onclick="backToTrackSelector()">Tracks</a> → 
-                <span>Select Race</span>
-            </div>
-            <h2 id="selectedTrackTitle"></h2>
-            <div class="race-list" id="raceList"></div>
-        </div>
-
-        <!-- Step 4: Race Detail & Picking -->
-        <div id="raceDetail" class="race-detail hidden">
-            <div class="breadcrumb">
-                <a onclick="backToDateSelector()">Dates</a> → 
-                <a onclick="backToTrackSelector()">Tracks</a> → 
-                <a onclick="backToRaceSelector()">Races</a> → 
-                <span>Pick Horses</span>
-            </div>
-            
-            <button class="btn back-btn" onclick="backToRaceSelector()">← Back to Races</button>
-            
-            <h2 id="selectedRaceTitle"></h2>
-            <p id="selectedRaceInfo"></p>
-            
-            <div class="info-box">
-                Pick your horse(s) below. You'll see your partner's picks in real-time! Horses are listed in post position order.
-            </div>
-            
-            <div class="horse-list" id="horseList"></div>
-            
-            <div class="action-buttons">
-                <button class="btn" id="confirmPickBtn" onclick="confirmPicks()" disabled>Confirm My Picks</button>
-                <button class="btn" id="watchBtn" onclick="watchRace()" disabled>Watch Race</button>
-                <button class="btn" id="resultsBtn" onclick="showResults()" disabled>Show Results</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let currentUser = '';
-        let currentSession = '';
-        let selectedDate = '';
-        let selectedTrack = '';
-        let selectedRace = null;
-        let myPicks = new Set();
-        let races = [];
-        let supabase = null;
+    // Target rows with class "HorseList" - this is the key!
+    $('tr.HorseList').each((i, row) => {
+      const $row = $(row);
+      const cells = $row.find('td');
+      
+      if (cells.length >= 7) {
+        // Column 2 (index 1) = Post Position
+        const ppText = $(cells[1]).text().trim();
+        const pp = parseInt(ppText);
         
-        const SUPABASE_URL = 'https://wrazhxrevnkupzhylieu.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndyYXpoeHJldm5rdXB6aHlsaWV1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4MDkwNjAsImV4cCI6MjA3NjM4NTA2MH0.jZ5_uqijFFaBhij_hpYz6RZsCdyF79ChLBbY_MNSSmw';
+        // Column 4 (index 3) = Horse Info (contains horse name in <a> tag)
+        const horseName = $(cells[3]).find('a').first().text().trim()
+          .replace(/\s*\u00a0.*$/, '') // Remove nbsp and everything after
+          .trim();
         
-        // Fetch directly from GitHub - no need for Cloudflare Worker!
-        const GITHUB_RACES_URL = 'https://raw.githubusercontent.com/pokemonrocks9/HorsieClub/main/races.json';
-
-        function initSupabase() {
-            try {
-                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-                return true;
-            } catch (error) {
-                console.error('Error initializing Supabase:', error);
-                return false;
-            }
+        // Column 7 (index 6) = Jockey
+        const jockey = $(cells[6]).text().trim();
+        
+        // Validate
+        if (pp && pp >= 1 && pp <= 20 && 
+            horseName && horseName.length >= 2 && 
+            jockey && jockey.length >= 2 &&
+            !seen.has(pp)) {
+          seen.add(pp);
+          horses.push({ 
+            number: pp, 
+            name: horseName.substring(0, 50),
+            jockey: jockey.substring(0, 30)
+          });
         }
+      }
+    });
 
-        window.addEventListener('DOMContentLoaded', () => {
-            initSupabase();
-            refreshSessions();
-        });
+    horses.sort((a, b) => a.number - b.number);
 
-        function setupRealtimeSubscription() {
-            if (!supabase || !currentSession) return;
-            
-            supabase
-                .channel('picks')
-                .on('postgres_changes', 
-                    { 
-                        event: '*', 
-                        schema: 'public', 
-                        table: 'picks',
-                        filter: `session_code=eq.${currentSession}`
-                    }, 
-                    (payload) => {
-                        console.log('Real-time update:', payload);
-                        if (selectedRace) {
-                            loadExistingPicks();
-                        }
-                    }
-                )
-                .subscribe();
+    // Need at least 4 horses for a valid race (some small races exist)
+    if (horses.length < 4) {
+      return null;
+    }
+
+    return {
+      title: cleanTitle,
+      grade,
+      date: raceDate,
+      track: TRACK_MAP[trackCode] || 'Unknown',
+      distance,
+      surface,
+      horses,
+      videoUrl: 'https://japanracing.jp/en/',
+      resultsUrl: `https://en.netkeiba.com/race/result.html?race_id=${raceId}`,
+      entriesUrl: url,
+    };
+
+  } catch (error) {
+    return null;
+  }
+}
+
+async function scrapeRaces() {
+  console.log('🏇 Spoiler-Free Race Scraper (Past 3 Weeks)\n');
+  console.log(`⏰ Run time: ${new Date().toISOString()}\n`);
+  
+  const raceIds = generateRecentRaceIds();
+  console.log(`📋 Checking ${raceIds.length} possible race IDs...\n`);
+  
+  const races = [];
+  let id = 1;
+  let successCount = 0;
+  let gradedCount = 0;
+  let checkedCount = 0;
+
+  const BATCH_SIZE = 15;
+  const TOTAL_TO_CHECK = 3000; // Check more IDs since we narrowed meeting range
+  const idsToCheck = raceIds.slice(0, TOTAL_TO_CHECK);
+  const totalBatches = Math.ceil(idsToCheck.length / BATCH_SIZE);
+  
+  console.log(`🔍 Checking ${TOTAL_TO_CHECK} race IDs for entries across all tracks...\n`);
+  
+  let firstSuccess = null;
+  let firstAttemptLogged = false;
+  
+  for (let i = 0; i < idsToCheck.length; i += BATCH_SIZE) {
+    const batch = idsToCheck.slice(i, i + BATCH_SIZE);
+    const currentBatch = Math.floor(i / BATCH_SIZE) + 1;
+    
+    process.stdout.write(`\rBatch ${currentBatch}/${totalBatches} | Found: ${successCount} races (${gradedCount} graded) | Checked: ${checkedCount}`);
+
+    const results = await Promise.allSettled(
+      batch.map(raceId => fetchRaceEntries(raceId))
+    );
+
+    for (let idx = 0; idx < results.length; idx++) {
+      const result = results[idx];
+      const raceId = batch[idx];
+      
+      checkedCount++;
+      
+      // Log first few attempts to see what's happening
+      if (!firstAttemptLogged && checkedCount <= 3) {
+        console.log(`\n\nDEBUG: Checked race ID ${raceId}`);
+        console.log(`  Result: ${result.status}`);
+        if (result.status === 'fulfilled' && result.value) {
+          console.log(`  Found: ${result.value.title}`);
+        } else {
+          console.log(`  Not found or invalid`);
         }
-
-        async function refreshSessions() {
-            const sessionsDiv = document.getElementById('activeSessions');
-            sessionsDiv.innerHTML = '<p style="color: #666;">Loading sessions...</p>';
-
-            if (!supabase) {
-                sessionsDiv.innerHTML = '<p style="color: #666;">Sessions list unavailable (using local storage mode)</p>';
-                return;
-            }
-
-            try {
-                const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-                const { data, error } = await supabase
-                    .from('picks')
-                    .select('session_code, user_name, created_at')
-                    .gte('created_at', oneDayAgo)
-                    .order('created_at', { ascending: false });
-
-                if (error) {
-                    // Silently fail - Supabase not available in artifact preview
-                    sessionsDiv.innerHTML = '<p style="color: #666;">Sessions list unavailable (picks will still work via local storage)</p>';
-                    return;
-                }
-
-                const sessions = {};
-                (data || []).forEach(pick => {
-                    if (!sessions[pick.session_code]) {
-                        sessions[pick.session_code] = {
-                            users: new Set(),
-                            lastActivity: pick.created_at
-                        };
-                    }
-                    sessions[pick.session_code].users.add(pick.user_name);
-                });
-
-                if (Object.keys(sessions).length === 0) {
-                    sessionsDiv.innerHTML = '<p style="color: #666;">No active sessions in the last 24 hours</p>';
-                } else {
-                    let html = '<div style="display: flex; flex-direction: column; gap: 10px;">';
-                    for (const [code, info] of Object.entries(sessions)) {
-                        const userList = Array.from(info.users).join(', ');
-                        const timeAgo = getTimeAgo(new Date(info.lastActivity));
-                        html += `
-                            <div style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 5px; cursor: pointer;" 
-                                 onmouseover="this.style.background='#f5f5f5'" 
-                                 onmouseout="this.style.background='white'"
-                                 onclick="document.getElementById('sessionCode').value='${code}'">
-                                <strong>${code}</strong><br>
-                                <small style="color: #666;">Users: ${userList} • ${timeAgo}</small>
-                            </div>
-                        `;
-                    }
-                    html += '</div>';
-                    sessionsDiv.innerHTML = html;
-                }
-            } catch (error) {
-                // Silently fail - Supabase not available
-                sessionsDiv.innerHTML = '<p style="color: #666;">Sessions list unavailable (picks will still work via local storage)</p>';
-            }
+        if (checkedCount === 3) firstAttemptLogged = true;
+      }
+      
+      if (result.status === 'fulfilled' && result.value) {
+        result.value.id = id++;
+        races.push(result.value);
+        successCount++;
+        if (result.value.grade) {
+          gradedCount++;
         }
-
-        function getTimeAgo(date) {
-            const seconds = Math.floor((new Date() - date) / 1000);
-            if (seconds < 60) return 'just now';
-            const minutes = Math.floor(seconds / 60);
-            if (minutes < 60) return `${minutes}m ago`;
-            const hours = Math.floor(minutes / 60);
-            if (hours < 24) return `${hours}h ago`;
-            const days = Math.floor(hours / 24);
-            return `${days}d ago`;
+        
+        // Log first success
+        if (!firstSuccess) {
+          firstSuccess = result.value;
+          console.log(`\n\n🎉 First race found: ${result.value.title}`);
+          console.log(`   Race ID: ${raceId}`);
+          console.log(`   Date: ${result.value.date}`);
+          console.log(`   Horses: ${result.value.horses.length}`);
+          console.log(`   Sample: #${result.value.horses[0].number} ${result.value.horses[0].name} (${result.value.horses[0].jockey})\n`);
         }
+      }
+    }
 
-        async function joinSession() {
-            const username = document.getElementById('username').value.trim();
-            const sessionCode = document.getElementById('sessionCode').value.trim();
-            
-            if (!username || !sessionCode) {
-                alert('Please enter both your name and a session code!');
-                return;
-            }
-            
-            currentUser = username;
-            currentSession = sessionCode;
-            
-            setupRealtimeSubscription();
-            
-            document.getElementById('setup').classList.add('hidden');
-            await loadRaces();
-            showDateSelector();
-        }
+    // Delay between batches
+    await new Promise(resolve => setTimeout(resolve, 400));
+  }
 
-        async function loadRaces() {
-            try {
-                // Fetch directly from GitHub - bypasses Cloudflare cache issues
-                const response = await fetch(GITHUB_RACES_URL);
-                const allRaces = await response.json();
-                
-                // Don't filter - use all races
-                races = allRaces;
-                
-                console.log(`✅ Loaded ${races.length} total races from GitHub`);
-                
-                // Show breakdown
-                const trackCounts = {};
-                const dateCounts = {};
-                races.forEach(race => {
-                    trackCounts[race.track] = (trackCounts[race.track] || 0) + 1;
-                    dateCounts[race.date] = (dateCounts[race.date] || 0) + 1;
-                });
-                
-                console.log('📊 Races by track:', trackCounts);
-                console.log('📅 Races by date:', dateCounts);
-                
-                if (races.length === 0) {
-                    alert('No races loaded. Check that the races.json file exists in your GitHub repo.');
-                }
-            } catch (error) {
-                console.error('Error loading races:', error);
-                alert('Error loading races from GitHub. Check console for details.');
-            }
-        }
+  console.log(`\n✅ Scraping complete!`);
+  console.log(`   Total races found: ${races.length}`);
+  console.log(`   Graded stakes: ${gradedCount}`);
+  console.log(`   IDs checked: ${checkedCount}\n`);
+  
+  // Show track breakdown
+  const trackCounts = {};
+  races.forEach(race => {
+    trackCounts[race.track] = (trackCounts[race.track] || 0) + 1;
+  });
+  console.log('📊 Races by track:');
+  Object.entries(trackCounts).sort((a, b) => b[1] - a[1]).forEach(([track, count]) => {
+    console.log(`   ${track}: ${count} races`);
+  });
+  
+  // Show date breakdown
+  const dateCounts = {};
+  races.forEach(race => {
+    dateCounts[race.date] = (dateCounts[race.date] || 0) + 1;
+  });
+  console.log('\n📅 Races by date:');
+  Object.entries(dateCounts).sort().forEach(([date, count]) => {
+    console.log(`   ${date}: ${count} races`);
+  });
+  
+  if (races.length === 0) {
+    console.log('::warning::No races found in the past 3 weeks');
+    console.log('This could mean:');
+    console.log('  - Race IDs need adjustment');
+    console.log('  - Netkeiba is blocking requests');
+    console.log('  - No racing this week');
+  } else {
+    console.log('::notice::Scraping completed successfully');
+    console.log(`::notice::Found ${races.length} races (${gradedCount} graded stakes)`);
+  }
 
-        async function refreshRaces() {
-            console.log('Refreshing races...');
-            await loadRaces();
-            
-            // Reset to date selector
-            document.getElementById('trackSelector').classList.add('hidden');
-            document.getElementById('raceSelector').classList.add('hidden');
-            document.getElementById('raceDetail').classList.add('hidden');
-            
-            showDateSelector();
-            
-            alert(`Loaded ${races.length} races!`);
-        }
+  // Sort by date (most recent first)
+  races.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-        function showDateSelector() {
-            console.log(`showDateSelector: Processing ${races.length} races`);
-            
-            // Group races by date
-            const racesByDate = {};
-            races.forEach(race => {
-                if (!race.date) {
-                    console.warn('Race missing date:', race.title);
-                    return;
-                }
-                if (!racesByDate[race.date]) {
-                    racesByDate[race.date] = [];
-                }
-                racesByDate[race.date].push(race);
-            });
+  // Show sample
+  if (races.length > 0) {
+    console.log('\n📊 Recent races found:');
+    races.slice(0, 15).forEach(race => {
+      const gradeStr = race.grade ? ` [${race.grade}]` : '';
+      console.log(`   ${race.date} - ${race.title}${gradeStr} (${race.horses.length} horses)`);
+    });
+  }
 
-            console.log(`Grouped into ${Object.keys(racesByDate).length} dates:`, Object.keys(racesByDate));
+  // Save to JSON
+  fs.writeFileSync('races.json', JSON.stringify(races, null, 2));
+  console.log(`\n💾 Saved ${races.length} races to races.json`);
+  
+  const summary = {
+    lastUpdated: new Date().toISOString(),
+    totalRaces: races.length,
+    gradedStakes: gradedCount,
+    dateRange: races.length > 0 ? {
+      earliest: races[races.length - 1].date,
+      latest: races[0].date
+    } : null,
+    note: 'Entry lists only - no spoilers!'
+  };
+  
+  console.log('\n📈 Summary:');
+  console.log(JSON.stringify(summary, null, 2));
+}
 
-            const dateGrid = document.getElementById('dateGrid');
-            dateGrid.innerHTML = '';
-
-            // Sort dates descending (most recent first)
-            const sortedDates = Object.keys(racesByDate).sort((a, b) => new Date(b) - new Date(a));
-
-            sortedDates.forEach(date => {
-                const dateObj = new Date(date + 'T00:00:00'); // Add time to avoid timezone issues
-                const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'short' });
-                const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                
-                const card = document.createElement('div');
-                card.className = 'selector-card';
-                card.onclick = () => selectDate(date);
-                card.innerHTML = `
-                    <div class="date-badge">${dateStr}</div>
-                    <div class="day-name">${dayName}</div>
-                    <div class="race-count">${racesByDate[date].length} races</div>
-                `;
-                dateGrid.appendChild(card);
-            });
-
-            document.getElementById('dateSelector').classList.remove('hidden');
-        }
-
-        function selectDate(date) {
-            selectedDate = date;
-            document.getElementById('dateSelector').classList.add('hidden');
-            showTrackSelector();
-        }
-
-        function showTrackSelector() {
-            const racesOnDate = races.filter(r => r.date === selectedDate);
-            
-            // Group by track
-            const racesByTrack = {};
-            racesOnDate.forEach(race => {
-                if (!racesByTrack[race.track]) {
-                    racesByTrack[race.track] = [];
-                }
-                racesByTrack[race.track].push(race);
-            });
-
-            const dateObj = new Date(selectedDate);
-            document.getElementById('selectedDateTitle').textContent = 
-                dateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
-
-            const trackGrid = document.getElementById('trackGrid');
-            trackGrid.innerHTML = '';
-
-            Object.keys(racesByTrack).sort().forEach(track => {
-                const card = document.createElement('div');
-                card.className = 'selector-card';
-                card.onclick = () => selectTrack(track);
-                card.innerHTML = `
-                    <div class="track-name">${track}</div>
-                    <div class="race-count">${racesByTrack[track].length} races</div>
-                `;
-                trackGrid.appendChild(card);
-            });
-
-            document.getElementById('trackSelector').classList.remove('hidden');
-        }
-
-        function selectTrack(track) {
-            selectedTrack = track;
-            document.getElementById('trackSelector').classList.add('hidden');
-            showRaceSelector();
-        }
-
-        function showRaceSelector() {
-            const racesForSelection = races.filter(r => 
-                r.date === selectedDate && r.track === selectedTrack
-            );
-
-            // Sort by race number (extract from title or use ID)
-            racesForSelection.sort((a, b) => a.id - b.id);
-
-            document.getElementById('selectedTrackTitle').textContent = 
-                `${selectedTrack} - ${new Date(selectedDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
-
-            const raceList = document.getElementById('raceList');
-            raceList.innerHTML = '';
-
-            racesForSelection.forEach((race, index) => {
-                const card = document.createElement('div');
-                card.className = 'race-card';
-                card.onclick = () => selectRace(race);
-                
-                const gradeBadge = race.grade ? `<span class="grade-badge">${race.grade}</span>` : '';
-                
-                card.innerHTML = `
-                    <div class="race-number">R${index + 1}</div>
-                    <div class="race-info">
-                        <div class="race-title">${race.title} ${gradeBadge}</div>
-                        <div class="race-details">${race.distance} ${race.surface} - ${race.horses.length} horses</div>
-                    </div>
-                `;
-                raceList.appendChild(card);
-            });
-
-            document.getElementById('raceSelector').classList.remove('hidden');
-        }
-
-        function selectRace(race) {
-            selectedRace = race;
-            myPicks.clear();
-            
-            document.getElementById('raceSelector').classList.add('hidden');
-            
-            const gradeBadge = race.grade ? `<span class="grade-badge">${race.grade}</span>` : '';
-            document.getElementById('selectedRaceTitle').innerHTML = `${race.title} ${gradeBadge}`;
-            document.getElementById('selectedRaceInfo').textContent = 
-                `${race.track} - ${race.distance} ${race.surface}`;
-            
-            loadHorses(race);
-            document.getElementById('raceDetail').classList.remove('hidden');
-        }
-
-        function loadHorses(race) {
-            const horseList = document.getElementById('horseList');
-            horseList.innerHTML = '';
-            
-            // Sort by post position instead of randomizing
-            const sortedHorses = [...race.horses].sort((a, b) => a.number - b.number);
-            
-            sortedHorses.forEach(horse => {
-                const horseCard = document.createElement('div');
-                horseCard.className = 'horse-card';
-                horseCard.onclick = () => togglePick(horse.number, horseCard);
-                horseCard.innerHTML = `
-                    <div class="horse-number">#${horse.number}</div>
-                    <div class="horse-name">${horse.name}</div>
-                    <div class="horse-jockey">J: ${horse.jockey}</div>
-                `;
-                horseCard.dataset.horseNumber = horse.number;
-                horseList.appendChild(horseCard);
-            });
-            
-            loadExistingPicks();
-        }
-
-        function togglePick(horseNumber, cardElement) {
-            if (myPicks.has(horseNumber)) {
-                myPicks.delete(horseNumber);
-                cardElement.classList.remove('selected');
-            } else {
-                myPicks.add(horseNumber);
-                cardElement.classList.add('selected');
-            }
-            
-            updateButtons();
-        }
-
-        function updateButtons() {
-            const confirmBtn = document.getElementById('confirmPickBtn');
-            const watchBtn = document.getElementById('watchBtn');
-            const resultsBtn = document.getElementById('resultsBtn');
-            
-            confirmBtn.disabled = myPicks.size === 0;
-            
-            const picksConfirmed = localStorage.getItem(`${currentSession}_${selectedRace.id}_confirmed`) === 'true';
-            watchBtn.disabled = !picksConfirmed;
-            resultsBtn.disabled = !picksConfirmed;
-        }
-
-        async function confirmPicks() {
-            if (myPicks.size === 0) return;
-            
-            const picks = {
-                user: currentUser,
-                raceId: selectedRace.id,
-                horses: Array.from(myPicks),
-                timestamp: new Date().toISOString()
-            };
-            
-            // Try Supabase but silently fail if it doesn't work (artifact mode)
-            if (supabase) {
-                try {
-                    await supabase
-                        .from('picks')
-                        .insert({
-                            session_code: currentSession,
-                            race_id: selectedRace.id,
-                            user_name: currentUser,
-                            horse_numbers: Array.from(myPicks),
-                            created_at: new Date().toISOString()
-                        });
-                } catch (error) {
-                    // Silently fail - will use localStorage
-                }
-            }
-            
-            // Always save to localStorage as backup
-            localStorage.setItem(`${currentSession}_${selectedRace.id}_${currentUser}`, JSON.stringify(picks));
-            localStorage.setItem(`${currentSession}_${selectedRace.id}_confirmed`, 'true');
-            
-            const horseNames = Array.from(myPicks)
-                .map(n => {
-                    const horse = selectedRace.horses.find(h => h.number === n);
-                    return `#${n} ${horse.name}`;
-                })
-                .join(', ');
-            
-            alert(`Picks confirmed! You chose: ${horseNames}`);
-            
-            loadExistingPicks();
-            updateButtons();
-        }
-
-        async function loadExistingPicks() {
-            const allPicks = {};
-            
-            // Try to load from Supabase first (silently fail if unavailable)
-            if (supabase && currentSession && selectedRace) {
-                try {
-                    const { data, error } = await supabase
-                        .from('picks')
-                        .select('*')
-                        .eq('session_code', currentSession)
-                        .eq('race_id', selectedRace.id);
-                    
-                    if (!error && data) {
-                        data.forEach(pick => {
-                            allPicks[pick.user_name] = pick.horse_numbers;
-                        });
-                    }
-                } catch (error) {
-                    // Silently fail - will use localStorage
-                }
-            }
-            
-            // Always check localStorage as fallback
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                if (key.startsWith(`${currentSession}_${selectedRace.id}_`) && !key.endsWith('_confirmed')) {
-                    const username = key.split('_').pop();
-                    if (!allPicks[username]) {
-                        const data = JSON.parse(localStorage.getItem(key));
-                        allPicks[username] = data.horses;
-                    }
-                }
-            }
-            
-            document.querySelectorAll('.picker-badge').forEach(badge => badge.remove());
-            document.querySelectorAll('.picked-by-user2').forEach(card => {
-                card.classList.remove('picked-by-user2');
-            });
-            
-            Object.entries(allPicks).forEach(([username, horses]) => {
-                horses.forEach(horseNum => {
-                    const card = document.querySelector(`[data-horse-number="${horseNum}"]`);
-                    if (card) {
-                        const badge = document.createElement('div');
-                        badge.className = `picker-badge ${username === currentUser ? 'user1' : 'user2'}`;
-                        badge.textContent = username;
-                        card.appendChild(badge);
-                        
-                        if (username !== currentUser) {
-                            card.classList.add('picked-by-user2');
-                        }
-                    }
-                });
-            });
-        }
-
-        function watchRace() {
-            window.open(selectedRace.videoUrl, '_blank');
-        }
-
-        function showResults() {
-            window.open(selectedRace.resultsUrl, '_blank');
-        }
-
-        function backToDateSelector() {
-            document.getElementById('trackSelector').classList.add('hidden');
-            document.getElementById('raceSelector').classList.add('hidden');
-            document.getElementById('raceDetail').classList.add('hidden');
-            showDateSelector();
-        }
-
-        function backToTrackSelector() {
-            document.getElementById('raceSelector').classList.add('hidden');
-            document.getElementById('raceDetail').classList.add('hidden');
-            showTrackSelector();
-        }
-
-        function backToRaceSelector() {
-            document.getElementById('raceDetail').classList.add('hidden');
-            showRaceSelector();
-        }
-    </script>
-</body>
-</html>
+scrapeRaces().catch(error => {
+  console.error('Fatal error:', error);
+  process.exit(1);
+});
