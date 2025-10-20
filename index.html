@@ -465,14 +465,13 @@
         }
 
         async function refreshSessions() {
-            if (!supabase) {
-                console.error('Supabase not initialized');
-                document.getElementById('activeSessions').innerHTML = '<p style="color: #666;">No active sessions available</p>';
-                return;
-            }
-
             const sessionsDiv = document.getElementById('activeSessions');
             sessionsDiv.innerHTML = '<p style="color: #666;">Loading sessions...</p>';
+
+            if (!supabase) {
+                sessionsDiv.innerHTML = '<p style="color: #666;">Sessions list unavailable (using local storage mode)</p>';
+                return;
+            }
 
             try {
                 const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
@@ -483,8 +482,8 @@
                     .order('created_at', { ascending: false });
 
                 if (error) {
-                    console.error('Supabase error details:', JSON.stringify(error));
-                    sessionsDiv.innerHTML = '<p style="color: #666;">No active sessions available</p>';
+                    console.error('Supabase error:', error);
+                    sessionsDiv.innerHTML = '<p style="color: #666;">Sessions list unavailable (picks will still work via local storage)</p>';
                     return;
                 }
 
@@ -521,7 +520,7 @@
                 }
             } catch (error) {
                 console.error('Error loading sessions:', error);
-                sessionsDiv.innerHTML = '<p style="color: #666;">No active sessions available</p>';
+                sessionsDiv.innerHTML = '<p style="color: #666;">Sessions list unavailable (picks will still work via local storage)</p>';
             }
         }
 
@@ -751,6 +750,7 @@
                 timestamp: new Date().toISOString()
             };
             
+            // Try Supabase but don't fail if it doesn't work
             if (supabase) {
                 try {
                     await supabase
@@ -762,11 +762,13 @@
                             horse_numbers: Array.from(myPicks),
                             created_at: new Date().toISOString()
                         });
+                    console.log('Saved to Supabase successfully');
                 } catch (error) {
-                    console.error('Error saving to Supabase:', error);
+                    console.log('Supabase save failed (using localStorage only):', error.message);
                 }
             }
             
+            // Always save to localStorage as backup
             localStorage.setItem(`${currentSession}_${selectedRace.id}_${currentUser}`, JSON.stringify(picks));
             localStorage.setItem(`${currentSession}_${selectedRace.id}_confirmed`, 'true');
             
@@ -786,21 +788,34 @@
         async function loadExistingPicks() {
             const allPicks = {};
             
+            // Try to load from Supabase first
             if (supabase && currentSession && selectedRace) {
                 try {
-                    const { data } = await supabase
+                    const { data, error } = await supabase
                         .from('picks')
                         .select('*')
                         .eq('session_code', currentSession)
                         .eq('race_id', selectedRace.id);
                     
-                    if (data) {
+                    if (!error && data) {
                         data.forEach(pick => {
                             allPicks[pick.user_name] = pick.horse_numbers;
                         });
                     }
                 } catch (error) {
-                    console.error('Error loading from Supabase:', error);
+                    console.log('Supabase load failed, using localStorage only:', error.message);
+                }
+            }
+            
+            // Always check localStorage as fallback
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith(`${currentSession}_${selectedRace.id}_`) && !key.endsWith('_confirmed')) {
+                    const username = key.split('_').pop();
+                    if (!allPicks[username]) {
+                        const data = JSON.parse(localStorage.getItem(key));
+                        allPicks[username] = data.horses;
+                    }
                 }
             }
             
