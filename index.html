@@ -361,7 +361,10 @@
             <div class="breadcrumb">
                 <span>Select Date</span>
             </div>
-            <h2>Select a Race Day</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Select a Race Day</h2>
+                <button class="btn" onclick="refreshRaces()">🔄 Refresh Races</button>
+            </div>
             <div class="selector-grid" id="dateGrid"></div>
         </div>
 
@@ -559,10 +562,31 @@
                 const response = await fetch(DEFAULT_WORKER_URL);
                 races = await response.json();
                 console.log(`Loaded ${races.length} races`);
+                
+                // Show a message to user
+                if (races.length === 0) {
+                    alert('No races loaded. Check that the worker URL is correct.');
+                } else {
+                    console.log(`✅ Loaded ${races.length} races from ${races[0].date} to ${races[races.length-1].date}`);
+                }
             } catch (error) {
                 console.error('Error loading races:', error);
-                alert('Error loading races. Please try again.');
+                alert('Error loading races. Check console for details.');
             }
+        }
+
+        async function refreshRaces() {
+            console.log('Refreshing races...');
+            await loadRaces();
+            
+            // Reset to date selector
+            document.getElementById('trackSelector').classList.add('hidden');
+            document.getElementById('raceSelector').classList.add('hidden');
+            document.getElementById('raceDetail').classList.add('hidden');
+            
+            showDateSelector();
+            
+            alert(`Loaded ${races.length} races!`);
         }
 
         function showDateSelector() {
