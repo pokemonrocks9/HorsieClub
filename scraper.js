@@ -116,26 +116,38 @@ async function fetchRaceEntries(raceId) {
     
     // Find date in page title - format: "RACE NAME | DD MMM YYYY"
     let raceDate = null;
-    const dateMatch = pageTitle.match(/(\d{1,2})\s+(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)\s+(\d{4})/i);
     
-    if (dateMatch) {
+    // Try multiple date patterns
+    const dateMatch1 = pageTitle.match(/(\d{1,2})\s+(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)\s+(\d{4})/i);
+    const dateMatch2 = pageTitle.match(/(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
+    const bodyText = $('body').text();
+    const dateMatch3 = bodyText.match(/(\d{4})\/(\d{1,2})\/(\d{1,2})/);
+    
+    if (dateMatch1) {
+      // Format: 19 OCT 2025
       const monthMap = {
         'JAN': '01', 'FEB': '02', 'MAR': '03', 'APR': '04',
         'MAY': '05', 'JUN': '06', 'JUL': '07', 'AUG': '08',
         'SEP': '09', 'OCT': '10', 'NOV': '11', 'DEC': '12'
       };
-      const day = dateMatch[1];
-      const month = monthMap[dateMatch[2].toUpperCase()];
-      const year = dateMatch[3];
+      const day = dateMatch1[1];
+      const month = monthMap[dateMatch1[2].toUpperCase()];
+      const year = dateMatch1[3];
       raceDate = `${year}-${month}-${String(day).padStart(2, '0')}`;
+    } else if (dateMatch2) {
+      // Format: 2025-10-19 or 2025/10/19
+      raceDate = `${dateMatch2[1]}-${String(dateMatch2[2]).padStart(2, '0')}-${String(dateMatch2[3]).padStart(2, '0')}`;
+    } else if (dateMatch3) {
+      // Format: 2025/10/19 in body
+      raceDate = `${dateMatch3[1]}-${String(dateMatch3[2]).padStart(2, '0')}-${String(dateMatch3[3]).padStart(2, '0')}`;
     }
     
-    // Only keep races from the past 14 days
+    // Only keep races from the past 21 days (3 weeks instead of 2)
     if (raceDate) {
       const raceTime = new Date(raceDate).getTime();
       const now = Date.now();
       const daysAgo = (now - raceTime) / (1000 * 60 * 60 * 24);
-      if (daysAgo > 14 || daysAgo < -2) {
+      if (daysAgo > 21 || daysAgo < -7) {  // Keep races up to 21 days old, 7 days in future
         return null;
       }
     } else {
@@ -320,10 +332,30 @@ async function scrapeRaces() {
     await new Promise(resolve => setTimeout(resolve, 400));
   }
 
-  console.log(`\n\n✅ Scraping complete!`);
+  console.log(`\n✅ Scraping complete!`);
   console.log(`   Total races found: ${races.length}`);
   console.log(`   Graded stakes: ${gradedCount}`);
   console.log(`   IDs checked: ${checkedCount}\n`);
+  
+  // Show track breakdown
+  const trackCounts = {};
+  races.forEach(race => {
+    trackCounts[race.track] = (trackCounts[race.track] || 0) + 1;
+  });
+  console.log('📊 Races by track:');
+  Object.entries(trackCounts).sort((a, b) => b[1] - a[1]).forEach(([track, count]) => {
+    console.log(`   ${track}: ${count} races`);
+  });
+  
+  // Show date breakdown
+  const dateCounts = {};
+  races.forEach(race => {
+    dateCounts[race.date] = (dateCounts[race.date] || 0) + 1;
+  });
+  console.log('\n📅 Races by date:');
+  Object.entries(dateCounts).sort().forEach(([date, count]) => {
+    console.log(`   ${date}: ${count} races`);
+  });
   
   if (races.length === 0) {
     console.log('::warning::No races found in the past 2 weeks');
