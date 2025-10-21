@@ -23,6 +23,7 @@
         .selector-card { border: 2px solid #e0e0e0; border-radius: 10px; padding: 15px 20px; cursor: pointer; transition: all 0.3s; display: flex; justify-content: space-between; align-items: center; position: relative; }
         .selector-card:hover { border-color: var(--theme-color, #f44336); box-shadow: 0 5px 15px rgba(244, 67, 54, 0.2); transform: translateX(5px); }
         .selector-card.has-picks { border-color: #4caf50; background: #f1f8f4; }
+        .selector-card.has-picks::after { content: '✓'; position: absolute; top: 0px; right: 0px; color: #4caf50; font-weight: bold; font-size: 18px; }
         .date-info { display: flex; align-items: center; gap: 15px; }
         .date-badge { font-size: 20px; font-weight: 600; color: #333; min-width: 80px; }
         .day-name { font-size: 16px; color: #666; min-width: 50px; }
