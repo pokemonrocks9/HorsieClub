@@ -393,7 +393,9 @@ function showTrackSelector(){
         byTrack[r.track]||(byTrack[r.track]=[]);
         byTrack[r.track].push(r);
     });
-    document.getElementById('selectedDateTitle').textContent=new Date(D).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+    const [y,m,d]=D.split('-');
+    const dateObj=new Date(y,m-1,d);
+    document.getElementById('selectedDateTitle').textContent=dateObj.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
     const g=document.getElementById('trackGrid');
     g.innerHTML='';
     Object.keys(byTrack).sort().forEach(t=>{
