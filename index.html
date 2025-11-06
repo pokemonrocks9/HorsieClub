@@ -54,10 +54,10 @@
         .horse-card:hover { border-color: var(--theme-color, #f44336); transform: translateX(5px); }
         .horse-card.selected { border-color: var(--theme-color, #f44336); }
         .horse-card.picked-by-user2 { }
-        .horse-number { font-size: 20px; min-width: 40px; transition: color 0.5s ease; color: #666; }
+        .horse-number { font-size: 20px; font-weight: bold; min-width: 40px; transition: color 0.5s ease; color: #666; }
         .horse-name { font-size: 16px; flex: 1; color: #333; }
         .horse-card.selected .horse-name { font-weight: 600; color: var(--theme-color, #f44336); }
-        .horse-card.selected .horse-number { font-weight: bold; color: var(--theme-color, #f44336); }
+        .horse-card.selected .horse-number { color: var(--theme-color, #f44336); }
         .picker-badge { position: static; padding: 0; border-radius: 50%; font-size: 14px; font-weight: 600; color: white; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; }
         .action-buttons { display: flex; gap: 15px; margin-top: 20px; }
         .back-btn { background: #666; }
@@ -532,11 +532,9 @@ async function loadExistingPicks(){
     document.querySelectorAll('.picker-badge').forEach(b=>b.remove());
     document.querySelectorAll('.picked-by-user2').forEach(c=>c.classList.remove('picked-by-user2'));
     
-    // Reset all backgrounds for non-selected cards
+    // Reset all backgrounds
     document.querySelectorAll('.horse-card').forEach(c=>{
-        if(!c.classList.contains('selected')){
-            c.style.background='';
-        }
+        c.style.background='';
     });
     
     // Track horses picked by multiple users
@@ -569,13 +567,19 @@ async function loadExistingPicks(){
     Object.keys(horsePickCounts).forEach(n=>{
         const c=document.querySelector(`[data-horse-number="${n}"]`);
         const pickerData=horsePickCounts[n];
-        if(c&&pickerData.length>1&&!c.classList.contains('selected')){
+        if(c&&pickerData.length>1){
+            // Create smooth gradient with blended colors
             const gradientStops=pickerData.map((data,i)=>{
-                const startPct=(i/pickerData.length)*100;
-                const endPct=((i+1)/pickerData.length)*100;
-                return `${data.color}15 ${startPct}%, ${data.color}15 ${endPct}%`;
+                const pct=(i/(pickerData.length-1))*100;
+                return `${data.color}20 ${pct}%`;
             }).join(', ');
-            c.style.background=`linear-gradient(to right, ${gradientStops})`;
+            c.style.background=`linear-gradient(90deg, ${gradientStops})`;
+        } else if(c&&pickerData.length===1&&!P.has(parseInt(n))){
+            // Single picker who is not current user selecting
+            c.style.background='';
+        } else if(c&&P.has(parseInt(n))){
+            // Current user has selected this horse
+            c.style.background=`${C}15`;
         }
     });
 }
