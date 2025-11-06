@@ -53,10 +53,11 @@
         .horse-card { border: 2px solid #e0e0e0; border-radius: 8px; padding: 12px 15px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 15px; position: relative; }
         .horse-card:hover { border-color: var(--theme-color, #f44336); transform: translateX(5px); }
         .horse-card.selected { border-color: var(--theme-color, #f44336); }
-        .horse-card.picked-by-user2 { border-color: #ff9800; background: #fff3e0; }
-        .horse-number { font-size: 20px; font-weight: bold; color: var(--theme-color, #f44336); min-width: 40px; transition: color 0.5s ease; }
-        .horse-name { font-size: 16px; flex: 1; }
-        .horse-card.selected .horse-name { font-weight: 600; }
+        .horse-card.picked-by-user2 { }
+        .horse-number { font-size: 20px; min-width: 40px; transition: color 0.5s ease; color: #666; }
+        .horse-name { font-size: 16px; flex: 1; color: #333; }
+        .horse-card.selected .horse-name { font-weight: 600; color: var(--theme-color, #f44336); }
+        .horse-card.selected .horse-number { font-weight: bold; color: var(--theme-color, #f44336); }
         .picker-badge { position: static; padding: 0; border-radius: 50%; font-size: 14px; font-weight: 600; color: white; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; }
         .action-buttons { display: flex; gap: 15px; margin-top: 20px; }
         .back-btn { background: #666; }
@@ -526,10 +527,12 @@ async function loadExistingPicks(){
         }
     }
     colors[U]=C;
+    
+    // Remove all badges first
     document.querySelectorAll('.picker-badge').forEach(b=>b.remove());
     document.querySelectorAll('.picked-by-user2').forEach(c=>c.classList.remove('picked-by-user2'));
     
-    // Reset all backgrounds first
+    // Reset all backgrounds for non-selected cards
     document.querySelectorAll('.horse-card').forEach(c=>{
         if(!c.classList.contains('selected')){
             c.style.background='';
@@ -541,10 +544,11 @@ async function loadExistingPicks(){
     Object.entries(picks).forEach(([u,hs])=>{
         hs.forEach(n=>{
             if(!horsePickCounts[n])horsePickCounts[n]=[];
-            horsePickCounts[n].push(colors[u]||(u===U?C:'#ff9800'));
+            horsePickCounts[n].push({user:u,color:colors[u]||(u===U?C:'#ff9800')});
         });
     });
     
+    // Add badges for all picks
     Object.entries(picks).forEach(([u,hs])=>{
         const col=colors[u]||(u===U?C:'#ff9800'),init=u.charAt(0).toUpperCase();
         hs.forEach(n=>{
@@ -557,19 +561,22 @@ async function loadExistingPicks(){
                 b.title=u;
                 c.appendChild(b);
                 u!==U&&c.classList.add('picked-by-user2');
-                
-                // Apply gradient if multiple people picked this horse
-                const pickerColors=horsePickCounts[n];
-                if(pickerColors&&pickerColors.length>1&&!c.classList.contains('selected')){
-                    const gradientStops=pickerColors.map((color,i)=>{
-                        const startPct=(i/pickerColors.length)*100;
-                        const endPct=((i+1)/pickerColors.length)*100;
-                        return `${color}15 ${startPct}%, ${color}15 ${endPct}%`;
-                    }).join(', ');
-                    c.style.background=`linear-gradient(to right, ${gradientStops})`;
-                }
             }
         });
+    });
+    
+    // Apply gradients after all badges are added
+    Object.keys(horsePickCounts).forEach(n=>{
+        const c=document.querySelector(`[data-horse-number="${n}"]`);
+        const pickerData=horsePickCounts[n];
+        if(c&&pickerData.length>1&&!c.classList.contains('selected')){
+            const gradientStops=pickerData.map((data,i)=>{
+                const startPct=(i/pickerData.length)*100;
+                const endPct=((i+1)/pickerData.length)*100;
+                return `${data.color}15 ${startPct}%, ${data.color}15 ${endPct}%`;
+            }).join(', ');
+            c.style.background=`linear-gradient(to right, ${gradientStops})`;
+        }
     });
 }
 
