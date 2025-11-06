@@ -535,13 +535,14 @@ function togglePick(n,c){
     if(P.has(n)){
         P.delete(n);
         c.classList.remove('selected');
-        c.style.background='';
+        if(userConfirmed){
+            loadExistingPicks();
+        }else{
+            c.style.background='';
+        }
     }else{
         P.add(n);
         c.classList.add('selected');
-        if(userConfirmed&&!c.classList.contains('multi-picker')&&!c.classList.contains('picked-by-user2')){
-            c.style.background=lightenColor(C,0.9);
-        }
     }
     updateButtons();
 }
@@ -588,14 +589,13 @@ async function loadExistingPicks(){
     colors[U]=C;
     const userConfirmed=localStorage.getItem(`${S}_${R.id}_confirmed`)==='true';
     const horsePickers={};
+    const currentSelections=new Set(P);
     document.querySelectorAll('.picker-badge').forEach(b=>b.remove());
-    document.querySelectorAll('.picked-by-user2').forEach(c=>{
-        c.classList.remove('picked-by-user2');
-        c.classList.remove('multi-picker');
+    document.querySelectorAll('.horse-card').forEach(c=>{
+        c.classList.remove('picked-by-user2','multi-picker');
+        c.style.border='';
         c.style.borderColor='';
         c.style.background='';
-        c.style.borderImage='';
-        c.style.border='';
     });
     document.querySelectorAll('style[data-multi-picker]').forEach(s=>s.remove());
     Object.entries(picks).forEach(([u,hs])=>{
@@ -621,12 +621,10 @@ async function loadExistingPicks(){
             const c=document.querySelector(`[data-horse-number="${n}"]`);
             if(c&&pickers.length>0){
                 c.classList.add('picked-by-user2');
-                const isSelected=P.has(parseInt(n));
+                const isSelected=currentSelections.has(parseInt(n));
                 if(pickers.length===1){
-                    c.style.setProperty('border','3px solid '+pickers[0].color,'important');
-                    if(!isSelected){
-                        c.style.setProperty('background',lightenColor(pickers[0].color,0.9),'important');
-                    }
+                    c.style.border='3px solid '+pickers[0].color;
+                    c.style.background=lightenColor(pickers[0].color,0.9);
                     c.classList.remove('multi-picker');
                 }else{
                     const pickerColors=pickers.map(p=>p.color);
@@ -636,22 +634,24 @@ async function loadExistingPicks(){
                     c.style.borderColor='transparent';
                     const style=document.createElement('style');
                     style.setAttribute('data-multi-picker','true');
-                    let styleContent=`.horse-card[data-horse-number="${n}"].multi-picker::before{background:${gradient};}`;
-                    if(!isSelected){
-                        styleContent+=` .horse-card[data-horse-number="${n}"].multi-picker{background:${lightGradient} !important;}`;
-                    }
-                    style.textContent=styleContent;
+                    style.textContent=`.horse-card[data-horse-number="${n}"].multi-picker::before{background:${gradient};} .horse-card[data-horse-number="${n}"].multi-picker{background:${lightGradient} !important;}`;
                     document.head.appendChild(style);
                 }
             }
         });
-        P.forEach(n=>{
+        currentSelections.forEach(n=>{
             const c=document.querySelector(`[data-horse-number="${n}"]`);
             if(c&&!c.classList.contains('picked-by-user2')){
                 c.style.background=lightenColor(C,0.9);
             }
         });
     }
+    currentSelections.forEach(n=>{
+        const c=document.querySelector(`[data-horse-number="${n}"]`);
+        if(c&&!c.classList.contains('selected')){
+            c.classList.add('selected');
+        }
+    });
 }
 
 function backToHome(){
