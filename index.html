@@ -535,9 +535,9 @@ async function loadExistingPicks(){
     // Reset all backgrounds and borders
     document.querySelectorAll('.horse-card').forEach(c=>{
         c.style.background='';
-        c.style.borderImage='';
+        c.style.border='';
         if(!c.classList.contains('selected')){
-            c.style.borderColor='#e0e0e0';
+            c.style.border='2px solid #e0e0e0';
         }
     });
     
@@ -579,12 +579,15 @@ async function loadExistingPicks(){
             }).join(', ');
             c.style.background=`linear-gradient(90deg, ${bgGradientStops})`;
             
-            // Create border gradient
+            // Create border gradient using border and background
             const borderGradientStops=pickerData.map((data,i)=>{
                 const pct=(i/(pickerData.length-1))*100;
                 return `${data.color} ${pct}%`;
             }).join(', ');
-            c.style.borderImage=`linear-gradient(90deg, ${borderGradientStops}) 1`;
+            c.style.border='2px solid transparent';
+            c.style.backgroundImage=`linear-gradient(white, white), linear-gradient(90deg, ${borderGradientStops})`;
+            c.style.backgroundOrigin='padding-box, border-box';
+            c.style.backgroundClip='padding-box, border-box';
         } else if(c&&pickerData.length===1&&!P.has(parseInt(n))){
             // Single picker who is not current user selecting
             c.style.background='';
