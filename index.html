@@ -52,12 +52,13 @@
         .race-details { font-size: 14px; color: #666; }
         .grade-badge { display: inline-block; background: #ffd700; color: #333; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 700; margin-left: 10px; }
         .horse-list { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
-        .horse-card { border: 2px solid #e0e0e0; border-radius: 8px; padding: 12px 15px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 15px; position: relative; }
+        .horse-card { border: 3px solid #e0e0e0; border-radius: 8px; padding: 12px 15px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 15px; position: relative; background: white; background-clip: padding-box; }
         .horse-card:hover { border-color: var(--theme-color, #f44336); transform: translateX(5px); }
-        .horse-card.selected { border-color: var(--theme-color, #f44336); background: #ffebee; }
+        .horse-card.selected:not(.multi-picker) { border-color: var(--theme-color, #f44336); background: #ffebee; }
         .horse-card.picked-by-user2 { border-color: var(--theme-color, #f44336); }
-        .horse-card.picked-by-user2.selected { border-color: var(--theme-color, #f44336); background: #ffebee; }
-        .horse-card.multi-picker::before { content: ''; position: absolute; inset: -2px; border-radius: 8px; padding: 2px; -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: -1; }
+        .horse-card.picked-by-user2.selected:not(.multi-picker) { border-color: var(--theme-color, #f44336); background: #ffebee; }
+        .horse-card.multi-picker { border: 3px solid transparent; position: relative; }
+        .horse-card.multi-picker::before { content: ''; position: absolute; inset: 0; border-radius: 8px; padding: 3px; -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
         .horse-number { font-size: 20px; font-weight: bold; color: var(--theme-color, #f44336); min-width: 40px; transition: color 0.5s ease; }
         .horse-name { font-size: 16px; font-weight: 600; flex: 1; }
         .picker-badge { position: static; padding: 0; border-radius: 50%; font-size: 14px; font-weight: 600; color: white; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; }
@@ -576,10 +577,12 @@ async function loadExistingPicks(){
     document.querySelectorAll('.picker-badge').forEach(b=>b.remove());
     document.querySelectorAll('.picked-by-user2').forEach(c=>{
         c.classList.remove('picked-by-user2');
+        c.classList.remove('multi-picker');
         c.style.borderColor='';
         c.style.background='';
         c.style.borderImage='';
     });
+    document.querySelectorAll('style[data-multi-picker]').forEach(s=>s.remove());
     Object.entries(picks).forEach(([u,hs])=>{
         const col=colors[u]||(u===U?C:'#ff9800'),init=u.charAt(0).toUpperCase();
         hs.forEach(n=>{
@@ -612,12 +615,11 @@ async function loadExistingPicks(){
                     const gradient=`linear-gradient(135deg, ${pickerColors.join(', ')})`;
                     const lightGradient=`linear-gradient(135deg, ${pickerColors.map(col=>lightenColor(col,0.9)).join(', ')})`;
                     c.classList.add('multi-picker');
-                    c.style.setProperty('--border-gradient',gradient);
                     c.style.borderColor='transparent';
                     const style=document.createElement('style');
-                    style.textContent=`.horse-card[data-horse-number="${n}"].multi-picker::before{background:${gradient};}`;
+                    style.setAttribute('data-multi-picker','true');
+                    style.textContent=`.horse-card[data-horse-number="${n}"].multi-picker::before{background:${gradient};} .horse-card[data-horse-number="${n}"].multi-picker{background:${lightGradient} !important;}`;
                     document.head.appendChild(style);
-                    c.style.background=lightGradient;
                 }
             }
         });
