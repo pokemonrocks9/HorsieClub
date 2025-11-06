@@ -393,8 +393,7 @@ function showTrackSelector(){
         byTrack[r.track]||(byTrack[r.track]=[]);
         byTrack[r.track].push(r);
     });
-    const [y,m,d]=D.split('-');
-    const dateObj=new Date(y,m-1,d);
+    const dateObj=new Date(D+'T12:00:00');
     document.getElementById('selectedDateTitle').textContent=dateObj.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
     const g=document.getElementById('trackGrid');
     g.innerHTML='';
@@ -419,7 +418,7 @@ function showRaceSelector(){
     document.getElementById('headerTitle').textContent='🏇 Select a Race';
     const rs=races.filter(r=>r.date===D&&r.track===T);
     rs.sort((a,b)=>(a.raceNumber||a.id)-(b.raceNumber||b.id));
-    document.getElementById('selectedTrackTitle').textContent=`${T} - ${new Date(D).toLocaleDateString('en-US',{month:'short',day:'numeric'})}`;
+    document.getElementById('selectedTrackTitle').textContent=`${T} - ${new Date(D+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})}`;
     const l=document.getElementById('raceList');
     l.innerHTML='';
     rs.forEach(r=>{
