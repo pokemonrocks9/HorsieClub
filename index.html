@@ -67,6 +67,20 @@
         .breadcrumb { font-size: 14px; color: #666; margin-bottom: 20px; }
         .breadcrumb a { color: #f44336; text-decoration: none; cursor: pointer; transition: color 0.5s ease; }
         .breadcrumb a:hover { text-decoration: underline; }
+        @media (max-width: 768px) {
+            .subtitle { display: none; }
+            .header > div { flex-direction: column !important; align-items: flex-start !important; }
+            .header > div > div:last-child { width: 100%; margin-top: 15px; }
+            .header > div > div:last-child a { display: none; }
+            #backToHomeBtn { width: 100%; }
+            #backToHomeBtn::before { content: '🏠'; }
+            #backToHomeBtn { font-size: 0; }
+            #backToHomeBtn::before { font-size: 16px; }
+            #headerTitle { font-size: 20px; }
+            h1::after { content: attr(data-short); }
+            h1 { font-size: 0; }
+            h1::after { font-size: 20px; }
+        }
     </style>
 </head>
 <body>
@@ -363,7 +377,9 @@ async function refreshRaces(){
 }
 
 function showDateSelector(){
-    document.getElementById('headerTitle').textContent='🏇 Select a Race Day';
+    const h=document.getElementById('headerTitle');
+    h.textContent='🏇 Select a Race Day';
+    h.setAttribute('data-short','🏇 Date');
     document.getElementById('backToHomeBtn').classList.remove('hidden');
     const byDate={};
     races.forEach(r=>{
@@ -389,7 +405,9 @@ function selectDate(d){
 }
 
 function showTrackSelector(){
-    document.getElementById('headerTitle').textContent='🏇 Select a Track';
+    const h=document.getElementById('headerTitle');
+    h.textContent='🏇 Select a Track';
+    h.setAttribute('data-short','🏇 Track');
     const byTrack={};
     races.filter(r=>r.date===D).forEach(r=>{
         byTrack[r.track]||(byTrack[r.track]=[]);
@@ -435,7 +453,9 @@ function selectTrack(t){
 }
 
 function showRaceSelector(){
-    document.getElementById('headerTitle').textContent='🏇 Select a Race';
+    const h=document.getElementById('headerTitle');
+    h.textContent='🏇 Select a Race';
+    h.setAttribute('data-short','🏇 Race');
     const rs=races.filter(r=>r.date===D&&r.track===T);
     rs.sort((a,b)=>(a.raceNumber||a.id)-(b.raceNumber||b.id));
     document.getElementById('selectedTrackTitle').textContent=`${T} - ${new Date(D+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})}`;
@@ -459,7 +479,9 @@ function showRaceSelector(){
 }
 
 function selectRace(r){
-    document.getElementById('headerTitle').textContent='🏇 Pick Your Horses';
+    const h=document.getElementById('headerTitle');
+    h.textContent='🏇 Pick Your Horses';
+    h.setAttribute('data-short','🏇 Horses');
     R=r;
     P.clear();
     document.getElementById('raceSelector').classList.add('hidden');
