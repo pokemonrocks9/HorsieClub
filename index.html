@@ -76,10 +76,10 @@
             #backToHomeBtn::before { content: '🏠'; }
             #backToHomeBtn { font-size: 0; }
             #backToHomeBtn::before { font-size: 16px; }
-            #headerTitle { font-size: 20px; }
-            h1::after { content: attr(data-short); }
+            #headerTitle { font-size: 0; }
+            #headerTitle::before { content: attr(data-short); font-size: 20px; }
             h1 { font-size: 0; }
-            h1::after { font-size: 20px; }
+            h1::before { content: attr(data-short); font-size: 20px; }
             button[onclick="refreshRaces()"] { font-size: 0; padding: 12px 20px; }
             button[onclick="refreshRaces()"]::before { content: '🔄'; font-size: 16px; }
             .track-selector-grid { grid-template-columns: 1fr; }
