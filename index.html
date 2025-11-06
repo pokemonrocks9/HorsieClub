@@ -6,7 +6,7 @@
     <title>Horsie Picker</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%); min-height: 100vh; padding: 20px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%); min-height: 100vh; padding: 20px; transition: background 0.5s ease; }
         .container { max-width: 1200px; margin: 0 auto; }
         .header { background: white; padding: 30px; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         h1 { color: #f44336; margin-bottom: 10px; transition: color 0.5s ease; }
@@ -52,7 +52,7 @@
         .horse-list { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
         .horse-card { border: 2px solid #e0e0e0; border-radius: 8px; padding: 12px 15px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 15px; position: relative; }
         .horse-card:hover { border-color: var(--theme-color, #f44336); transform: translateX(5px); }
-        .horse-card.selected { border-color: var(--theme-color, #f44336); background: #ffebee; }
+        .horse-card.selected { border-color: var(--theme-color, #f44336); }
         .horse-card.picked-by-user2 { border-color: #ff9800; background: #fff3e0; }
         .horse-number { font-size: 20px; font-weight: bold; color: var(--theme-color, #f44336); min-width: 40px; transition: color 0.5s ease; }
         .horse-name { font-size: 16px; flex: 1; }
@@ -474,7 +474,15 @@ function loadHorses(r){
 }
 
 function togglePick(n,c){
-    P.has(n)?(P.delete(n),c.classList.remove('selected')):(P.add(n),c.classList.add('selected'));
+    if(P.has(n)){
+        P.delete(n);
+        c.classList.remove('selected');
+        c.style.background='';
+    }else{
+        P.add(n);
+        c.classList.add('selected');
+        c.style.background=`${C}15`;
+    }
     updateButtons();
 }
 
@@ -520,35 +528,48 @@ async function loadExistingPicks(){
     colors[U]=C;
     document.querySelectorAll('.picker-badge').forEach(b=>b.remove());
     document.querySelectorAll('.picked-by-user2').forEach(c=>c.classList.remove('picked-by-user2'));
-    const horsePickers={};
+    
+    // Reset all backgrounds first
+    document.querySelectorAll('.horse-card').forEach(c=>{
+        if(!c.classList.contains('selected')){
+            c.style.background='';
+        }
+    });
+    
+    // Track horses picked by multiple users
+    const horsePickCounts={};
     Object.entries(picks).forEach(([u,hs])=>{
         hs.forEach(n=>{
-            if(!horsePickers[n])horsePickers[n]=[];
-            horsePickers[n].push({user:u,color:colors[u]||(u===U?C:'#ff9800')});
+            if(!horsePickCounts[n])horsePickCounts[n]=[];
+            horsePickCounts[n].push(colors[u]||(u===U?C:'#ff9800'));
         });
     });
-    Object.entries(horsePickers).forEach(([n,pickers])=>{
-        const c=document.querySelector(`[data-horse-number="${n}"]`);
-        if(c){
-            if(pickers.length===1){
-                const p=pickers[0];
+    
+    Object.entries(picks).forEach(([u,hs])=>{
+        const col=colors[u]||(u===U?C:'#ff9800'),init=u.charAt(0).toUpperCase();
+        hs.forEach(n=>{
+            const c=document.querySelector(`[data-horse-number="${n}"]`);
+            if(c){
                 const b=document.createElement('div');
                 b.className='picker-badge';
-                b.style.background=p.color;
-                b.textContent=p.user.charAt(0).toUpperCase();
-                b.title=p.user;
+                b.style.background=col;
+                b.textContent=init;
+                b.title=u;
                 c.appendChild(b);
-            }else{
-                const b=document.createElement('div');
-                b.className='picker-badge';
-                const gradientColors=pickers.map(p=>p.color).join(',');
-                b.style.background=`linear-gradient(135deg, ${gradientColors})`;
-                b.textContent=pickers.length;
-                b.title=pickers.map(p=>p.user).join(', ');
-                c.appendChild(b);
+                u!==U&&c.classList.add('picked-by-user2');
+                
+                // Apply gradient if multiple people picked this horse
+                const pickerColors=horsePickCounts[n];
+                if(pickerColors&&pickerColors.length>1&&!c.classList.contains('selected')){
+                    const gradientStops=pickerColors.map((color,i)=>{
+                        const startPct=(i/pickerColors.length)*100;
+                        const endPct=((i+1)/pickerColors.length)*100;
+                        return `${color}15 ${startPct}%, ${color}15 ${endPct}%`;
+                    }).join(', ');
+                    c.style.background=`linear-gradient(to right, ${gradientStops})`;
+                }
             }
-            pickers.some(p=>p.user!==U)&&c.classList.add('picked-by-user2');
-        }
+        });
     });
 }
 
