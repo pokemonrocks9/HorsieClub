@@ -34,6 +34,8 @@
         .track-card.has-picks::after { content: '✓'; position: absolute; top: 0px; right: 5px; color: #4caf50; font-weight: bold; font-size: 18px; }
         .track-name { font-size: 20px; font-weight: 600; color: var(--theme-color, #f44336); transition: color 0.5s ease; }
         .race-count { font-size: 14px; color: #666; }
+        .track-grades { display: flex; gap: 5px; margin-top: 8px; justify-content: center; flex-wrap: wrap; }
+        .track-grade-badge { display: inline-block; background: #ffd700; color: #333; padding: 3px 6px; border-radius: 3px; font-size: 11px; font-weight: 700; }
         .color-picker-section { margin: 20px 0; padding: 20px; background: #f5f5f5; border-radius: 10px; }
         .color-options { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
         .color-option { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: all 0.2s; }
@@ -398,11 +400,29 @@ function showTrackSelector(){
     const g=document.getElementById('trackGrid');
     g.innerHTML='';
     Object.keys(byTrack).sort().forEach(t=>{
+        const trackRaces=byTrack[t];
+        const grades=new Set();
+        trackRaces.forEach(r=>{
+            let grade=r.grade;
+            if(!grade&&r.title){
+                const m=r.title.match(/\(([GL]\d?)\)/);
+                m&&(grade=m[1]);
+            }
+            if(grade&&['L','G1','G2','G3'].includes(grade))grades.add(grade);
+        });
+        const sortedGrades=[...grades].sort((a,b)=>{
+            const order={'G1':0,'G2':1,'G3':2,'L':3};
+            return order[a]-order[b];
+        });
         const c=document.createElement('div');
         c.className='track-card';
         if(hasPicksForTrack(t))c.classList.add('has-picks');
         c.onclick=()=>selectTrack(t);
-        c.innerHTML=`<div class="track-name">${t}</div><div class="race-count">${byTrack[t].length} races</div>`;
+        let gradeBadges='';
+        if(sortedGrades.length>0){
+            gradeBadges=`<div class="track-grades">${sortedGrades.map(gr=>`<span class="track-grade-badge">${gr}</span>`).join('')}</div>`;
+        }
+        c.innerHTML=`<div class="track-name">${t}</div><div class="race-count">${trackRaces.length} races</div>${gradeBadges}`;
         g.appendChild(c);
     });
     document.getElementById('trackSelector').classList.remove('hidden');
@@ -426,7 +446,12 @@ function showRaceSelector(){
         c.className='race-card';
         if(hasPicksForRace(r.id))c.classList.add('has-picks');
         c.onclick=()=>selectRace(r);
-        const g=r.grade?`<span class="grade-badge">${r.grade}</span>`:'',n=r.raceNumber||r.id;
+        let grade=r.grade;
+        if(!grade&&r.title){
+            const m=r.title.match(/\(([GL]\d?)\)/);
+            m&&(grade=m[1]);
+        }
+        const g=grade?`<span class="grade-badge">${grade}</span>`:'',n=r.raceNumber||r.id;
         c.innerHTML=`<div class="race-number">R${n}</div><div class="race-info"><div class="race-title">${r.title} ${g}</div><div class="race-details">${r.distance} ${r.surface} - ${r.horses.length} horses</div></div>`;
         l.appendChild(c);
     });
@@ -438,7 +463,12 @@ function selectRace(r){
     R=r;
     P.clear();
     document.getElementById('raceSelector').classList.add('hidden');
-    const g=r.grade?`<span class="grade-badge">${r.grade}</span>`:'';
+    let grade=r.grade;
+    if(!grade&&r.title){
+        const m=r.title.match(/\(([GL]\d?)\)/);
+        m&&(grade=m[1]);
+    }
+    const g=grade?`<span class="grade-badge">${grade}</span>`:'';
     document.getElementById('selectedRaceTitle').innerHTML=`${r.title} ${g}`;
     document.getElementById('selectedRaceInfo').textContent=`${r.track} - ${r.distance} ${r.surface}`;
     loadHorses(r);
