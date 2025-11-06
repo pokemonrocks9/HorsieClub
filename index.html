@@ -32,7 +32,7 @@
         .track-card:hover { border-color: var(--theme-color, #f44336); box-shadow: 0 5px 15px rgba(244, 67, 54, 0.2); transform: translateY(-2px); }
         .track-card.has-picks { border-color: #4caf50; background: #f1f8f4; }
         .track-card.has-picks::after { content: '✓'; position: absolute; top: 0px; right: 5px; color: #4caf50; font-weight: bold; font-size: 18px; }
-        .track-name { font-size: 20px; font-weight: 600; color: var(--theme-color, #f44336); transition: color 0.5s ease; }
+        .track-name { font-size: 20px; font-weight: 600; color: #333; }
         .race-count { font-size: 14px; color: #666; }
         .track-grades { display: flex; gap: 5px; margin-top: 8px; justify-content: center; flex-wrap: wrap; }
         .track-grade-badge { display: inline-block; background: #ffd700; color: #333; padding: 3px 6px; border-radius: 3px; font-size: 11px; font-weight: 700; }
@@ -47,19 +47,19 @@
         .race-card.has-picks { border-color: #4caf50; background: #f1f8f4; }
         .race-card.has-picks::after { content: '✓'; position: absolute; top: 0px; right: 5px; color: #4caf50; font-weight: bold; font-size: 18px; }
         .race-info { flex: 1; }
-        .race-number { font-size: 24px; font-weight: bold; color: var(--theme-color, #f44336); margin-right: 15px; transition: color 0.5s ease; }
+        .race-number { font-size: 24px; font-weight: bold; color: #333; margin-right: 15px; }
         .race-title { font-size: 18px; font-weight: 600; color: #333; margin-bottom: 5px; }
         .race-details { font-size: 14px; color: #666; }
         .grade-badge { display: inline-block; background: #ffd700; color: #333; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 700; margin-left: 10px; }
         .horse-list { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
         .horse-card { border: 3px solid #e0e0e0; border-radius: 8px; padding: 12px 15px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 15px; position: relative; background: white; background-clip: padding-box; }
         .horse-card:hover { border-color: var(--theme-color, #f44336); transform: translateX(5px); }
-        .horse-card.selected:not(.multi-picker) { border-color: var(--theme-color, #f44336); background: #ffebee; }
+        .horse-card.selected:not(.multi-picker) { border-color: var(--theme-color, #f44336); }
         .horse-card.picked-by-user2 { border-color: var(--theme-color, #f44336); }
-        .horse-card.picked-by-user2.selected:not(.multi-picker) { border-color: var(--theme-color, #f44336); background: #ffebee; }
+        .horse-card.picked-by-user2.selected:not(.multi-picker) { border-color: var(--theme-color, #f44336); }
         .horse-card.multi-picker { border: 3px solid transparent; position: relative; }
         .horse-card.multi-picker::before { content: ''; position: absolute; inset: 0; border-radius: 8px; padding: 3px; -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
-        .horse-number { font-size: 20px; font-weight: bold; color: var(--theme-color, #f44336); min-width: 40px; transition: color 0.5s ease; }
+        .horse-number { font-size: 20px; font-weight: bold; color: #333; min-width: 40px; }
         .horse-name { font-size: 16px; font-weight: 600; flex: 1; }
         .picker-badge { position: static; padding: 0; border-radius: 50%; font-size: 14px; font-weight: 600; color: white; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; }
         .action-buttons { display: flex; gap: 15px; margin-top: 20px; }
@@ -196,7 +196,7 @@ function applyTheme(c){
     const darker=darkenColor(c,0.15),darkest=darkenColor(c,0.25),lighter=lightenColor(c,0.9);
     document.documentElement.style.setProperty('--theme-color',c);
     document.body.style.background=`linear-gradient(135deg, ${darker} 0%, ${darkest} 100%)`;
-    document.querySelectorAll('h1, .track-name, .race-number, .horse-number, .breadcrumb a').forEach(e=>e.style.color=c);
+    document.querySelectorAll('h1, .breadcrumb a').forEach(e=>e.style.color=c);
     document.querySelectorAll('.btn:not([style*="background: #f44336"])').forEach(e=>{
         e.style.background=c;
         e.onmouseenter=()=>e.style.background=darker;
@@ -528,7 +528,17 @@ function loadHorses(r){
 }
 
 function togglePick(n,c){
-    P.has(n)?(P.delete(n),c.classList.remove('selected')):(P.add(n),c.classList.add('selected'));
+    if(P.has(n)){
+        P.delete(n);
+        c.classList.remove('selected');
+        c.style.background='';
+    }else{
+        P.add(n);
+        c.classList.add('selected');
+        if(!c.classList.contains('multi-picker')){
+            c.style.background=lightenColor(C,0.9);
+        }
+    }
     updateButtons();
 }
 
