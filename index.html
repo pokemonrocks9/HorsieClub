@@ -561,7 +561,7 @@ async function confirmPicks(){
     const names=Array.from(P).map(n=>`#${n} ${R.horses.find(h=>h.number===n).name}`).join(', ');
     alert(`✅ Picks confirmed!\n\nYou chose: ${names}`);
     await loadAllSessionPicks();
-    loadExistingPicks();
+    await loadExistingPicks();
     updateButtons();
 }
 
@@ -595,6 +595,7 @@ async function loadExistingPicks(){
         c.style.borderColor='';
         c.style.background='';
         c.style.borderImage='';
+        c.style.border='';
     });
     document.querySelectorAll('style[data-multi-picker]').forEach(s=>s.remove());
     Object.entries(picks).forEach(([u,hs])=>{
@@ -620,9 +621,12 @@ async function loadExistingPicks(){
             const c=document.querySelector(`[data-horse-number="${n}"]`);
             if(c&&pickers.length>0){
                 c.classList.add('picked-by-user2');
+                const isSelected=P.has(parseInt(n));
                 if(pickers.length===1){
                     c.style.setProperty('border','3px solid '+pickers[0].color,'important');
-                    c.style.setProperty('background',lightenColor(pickers[0].color,0.9),'important');
+                    if(!isSelected){
+                        c.style.setProperty('background',lightenColor(pickers[0].color,0.9),'important');
+                    }
                     c.classList.remove('multi-picker');
                 }else{
                     const pickerColors=pickers.map(p=>p.color);
@@ -632,9 +636,19 @@ async function loadExistingPicks(){
                     c.style.borderColor='transparent';
                     const style=document.createElement('style');
                     style.setAttribute('data-multi-picker','true');
-                    style.textContent=`.horse-card[data-horse-number="${n}"].multi-picker::before{background:${gradient};} .horse-card[data-horse-number="${n}"].multi-picker{background:${lightGradient} !important;}`;
+                    let styleContent=`.horse-card[data-horse-number="${n}"].multi-picker::before{background:${gradient};}`;
+                    if(!isSelected){
+                        styleContent+=` .horse-card[data-horse-number="${n}"].multi-picker{background:${lightGradient} !important;}`;
+                    }
+                    style.textContent=styleContent;
                     document.head.appendChild(style);
                 }
+            }
+        });
+        P.forEach(n=>{
+            const c=document.querySelector(`[data-horse-number="${n}"]`);
+            if(c&&!c.classList.contains('picked-by-user2')){
+                c.style.background=lightenColor(C,0.9);
             }
         });
     }
