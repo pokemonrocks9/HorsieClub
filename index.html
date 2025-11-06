@@ -575,29 +575,32 @@ async function loadExistingPicks(){
         const c=document.querySelector(`[data-horse-number="${n}"]`);
         const pickerData=horsePickCounts[n];
         if(c&&pickerData.length>1){
-            // Create smooth gradient with blended colors for background
+            // Multiple pickers - create smooth gradient with blended colors
             const bgGradientStops=pickerData.map((data,i)=>{
                 const pct=(i/(pickerData.length-1))*100;
                 return `${data.color}20 ${pct}%`;
             }).join(', ');
             
-            // Create border gradient
             const borderGradientStops=pickerData.map((data,i)=>{
                 const pct=(i/(pickerData.length-1))*100;
                 return `${data.color} ${pct}%`;
             }).join(', ');
             
-            // Use layered backgrounds: content background + border gradient
             c.style.border='2px solid transparent';
             c.style.backgroundImage=`linear-gradient(90deg, ${bgGradientStops}), linear-gradient(90deg, ${borderGradientStops})`;
             c.style.backgroundOrigin='padding-box, border-box';
             c.style.backgroundClip='padding-box, border-box';
-        } else if(c&&pickerData.length===1&&!P.has(parseInt(n))){
-            // Single picker who is not current user selecting
-            c.style.background='';
-        } else if(c&&P.has(parseInt(n))){
-            // Current user has selected this horse
-            c.style.background=`${C}15`;
+        } else if(c&&pickerData.length===1){
+            // Single picker - show their color with light background and solid border
+            const pickerColor=pickerData[0].color;
+            if(!P.has(parseInt(n))){
+                // Not selected by current user - show other person's pick
+                c.style.background=`${pickerColor}15`;
+                c.style.border=`2px solid ${pickerColor}`;
+            } else {
+                // Selected by current user
+                c.style.background=`${C}15`;
+            }
         }
     });
 }
