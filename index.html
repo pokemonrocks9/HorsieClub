@@ -532,9 +532,13 @@ async function loadExistingPicks(){
     document.querySelectorAll('.picker-badge').forEach(b=>b.remove());
     document.querySelectorAll('.picked-by-user2').forEach(c=>c.classList.remove('picked-by-user2'));
     
-    // Reset all backgrounds
+    // Reset all backgrounds and borders
     document.querySelectorAll('.horse-card').forEach(c=>{
         c.style.background='';
+        c.style.borderImage='';
+        if(!c.classList.contains('selected')){
+            c.style.borderColor='#e0e0e0';
+        }
     });
     
     // Track horses picked by multiple users
@@ -568,12 +572,19 @@ async function loadExistingPicks(){
         const c=document.querySelector(`[data-horse-number="${n}"]`);
         const pickerData=horsePickCounts[n];
         if(c&&pickerData.length>1){
-            // Create smooth gradient with blended colors
-            const gradientStops=pickerData.map((data,i)=>{
+            // Create smooth gradient with blended colors for background
+            const bgGradientStops=pickerData.map((data,i)=>{
                 const pct=(i/(pickerData.length-1))*100;
                 return `${data.color}20 ${pct}%`;
             }).join(', ');
-            c.style.background=`linear-gradient(90deg, ${gradientStops})`;
+            c.style.background=`linear-gradient(90deg, ${bgGradientStops})`;
+            
+            // Create border gradient
+            const borderGradientStops=pickerData.map((data,i)=>{
+                const pct=(i/(pickerData.length-1))*100;
+                return `${data.color} ${pct}%`;
+            }).join(', ');
+            c.style.borderImage=`linear-gradient(90deg, ${borderGradientStops}) 1`;
         } else if(c&&pickerData.length===1&&!P.has(parseInt(n))){
             // Single picker who is not current user selecting
             c.style.background='';
