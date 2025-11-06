@@ -54,12 +54,15 @@
         .horse-list { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
         .horse-card { border: 3px solid #e0e0e0; border-radius: 8px; padding: 12px 15px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 15px; position: relative; background: white; background-clip: padding-box; }
         .horse-card:hover { border-color: var(--theme-color, #f44336); transform: translateX(5px); }
-        .horse-card.selected:not(.multi-picker) { border-color: var(--theme-color, #f44336); }
-        .horse-card.picked-by-user2 { border-color: var(--theme-color, #f44336); }
-        .horse-card.picked-by-user2.selected:not(.multi-picker) { border-color: var(--theme-color, #f44336); }
+        .horse-card.selected:not(.multi-picker):not(.picked-by-user2) { border-color: var(--theme-color, #f44336); }
+        .horse-card.picked-by-user2 { }
+        .horse-card.picked-by-user2.selected:not(.multi-picker) { }
         .horse-card.multi-picker { border: 3px solid transparent; position: relative; }
-        .horse-card.multi-picker::before { content: ''; position: absolute; inset: 0; border-radius: 8px; padding: 3px; -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
-        .horse-number { font-size: 20px; font-weight: bold; color: #333; min-width: 40px; }
+        .horse-card.multi-picker::before { content: ''; position: absolute; inset: -3px; border-radius: 8px; padding: 3px; -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
+        .horse-number { font-size: 20px; font-weight: bold; color: #333; min-width: 40px; transition: color 0.3s, font-weight 0.3s; }
+        .horse-card.selected .horse-number { color: var(--theme-color, #f44336); font-weight: 900; }
+        .horse-name { font-size: 16px; font-weight: 600; flex: 1; transition: font-weight 0.3s, color 0.3s; }
+        .horse-card.selected .horse-name { font-weight: 700; color: var(--theme-color, #f44336); }
         .horse-name { font-size: 16px; font-weight: 600; flex: 1; }
         .picker-badge { position: static; padding: 0; border-radius: 50%; font-size: 14px; font-weight: 600; color: white; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; }
         .action-buttons { display: flex; gap: 15px; margin-top: 20px; }
@@ -528,6 +531,7 @@ function loadHorses(r){
 }
 
 function togglePick(n,c){
+    const userConfirmed=localStorage.getItem(`${S}_${R.id}_confirmed`)==='true';
     if(P.has(n)){
         P.delete(n);
         c.classList.remove('selected');
@@ -535,7 +539,7 @@ function togglePick(n,c){
     }else{
         P.add(n);
         c.classList.add('selected');
-        if(!c.classList.contains('multi-picker')){
+        if(userConfirmed&&!c.classList.contains('multi-picker')&&!c.classList.contains('picked-by-user2')){
             c.style.background=lightenColor(C,0.9);
         }
     }
@@ -617,8 +621,8 @@ async function loadExistingPicks(){
             if(c&&pickers.length>0){
                 c.classList.add('picked-by-user2');
                 if(pickers.length===1){
-                    c.style.borderColor=pickers[0].color;
-                    c.style.background=lightenColor(pickers[0].color,0.9);
+                    c.style.setProperty('border','3px solid '+pickers[0].color,'important');
+                    c.style.setProperty('background',lightenColor(pickers[0].color,0.9),'important');
                     c.classList.remove('multi-picker');
                 }else{
                     const pickerColors=pickers.map(p=>p.color);
