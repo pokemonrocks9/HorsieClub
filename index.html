@@ -535,6 +535,9 @@ async function loadExistingPicks(){
     // Reset all backgrounds and borders
     document.querySelectorAll('.horse-card').forEach(c=>{
         c.style.background='';
+        c.style.backgroundImage='';
+        c.style.backgroundOrigin='';
+        c.style.backgroundClip='';
         c.style.border='';
         if(!c.classList.contains('selected')){
             c.style.border='2px solid #e0e0e0';
@@ -577,15 +580,16 @@ async function loadExistingPicks(){
                 const pct=(i/(pickerData.length-1))*100;
                 return `${data.color}20 ${pct}%`;
             }).join(', ');
-            c.style.background=`linear-gradient(90deg, ${bgGradientStops})`;
             
-            // Create border gradient using border and background
+            // Create border gradient
             const borderGradientStops=pickerData.map((data,i)=>{
                 const pct=(i/(pickerData.length-1))*100;
                 return `${data.color} ${pct}%`;
             }).join(', ');
+            
+            // Use layered backgrounds: content background + border gradient
             c.style.border='2px solid transparent';
-            c.style.backgroundImage=`linear-gradient(white, white), linear-gradient(90deg, ${borderGradientStops})`;
+            c.style.backgroundImage=`linear-gradient(90deg, ${bgGradientStops}), linear-gradient(90deg, ${borderGradientStops})`;
             c.style.backgroundOrigin='padding-box, border-box';
             c.style.backgroundClip='padding-box, border-box';
         } else if(c&&pickerData.length===1&&!P.has(parseInt(n))){
