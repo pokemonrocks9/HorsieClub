@@ -575,10 +575,10 @@ async function loadExistingPicks(){
         const c=document.querySelector(`[data-horse-number="${n}"]`);
         const pickerData=horsePickCounts[n];
         if(c&&pickerData.length>1){
-            // Multiple pickers - create smooth gradient with blended colors
+            // Multiple pickers - create smooth gradient with blended colors (lighter)
             const bgGradientStops=pickerData.map((data,i)=>{
                 const pct=(i/(pickerData.length-1))*100;
-                return `${data.color}20 ${pct}%`;
+                return `${data.color}15 ${pct}%`;
             }).join(', ');
             
             const borderGradientStops=pickerData.map((data,i)=>{
@@ -586,10 +586,12 @@ async function loadExistingPicks(){
                 return `${data.color} ${pct}%`;
             }).join(', ');
             
-            c.style.border='2px solid transparent';
-            c.style.backgroundImage=`linear-gradient(90deg, ${bgGradientStops}), linear-gradient(90deg, ${borderGradientStops})`;
-            c.style.backgroundOrigin='padding-box, border-box';
-            c.style.backgroundClip='padding-box, border-box';
+            // Set background gradient (light)
+            c.style.background=`linear-gradient(90deg, ${bgGradientStops})`;
+            
+            // Set border gradient using border-image
+            c.style.border='2px solid';
+            c.style.borderImage=`linear-gradient(90deg, ${borderGradientStops}) 1`;
         } else if(c&&pickerData.length===1){
             // Single picker - show their color with light background and solid border
             const pickerColor=pickerData[0].color;
