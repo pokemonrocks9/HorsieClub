@@ -69,17 +69,16 @@
         .breadcrumb a:hover { text-decoration: underline; }
         @media (max-width: 768px) {
             .subtitle { display: none; }
-            .header > div { flex-direction: column !important; align-items: flex-start !important; }
-            .header > div > div:last-child { width: 100%; margin-top: 15px; }
+            .header > div { flex-direction: row !important; align-items: center !important; justify-content: space-between !important; }
+            .header > div > div:last-child { width: auto; margin-top: 0; display: flex; }
             .header > div > div:last-child a { display: none; }
-            #backToHomeBtn { width: 100%; }
+            #backToHomeBtn { width: auto; padding: 12px 20px; }
             #backToHomeBtn::before { content: '🏠'; }
             #backToHomeBtn { font-size: 0; }
             #backToHomeBtn::before { font-size: 16px; }
-            #headerTitle { font-size: 0; }
-            #headerTitle::before { content: attr(data-short); font-size: 20px; }
-            h1 { font-size: 0; }
-            h1::before { content: attr(data-short); font-size: 20px; }
+            #headerTitle[data-short] { font-size: 0; }
+            #headerTitle[data-short]::before { content: attr(data-short); font-size: 20px; }
+            h1 { font-size: 20px; }
             button[onclick="refreshRaces()"] { font-size: 0; padding: 12px 20px; }
             button[onclick="refreshRaces()"]::before { content: '🔄'; font-size: 16px; }
             .track-selector-grid { grid-template-columns: 1fr; }
@@ -169,7 +168,6 @@
             <button class="btn back-btn" onclick="backToRaceSelector()">← Back to Races</button>
             <h2 id="selectedRaceTitle" style="margin-top: 15px;"></h2>
             <p id="selectedRaceInfo"></p>
-            <div class="info-box">Pick your horse(s) below. Picks update automatically every 3 seconds!</div>
             <div class="horse-list" id="horseList"></div>
             <div class="action-buttons">
                 <button class="btn" id="confirmPickBtn" onclick="confirmPicks()" disabled>Confirm My Picks</button>
