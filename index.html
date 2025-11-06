@@ -51,6 +51,18 @@
         .grade-badge { display: inline-block; background: #ffd700; color: #333; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 700; margin-left: 10px; }
         .horse-list { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
         .horse-card { border: 2px solid #e0e0e0; border-radius: 8px; padding: 12px 15px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 15px; position: relative; }
+        .horse-card.gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 8px;
+            padding: 2px;
+            background: var(--gradient-border);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
         .horse-card:hover { border-color: var(--theme-color, #f44336); transform: translateX(5px); }
         .horse-card.selected { border-color: var(--theme-color, #f44336); }
         .horse-card.picked-by-user2 { }
@@ -586,14 +598,20 @@ async function loadExistingPicks(){
                 return `${data.color} ${pct}%`;
             }).join(', ');
             
-            // Set background gradient (light)
+            // Set light background gradient
             c.style.background=`linear-gradient(90deg, ${bgGradientStops})`;
             
-            // Set border gradient using border-image
-            c.style.border='2px solid';
-            c.style.borderImage=`linear-gradient(90deg, ${borderGradientStops}) 1`;
+            // Use pseudo-element trick for rounded gradient border
+            c.style.position='relative';
+            c.style.background=`linear-gradient(90deg, ${bgGradientStops})`;
+            c.style.border='none';
+            c.style.setProperty('--gradient-border', `linear-gradient(90deg, ${borderGradientStops})`);
+            
+            // Add class to trigger pseudo-element
+            c.classList.add('gradient-border');
         } else if(c&&pickerData.length===1){
             // Single picker - show their color with light background and solid border
+            c.classList.remove('gradient-border');
             const pickerColor=pickerData[0].color;
             if(!P.has(parseInt(n))){
                 // Not selected by current user - show other person's pick
