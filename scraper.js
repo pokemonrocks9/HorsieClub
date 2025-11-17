@@ -246,7 +246,7 @@ async function scrapeRaces() {
   let checkedCount = 0;
 
   const BATCH_SIZE = 15;
-  const TOTAL_TO_CHECK = 3000; // FIXED: Increased from 3000 to check Fukushima (but with reordering, 3000 is now enough!)
+  const TOTAL_TO_CHECK = 7200; // FIXED: Increased from 3000 to check Fukushima (but with reordering, 3000 is now enough!)
   const idsToCheck = raceIds.slice(0, TOTAL_TO_CHECK);
   const totalBatches = Math.ceil(idsToCheck.length / BATCH_SIZE);
   
