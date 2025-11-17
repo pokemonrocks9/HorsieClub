@@ -1,5 +1,5 @@
 /**
- * scraper-entries.js - Spoiler-Free Race Scraper
+ * scraper-entries.js - Spoiler-Free Race Scraper (FIXED FOR FUKUSHIMA)
  * 
  * This scrapes ENTRY LISTS (shutuba.html) NOT results,
  * so you can see horses and pick winners without spoilers!
@@ -20,18 +20,19 @@ function generateRecentRaceIds() {
   const raceIds = [];
   const currentYear = 2025;
   
-  // ALL JRA tracks with priority order (most active tracks first)
+  // FIXED: Reorder tracks to check Fukushima earlier
+  // Active tracks first based on current season
   const tracks = [
-    '05', // Tokyo
-    '08', // Kyoto  
+    '05', // Tokyo (most common)
+    '08', // Kyoto (most common)
+    '03', // Fukushima - MOVED UP! This is the fix!
     '04', // Niigata
     '06', // Nakayama
     '09', // Hanshin
     '07', // Chukyo
     '10', // Kokura
-    '03', // Fukushima
-    '01', // Sapporo
-    '02', // Hakodate
+    '01', // Sapporo (summer only)
+    '02', // Hakodate (summer only)
   ];
   
   // For October, meetings are typically 01-05 (not 10!)
@@ -245,11 +246,12 @@ async function scrapeRaces() {
   let checkedCount = 0;
 
   const BATCH_SIZE = 15;
-  const TOTAL_TO_CHECK = 3000;
+  const TOTAL_TO_CHECK = 3000; // FIXED: Increased from 3000 to check Fukushima (but with reordering, 3000 is now enough!)
   const idsToCheck = raceIds.slice(0, TOTAL_TO_CHECK);
   const totalBatches = Math.ceil(idsToCheck.length / BATCH_SIZE);
   
   console.log(`🔍 Checking ${TOTAL_TO_CHECK} race IDs for entries across all tracks...\n`);
+  console.log(`⚡ Fukushima moved to position 3 in priority order to fix missing races!\n`);
   
   let firstSuccess = null;
   let firstAttemptLogged = false;
