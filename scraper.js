@@ -23,7 +23,7 @@ function generateRecentRaceIds() {
   const raceIds = [];
   const currentYear = new Date().getFullYear(); // FIXED: Dynamic year!
   
-  console.log(`📅 Current year: ${currentYear}`);
+  console.log(`Current year: ${currentYear}`);
   
   // FIXED: Reorder tracks to check Fukushima earlier
   const tracks = [
@@ -241,7 +241,7 @@ async function fetchRaceEntries(raceId) {
 }
 
 async function scrapeRaces() {
-  console.log('🏇 Spoiler-Free Race Scraper (FULLY FIXED)\n');
+  console.log('🏇 Spoiler-Free Race Scraper\n');
   console.log(`⏰ Run time: ${new Date().toISOString()}\n`);
   
   const raceIds = generateRecentRaceIds();
@@ -259,7 +259,6 @@ async function scrapeRaces() {
   const totalBatches = Math.ceil(idsToCheck.length / BATCH_SIZE);
   
   console.log(`🔍 Checking ${TOTAL_TO_CHECK} race IDs for entries across all tracks...\n`);
-  console.log(`⚡ Fixes: Dynamic year, Fukushima prioritized, 90-day range!\n`);
   
   let firstSuccess = null;
   
