@@ -161,12 +161,12 @@ async function fetchRaceEntries(raceId) {
       raceDate = `${dateMatch3[1]}-${String(dateMatch3[2]).padStart(2, '0')}-${String(dateMatch3[3]).padStart(2, '0')}`;
     }
     
-    // FIXED: Extended date range - 90 days back, 30 days forward
+    // FIXED: Extended date range - 30 days back, 30 days forward
     if (raceDate) {
       const raceTime = new Date(raceDate).getTime();
       const now = Date.now();
       const daysAgo = (now - raceTime) / (1000 * 60 * 60 * 24);
-      if (daysAgo > 90 || daysAgo < -30) {  // Keep races up to 90 days old, 30 days in future
+      if (daysAgo > 30 || daysAgo < -30) {  // Keep races up to 30 days old, 30 days in future
         return null;
       }
     } else {
