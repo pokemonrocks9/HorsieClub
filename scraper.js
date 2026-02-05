@@ -18,7 +18,7 @@ const TRACK_MAP = {
 // Generate possible race IDs focusing on recent race meetings
 function generateRecentRaceIds() {
   const raceIds = [];
-  const currentYear = 2025;
+  const currentYear = 2026;
   
   // FIXED: Reorder tracks to check Fukushima earlier
   // Active tracks first based on current season
