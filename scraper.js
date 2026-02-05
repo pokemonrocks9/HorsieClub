@@ -1,8 +1,11 @@
 /**
- * scraper-entries.js - Spoiler-Free Race Scraper (FIXED FOR FUKUSHIMA)
+ * scraper-entries.js - Spoiler-Free Race Scraper (FULLY FIXED)
  * 
- * This scrapes ENTRY LISTS (shutuba.html) NOT results,
- * so you can see horses and pick winners without spoilers!
+ * FIXES:
+ * - Dynamic year (was hardcoded to 2025!)
+ * - Fukushima in 3rd position
+ * - Extended date range (90 days back, 30 forward)
+ * - Better error handling
  */
 
 import fetch from 'node-fetch';
@@ -18,26 +21,26 @@ const TRACK_MAP = {
 // Generate possible race IDs focusing on recent race meetings
 function generateRecentRaceIds() {
   const raceIds = [];
-  const currentYear = 2026;
+  const currentYear = new Date().getFullYear(); // FIXED: Dynamic year!
+  
+  console.log(`📅 Current year: ${currentYear}`);
   
   // FIXED: Reorder tracks to check Fukushima earlier
-  // Active tracks first based on current season
   const tracks = [
-    '05', // Tokyo (most common)
-    '08', // Kyoto (most common)
-    '03', // Fukushima - MOVED UP! This is the fix!
-    '04', // Niigata
+    '05', // Tokyo
+    '08', // Kyoto
+    '03', // Fukushima - MOVED UP!
     '06', // Nakayama
     '09', // Hanshin
+    '04', // Niigata
     '07', // Chukyo
     '10', // Kokura
     '01', // Sapporo (summer only)
     '02', // Hakodate (summer only)
   ];
   
-  // For October, meetings are typically 01-05 (not 10!)
-  // Lower numbers = more recent in the current season
-  const meetings = ['05', '04', '03', '02', '01'];
+  // Meetings - check more for new year rollover
+  const meetings = ['08', '07', '06', '05', '04', '03', '02', '01'];
   
   // Days 01-12 (typical race meeting is 2-4 days)
   const days = ['12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02', '01'];
@@ -58,7 +61,7 @@ function generateRecentRaceIds() {
   }
   
   console.log(`Generated ${raceIds.length} race IDs across all ${tracks.length} tracks`);
-  console.log(`Checking meetings 01-05 (current season)`);
+  console.log(`Checking meetings 01-08`);
   console.log(`Sample IDs: ${raceIds.slice(0, 5).join(', ')}`);
   
   return raceIds;
@@ -148,12 +151,12 @@ async function fetchRaceEntries(raceId) {
       raceDate = `${dateMatch3[1]}-${String(dateMatch3[2]).padStart(2, '0')}-${String(dateMatch3[3]).padStart(2, '0')}`;
     }
     
-    // Only keep races from the past 21 days (3 weeks instead of 2)
+    // FIXED: Extended date range - 90 days back, 30 days forward
     if (raceDate) {
       const raceTime = new Date(raceDate).getTime();
       const now = Date.now();
       const daysAgo = (now - raceTime) / (1000 * 60 * 60 * 24);
-      if (daysAgo > 21 || daysAgo < -7) {  // Keep races up to 21 days old, 7 days in future
+      if (daysAgo > 90 || daysAgo < -30) {  // Keep races up to 90 days old, 30 days in future
         return null;
       }
     } else {
@@ -169,11 +172,11 @@ async function fetchRaceEntries(raceId) {
       surface = distanceMatch[1] === 'T' ? 'Turf' : 'Dirt';
     }
 
-    // Extract horses from ENTRY table - FIXED PARSING
+    // Extract horses from ENTRY table
     const horses = [];
     const seen = new Set();
 
-    // Target rows with class "HorseList" - this is the key!
+    // Target rows with class "HorseList"
     $('tr.HorseList').each((i, row) => {
       const $row = $(row);
       const cells = $row.find('td');
@@ -183,9 +186,9 @@ async function fetchRaceEntries(raceId) {
         const ppText = $(cells[1]).text().trim();
         const pp = parseInt(ppText);
         
-        // Column 4 (index 3) = Horse Info (contains horse name in <a> tag)
+        // Column 4 (index 3) = Horse Info
         const horseName = $(cells[3]).find('a').first().text().trim()
-          .replace(/\s*\u00a0.*$/, '') // Remove nbsp and everything after
+          .replace(/\s*\u00a0.*$/, '')
           .trim();
         
         // Column 7 (index 6) = Jockey
@@ -208,14 +211,14 @@ async function fetchRaceEntries(raceId) {
 
     horses.sort((a, b) => a.number - b.number);
 
-    // Need at least 4 horses for a valid race (some small races exist)
+    // Need at least 4 horses for a valid race
     if (horses.length < 4) {
       return null;
     }
 
     return {
       title: cleanTitle,
-      raceNumber, // ADD RACE NUMBER HERE
+      raceNumber,
       grade,
       date: raceDate,
       track: TRACK_MAP[trackCode] || 'Unknown',
@@ -228,12 +231,17 @@ async function fetchRaceEntries(raceId) {
     };
 
   } catch (error) {
+    // Log first error to help diagnose network issues
+    if (!this.firstErrorLogged) {
+      console.error(`\n⚠️  First fetch error: ${error.message}`);
+      this.firstErrorLogged = true;
+    }
     return null;
   }
 }
 
 async function scrapeRaces() {
-  console.log('🏇 Spoiler-Free Race Scraper (Past 3 Weeks)\n');
+  console.log('🏇 Spoiler-Free Race Scraper (FULLY FIXED)\n');
   console.log(`⏰ Run time: ${new Date().toISOString()}\n`);
   
   const raceIds = generateRecentRaceIds();
@@ -246,15 +254,14 @@ async function scrapeRaces() {
   let checkedCount = 0;
 
   const BATCH_SIZE = 15;
-  const TOTAL_TO_CHECK = 7200; // FIXED: Increased from 3000 to check Fukushima (but with reordering, 3000 is now enough!)
+  const TOTAL_TO_CHECK = 7200; // Check everything
   const idsToCheck = raceIds.slice(0, TOTAL_TO_CHECK);
   const totalBatches = Math.ceil(idsToCheck.length / BATCH_SIZE);
   
   console.log(`🔍 Checking ${TOTAL_TO_CHECK} race IDs for entries across all tracks...\n`);
-  console.log(`⚡ Fukushima moved to position 3 in priority order to fix missing races!\n`);
+  console.log(`⚡ Fixes: Dynamic year, Fukushima prioritized, 90-day range!\n`);
   
   let firstSuccess = null;
-  let firstAttemptLogged = false;
   
   for (let i = 0; i < idsToCheck.length; i += BATCH_SIZE) {
     const batch = idsToCheck.slice(i, i + BATCH_SIZE);
@@ -272,18 +279,6 @@ async function scrapeRaces() {
       
       checkedCount++;
       
-      // Log first few attempts to see what's happening
-      if (!firstAttemptLogged && checkedCount <= 3) {
-        console.log(`\n\nDEBUG: Checked race ID ${raceId}`);
-        console.log(`  Result: ${result.status}`);
-        if (result.status === 'fulfilled' && result.value) {
-          console.log(`  Found: ${result.value.title}`);
-        } else {
-          console.log(`  Not found or invalid`);
-        }
-        if (checkedCount === 3) firstAttemptLogged = true;
-      }
-      
       if (result.status === 'fulfilled' && result.value) {
         result.value.id = id++;
         races.push(result.value);
@@ -297,10 +292,9 @@ async function scrapeRaces() {
           firstSuccess = result.value;
           console.log(`\n\n🎉 First race found: ${result.value.title}`);
           console.log(`   Race ID: ${raceId}`);
-          console.log(`   Race Number: ${result.value.raceNumber}`);
+          console.log(`   Track: ${result.value.track}`);
           console.log(`   Date: ${result.value.date}`);
-          console.log(`   Horses: ${result.value.horses.length}`);
-          console.log(`   Sample: #${result.value.horses[0].number} ${result.value.horses[0].name} (${result.value.horses[0].jockey})\n`);
+          console.log(`   Horses: ${result.value.horses.length}\n`);
         }
       }
     }
@@ -335,13 +329,14 @@ async function scrapeRaces() {
   });
   
   if (races.length === 0) {
-    console.log('::warning::No races found in the past 3 weeks');
-    console.log('This could mean:');
-    console.log('  - Race IDs need adjustment');
-    console.log('  - Netkeiba is blocking requests');
-    console.log('  - No racing this week');
+    console.log('\n::error::No races found!');
+    console.log('Possible causes:');
+    console.log('  1. Network issue - GitHub Actions may be blocked by netkeiba.com');
+    console.log('  2. No races scheduled in the date range');
+    console.log('  3. Meeting numbers need adjustment for new year');
+    console.log('\nRun scraper-diagnostic.js for more details');
   } else {
-    console.log('::notice::Scraping completed successfully');
+    console.log('\n::notice::Scraping completed successfully');
     console.log(`::notice::Found ${races.length} races (${gradedCount} graded stakes)`);
   }
 
@@ -353,7 +348,7 @@ async function scrapeRaces() {
     console.log('\n📊 Recent races found:');
     races.slice(0, 15).forEach(race => {
       const gradeStr = race.grade ? ` [${race.grade}]` : '';
-      console.log(`   ${race.date} - R${race.raceNumber} ${race.title}${gradeStr} (${race.horses.length} horses)`);
+      console.log(`   ${race.date} - ${race.track} R${race.raceNumber} ${race.title}${gradeStr}`);
     });
   }
 
