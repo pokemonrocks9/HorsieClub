@@ -1,11 +1,8 @@
 /**
- * scraper-entries.js - Spoiler-Free Race Scraper (FULLY FIXED)
+ * scraper-entries.js - Spoiler-Free Race Scraper
  * 
- * FIXES:
- * - Dynamic year (was hardcoded to 2025!)
- * - Fukushima in 3rd position
- * - Extended date range (90 days back, 30 forward)
- * - Better error handling
+ * This scrapes ENTRY LISTS (shutuba.html) NOT results,
+ * so you can see horses and pick winners without spoilers!
  */
 
 import fetch from 'node-fetch';
@@ -21,9 +18,20 @@ const TRACK_MAP = {
 // Generate possible race IDs focusing on recent race meetings
 function generateRecentRaceIds() {
   const raceIds = [];
-  const currentYear = new Date().getFullYear(); // FIXED: Dynamic year!
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth() + 1; // 1-12
   
   console.log(`Current year: ${currentYear}`);
+  
+  // If we're in January-March, also check previous year's late races
+  const yearsToCheck = [];
+  if (currentMonth <= 3) {
+    yearsToCheck.push(currentYear - 1); // Previous year first (recent races)
+    yearsToCheck.push(currentYear);     // Then current year
+    console.log(`Early in year - also checking ${currentYear - 1} races`);
+  } else {
+    yearsToCheck.push(currentYear);
+  }
   
   // FIXED: Reorder tracks to check Fukushima earlier
   const tracks = [
@@ -39,8 +47,8 @@ function generateRecentRaceIds() {
     '02', // Hakodate (summer only)
   ];
   
-  // Meetings - check more for new year rollover
-  const meetings = ['08', '07', '06', '05', '04', '03', '02', '01'];
+  // Meetings - check RECENT meetings first! (01 = most recent in current season)
+  const meetings = ['01', '02', '03', '04', '05', '06', '07', '08'];
   
   // Days 01-12 (typical race meeting is 2-4 days)
   const days = ['12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02', '01'];
@@ -49,12 +57,14 @@ function generateRecentRaceIds() {
   const races = ['12', '11', '10', '09', '08', '07', '06', '05', '04', '03', '02', '01'];
   
   // Generate IDs for all combinations
-  for (const track of tracks) {
-    for (const meeting of meetings) {
-      for (const day of days) {
-        for (const race of races) {
-          const raceId = `${currentYear}${track}${meeting}${day}${race}`;
-          raceIds.push(raceId);
+  for (const year of yearsToCheck) {
+    for (const track of tracks) {
+      for (const meeting of meetings) {
+        for (const day of days) {
+          for (const race of races) {
+            const raceId = `${year}${track}${meeting}${day}${race}`;
+            raceIds.push(raceId);
+          }
         }
       }
     }
@@ -241,11 +251,11 @@ async function fetchRaceEntries(raceId) {
 }
 
 async function scrapeRaces() {
-  console.log('🏇 Spoiler-Free Race Scraper\n');
-  console.log(`⏰ Run time: ${new Date().toISOString()}\n`);
+  console.log('Spoiler-Free Race Scraper (Past 3 Weeks)\n');
+  console.log(`Run time: ${new Date().toISOString()}\n`);
   
   const raceIds = generateRecentRaceIds();
-  console.log(`📋 Checking ${raceIds.length} possible race IDs...\n`);
+  console.log(`Checking ${raceIds.length} possible race IDs...\n`);
   
   const races = [];
   let id = 1;
@@ -254,11 +264,12 @@ async function scrapeRaces() {
   let checkedCount = 0;
 
   const BATCH_SIZE = 15;
-  const TOTAL_TO_CHECK = 7200; // Check everything
+  // If checking 2 years (Jan-Mar), we have double the IDs
+  const TOTAL_TO_CHECK = raceIds.length; // Check all generated IDs
   const idsToCheck = raceIds.slice(0, TOTAL_TO_CHECK);
   const totalBatches = Math.ceil(idsToCheck.length / BATCH_SIZE);
   
-  console.log(`🔍 Checking ${TOTAL_TO_CHECK} race IDs for entries across all tracks...\n`);
+  console.log(`Checking ${TOTAL_TO_CHECK} race IDs for entries across all tracks...\n`);
   
   let firstSuccess = null;
   
@@ -289,7 +300,7 @@ async function scrapeRaces() {
         // Log first success
         if (!firstSuccess) {
           firstSuccess = result.value;
-          console.log(`\n\n🎉 First race found: ${result.value.title}`);
+          console.log(`\n\nFirst race found: ${result.value.title}`);
           console.log(`   Race ID: ${raceId}`);
           console.log(`   Track: ${result.value.track}`);
           console.log(`   Date: ${result.value.date}`);
@@ -302,7 +313,7 @@ async function scrapeRaces() {
     await new Promise(resolve => setTimeout(resolve, 400));
   }
 
-  console.log(`\n✅ Scraping complete!`);
+  console.log(`\nScraping complete!`);
   console.log(`   Total races found: ${races.length}`);
   console.log(`   Graded stakes: ${gradedCount}`);
   console.log(`   IDs checked: ${checkedCount}\n`);
@@ -312,7 +323,7 @@ async function scrapeRaces() {
   races.forEach(race => {
     trackCounts[race.track] = (trackCounts[race.track] || 0) + 1;
   });
-  console.log('📊 Races by track:');
+  console.log('Races by track:');
   Object.entries(trackCounts).sort((a, b) => b[1] - a[1]).forEach(([track, count]) => {
     console.log(`   ${track}: ${count} races`);
   });
@@ -322,7 +333,7 @@ async function scrapeRaces() {
   races.forEach(race => {
     dateCounts[race.date] = (dateCounts[race.date] || 0) + 1;
   });
-  console.log('\n📅 Races by date:');
+  console.log('\nRaces by date:');
   Object.entries(dateCounts).sort().forEach(([date, count]) => {
     console.log(`   ${date}: ${count} races`);
   });
@@ -344,7 +355,7 @@ async function scrapeRaces() {
 
   // Show sample
   if (races.length > 0) {
-    console.log('\n📊 Recent races found:');
+    console.log('\nRecent races found:');
     races.slice(0, 15).forEach(race => {
       const gradeStr = race.grade ? ` [${race.grade}]` : '';
       console.log(`   ${race.date} - ${race.track} R${race.raceNumber} ${race.title}${gradeStr}`);
@@ -353,7 +364,7 @@ async function scrapeRaces() {
 
   // Save to JSON
   fs.writeFileSync('races.json', JSON.stringify(races, null, 2));
-  console.log(`\n💾 Saved ${races.length} races to races.json`);
+  console.log(`\nSaved ${races.length} races to races.json`);
   
   const summary = {
     lastUpdated: new Date().toISOString(),
@@ -366,7 +377,7 @@ async function scrapeRaces() {
     note: 'Entry lists only - no spoilers!'
   };
   
-  console.log('\n📈 Summary:');
+  console.log('\nSummary:');
   console.log(JSON.stringify(summary, null, 2));
 }
 
