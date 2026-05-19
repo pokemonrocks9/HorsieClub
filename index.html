@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Horsie Picker</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#f44336">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%); min-height: 100vh; padding: 20px; transition: background 0.5s ease; }
@@ -652,6 +655,15 @@ function backToRaceSelector(){
     stopPoll();
     document.getElementById('raceDetail').classList.add('hidden');
     showRaceSelector();
+}
+
+// Register Service Worker for PWA
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+            .then(reg => console.log('✅ Service Worker registered'))
+            .catch(err => console.error('❌ Service Worker registration failed', err));
+    });
 }
     </script>
 </body>
