@@ -8,23 +8,29 @@
     <meta name="theme-color" content="#f44336">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
     <style>
+        :root {
+            --theme-color: #f44336;
+            --theme-darker: #d32f2f;
+            --theme-darkest: #c62828;
+            --theme-lighter: #fdecea;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%); min-height: 100vh; padding: 20px 20px 80px; transition: background 0.5s ease; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, var(--theme-darker) 0%, var(--theme-darkest) 100%); min-height: 100vh; padding: 20px 20px 80px; transition: background 0.5s ease; }
         .container { max-width: 1200px; margin: 0 auto; }
         .header { background: white; padding: 30px; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        h1 { color: #f44336; margin-bottom: 10px; transition: color 0.5s ease; }
+        h1 { color: var(--theme-color); margin-bottom: 10px; transition: color 0.5s ease; }
         .subtitle { color: #666; font-size: 14px; }
         .setup-section, .selector-section, .race-detail { background: white; padding: 30px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .input-group { margin-bottom: 20px; }
         label { display: block; margin-bottom: 8px; font-weight: 600; color: #333; }
         input[type="text"], select { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px; transition: border-color 0.3s; }
-        input[type="text"]:focus, select:focus { outline: none; border-color: #f44336; transition: border-color 0.3s ease; }
-        .btn { background: #f44336; color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
-        .btn:hover { background: #e53935; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(244, 67, 54, 0.4); }
+        input[type="text"]:focus, select:focus { outline: none; border-color: var(--theme-color); transition: border-color 0.3s ease; }
+        .btn { background: var(--theme-color); color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .btn:hover { background: var(--theme-darker); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(244, 67, 54, 0.4); }
         .btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
         .selector-grid { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
         .selector-card { border: 2px solid #e0e0e0; border-radius: 10px; padding: 15px 20px; cursor: pointer; transition: all 0.3s; display: flex; justify-content: space-between; align-items: center; position: relative; }
-        .selector-card:hover { border-color: var(--theme-color, #f44336); box-shadow: 0 5px 15px rgba(244, 67, 54, 0.2); transform: translateX(5px); }
+        .selector-card:hover { border-color: var(--theme-color); box-shadow: 0 5px 15px rgba(244, 67, 54, 0.2); transform: translateX(5px); }
         .selector-card.has-picks { border-color: #4caf50; background: #f1f8f4; }
         .selector-card.has-picks::after { content: '✓'; position: absolute; top: 0px; right: 5px; color: #4caf50; font-weight: bold; font-size: 18px; }
         .date-info { display: flex; align-items: center; gap: 15px; }
@@ -32,10 +38,10 @@
         .day-name { font-size: 16px; color: #666; min-width: 50px; }
         .track-selector-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
         .track-card { border: 2px solid #e0e0e0; border-radius: 10px; padding: 20px; cursor: pointer; transition: all 0.3s; text-align: center; position: relative; }
-        .track-card:hover { border-color: var(--theme-color, #f44336); box-shadow: 0 5px 15px rgba(244, 67, 54, 0.2); transform: translateY(-2px); }
+        .track-card:hover { border-color: var(--theme-color); box-shadow: 0 5px 15px rgba(244, 67, 54, 0.2); transform: translateY(-2px); }
         .track-card.has-picks { border-color: #4caf50; background: #f1f8f4; }
         .track-card.has-picks::after { content: '✓'; position: absolute; top: 0px; right: 5px; color: #4caf50; font-weight: bold; font-size: 18px; }
-        .track-name { font-size: 20px; font-weight: 600; color: var(--theme-color, #f44336); transition: color 0.5s ease; }
+        .track-name { font-size: 20px; font-weight: 600; color: var(--theme-color); transition: color 0.5s ease; }
         .race-count { font-size: 14px; color: #666; }
         .color-picker-section { margin: 20px 0; padding: 20px; background: #f5f5f5; border-radius: 10px; }
         .color-options { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
@@ -44,11 +50,11 @@
         .color-option.selected { border-color: #333; box-shadow: 0 0 0 2px white, 0 0 0 4px #333; }
         .race-list { display: grid; gap: 15px; margin: 20px 0; }
         .race-card { border: 2px solid #e0e0e0; border-radius: 10px; padding: 20px; cursor: pointer; transition: all 0.3s; display: flex; justify-content: space-between; align-items: center; position: relative; }
-        .race-card:hover { border-color: var(--theme-color, #f44336); box-shadow: 0 5px 15px rgba(244, 67, 54, 0.2); }
+        .race-card:hover { border-color: var(--theme-color); box-shadow: 0 5px 15px rgba(244, 67, 54, 0.2); }
         .race-card.has-picks { border-color: #4caf50; background: #f1f8f4; }
         .race-card.has-picks::after { content: '✓'; position: absolute; top: 0px; right: 5px; color: #4caf50; font-weight: bold; font-size: 18px; }
         .race-info { flex: 1; }
-        .race-number { font-size: 24px; font-weight: bold; color: var(--theme-color, #f44336); margin-right: 15px; transition: color 0.5s ease; }
+        .race-number { font-size: 24px; font-weight: bold; color: var(--theme-color); margin-right: 15px; transition: color 0.5s ease; }
         .race-title { font-size: 18px; font-weight: 600; color: #333; margin-bottom: 5px; }
         .race-details { font-size: 14px; color: #666; }
         .grade-badge { display: inline-block; background: #ffd700; color: #333; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 700; margin-left: 10px; }
@@ -66,13 +72,13 @@
             mask-composite: exclude;
             pointer-events: none;
         }
-        .horse-card:hover { border-color: var(--theme-color, #f44336); transform: translateX(5px); }
-        .horse-card.selected { border-color: var(--theme-color, #f44336); }
+        .horse-card:hover { border-color: var(--theme-color); transform: translateX(5px); }
+        .horse-card.selected { border-color: var(--theme-color); background: var(--theme-lighter); }
         .horse-card.picked-by-user2 { }
         .horse-number { font-size: 20px; font-weight: bold; min-width: 40px; transition: color 0.5s ease; color: #666; }
         .horse-name { font-size: 16px; flex: 1; color: #333; }
-        .horse-card.selected .horse-name { font-weight: 600; color: var(--theme-color, #f44336); }
-        .horse-card.selected .horse-number { color: var(--theme-color, #f44336); }
+        .horse-card.selected .horse-name { font-weight: 600; color: var(--theme-color); }
+        .horse-card.selected .horse-number { color: var(--theme-color); }
         .picker-badge { position: static; padding: 0; border-radius: 50%; font-size: 14px; font-weight: 600; color: white; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; }
         .action-buttons { display: flex; gap: 15px; margin-top: 20px; }
         .back-btn { background: #666; }
@@ -80,7 +86,7 @@
         .hidden { display: none; }
         .info-box { background: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; margin: 20px 0; border-radius: 4px; }
         .breadcrumb { font-size: 14px; color: #666; margin-bottom: 20px; }
-        .breadcrumb a { color: #f44336; text-decoration: none; cursor: pointer; transition: color 0.5s ease; }
+        .breadcrumb a { color: var(--theme-color); text-decoration: none; cursor: pointer; transition: color 0.5s ease; }
         .breadcrumb a:hover { text-decoration: underline; }
 
         /* Bottom Nav */
@@ -234,27 +240,16 @@ function selectColor(c){
 }
 
 function applyTheme(c){
-    const darker=darkenColor(c,0.15),darkest=darkenColor(c,0.25),lighter=lightenColor(c,0.9);
-    document.documentElement.style.setProperty('--theme-color',c);
-    document.body.style.background=`linear-gradient(135deg, ${darker} 0%, ${darkest} 100%)`;
-    document.querySelectorAll('h1, .track-name, .race-number, .horse-number, .breadcrumb a').forEach(e=>e.style.color=c);
-    document.querySelectorAll('.btn:not([style*="background: #f44336"])').forEach(e=>{
-        e.style.background=c;
-        e.onmouseenter=()=>e.style.background=darker;
-        e.onmouseleave=()=>e.style.background=c
-    });
-    document.querySelectorAll('input:focus, select:focus').forEach(e=>e.style.borderColor=c);
-    document.querySelectorAll('.horse-card.selected').forEach(e=>{
-        e.style.borderColor=c;
-        e.style.background=lighter
-    });
+    const darker=darkenColor(c,0.15),darkest=darkenColor(c,0.25),lighter=lightenColor(c,0.9);C=c;
+    const root = document.documentElement;
+    root.style.setProperty('--theme-color', c);
+    root.style.setProperty('--theme-darker', darker);
+    root.style.setProperty('--theme-darkest', darkest);
+    root.style.setProperty('--theme-lighter', lighter);
+
     // Update active nav button color
     document.querySelectorAll('.nav-btn').forEach(b => {
-        if (b.classList.contains('active')) {
-            b.style.color = c;
-        } else {
-            b.style.color = '';
-        }
+        b.style.color = b.classList.contains('active') ? c : '';
     });
 }
 
