@@ -248,8 +248,14 @@ function applyTheme(c){
         e.style.borderColor=c;
         e.style.background=lighter
     });
-    const activeNav = document.querySelector('.nav-btn.active');
-    if(activeNav) activeNav.style.color = c;
+    // Update active nav button color
+    document.querySelectorAll('.nav-btn').forEach(b => {
+        if (b.classList.contains('active')) {
+            b.style.color = c;
+        } else {
+            b.style.color = '';
+        }
+    });
 }
 
 function darkenColor(hex,amt){
@@ -268,9 +274,9 @@ function lightenColor(hex,amt){
     return`#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`;
 }
 
-window.addEventListener('DOMContentLoaded',async()=>{const c=localStorage.getItem('userColor');c?(selectColor(c),applyTheme(c)):applyTheme('#f44336');U=localStorage.getItem('currentUser')||'';S=localStorage.getItem('currentSession')||'';if(U&&S)document.getElementById('bottomNav').classList.remove('hidden');await autoClean();refreshSessions();document.getElementById('sessionCode').addEventListener('input',updateBtn);await renderViewFromUrl();});
+window.addEventListener('DOMContentLoaded',async()=>{const c=localStorage.getItem('userColor')||'#f44336';selectColor(c);applyTheme(c);U=localStorage.getItem('currentUser')||'';S=localStorage.getItem('currentSession')||'';if(U&&S)document.getElementById('bottomNav').classList.remove('hidden');await autoClean();refreshSessions();document.getElementById('sessionCode').addEventListener('input',updateBtn);await renderViewFromUrl();});
 
-function switchTab(tab){document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>{b.classList.remove('active');b.style.color='';});const activeBtn=document.getElementById('nav-'+tab);activeBtn.classList.add('active');activeBtn.style.color=C;document.getElementById('tab-'+tab).classList.add('active');if(tab==='settings')renderSettings();}
+function switchTab(tab){document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>{b.classList.remove('active');b.style.color='';});const activeBtn=document.getElementById('nav-'+tab);if(activeBtn){activeBtn.classList.add('active');activeBtn.style.color=C;}document.getElementById('tab-'+tab).classList.add('active');if(tab==='settings')renderSettings();}
 function renderSettings(){const info=document.getElementById('settingsInfo');info.innerHTML=`<div style="text-align: left;"><p style="margin-bottom: 10px;"><strong>Logged in as:</strong> ${U}</p><p style="margin-bottom: 10px;"><strong>Active Session:</strong> ${S}</p><div style="display: flex; align-items: center; gap: 10px;"><strong>Theme Color:</strong><div style="width: 24px; height: 24px; border-radius: 50%; background: ${C}; border: 2px solid white; box-shadow: 0 0 0 1px #ccc;"></div></div></div>`;}
 
 window.addEventListener('popstate',async()=>{await renderViewFromUrl();});
