@@ -9,7 +9,7 @@
     <link rel="apple-touch-icon" href="icons/icon-192.png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%); min-height: 100vh; padding: 20px; transition: background 0.5s ease; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%); min-height: 100vh; padding: 20px 20px 80px; transition: background 0.5s ease; }
         .container { max-width: 1200px; margin: 0 auto; }
         .header { background: white; padding: 30px; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         h1 { color: #f44336; margin-bottom: 10px; transition: color 0.5s ease; }
@@ -82,6 +82,26 @@
         .breadcrumb { font-size: 14px; color: #666; margin-bottom: 20px; }
         .breadcrumb a { color: #f44336; text-decoration: none; cursor: pointer; transition: color 0.5s ease; }
         .breadcrumb a:hover { text-decoration: underline; }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            height: calc(65px + env(safe-area-inset-bottom));
+            background: white; border-top: 1px solid #e0e0e0;
+            display: flex; z-index: 1000; padding-bottom: env(safe-area-inset-bottom);
+        }
+        .nav-btn {
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 4px; background: none; border: none;
+            cursor: pointer; color: #666; font-size: 11px;
+            font-weight: 500; transition: all 0.2s;
+        }
+        .nav-btn svg { width: 24px; height: 24px; stroke: #666; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: all 0.2s; }
+        .nav-btn.active { color: var(--theme-color, #f44336); }
+        .nav-btn.active svg { stroke: var(--theme-color, #f44336); }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
     </style>
 </head>
 <body>
@@ -101,79 +121,102 @@
             </div>
         </div>
 
-        <div id="setup" class="setup-section">
-            <h2>Setup Session</h2>
-            <div class="info-box">🎯 Enter your details to get started!</div>
-            
-            <div style="margin: 20px 0; padding: 15px; background: #f5f5f5; border-radius: 8px;">
-                <h3 style="margin-bottom: 10px;">Active Sessions</h3>
-                <div id="activeSessions" style="max-height: 200px; overflow-y: auto;">
-                    <p style="color: #666;">Loading sessions...</p>
+        <div id="tab-vote" class="tab-panel active">
+            <div id="setup" class="setup-section">
+                <h2>Setup Session</h2>
+                <div class="info-box">🎯 Enter your details to get started!</div>
+                
+                <div style="margin: 20px 0; padding: 15px; background: #f5f5f5; border-radius: 8px;">
+                    <h3 style="margin-bottom: 10px;">Active Sessions</h3>
+                    <div id="activeSessions" style="max-height: 200px; overflow-y: auto;">
+                        <p style="color: #666;">Loading sessions...</p>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <button class="btn" onclick="refreshSessions()">🔄 Refresh</button>
+                        <button class="btn" onclick="clearAllSessions()" style="background: #f44336;">🗑️ Clear All</button>
+                    </div>
                 </div>
-                <div style="display: flex; gap: 10px; margin-top: 10px;">
-                    <button class="btn" onclick="refreshSessions()">🔄 Refresh</button>
-                    <button class="btn" onclick="clearAllSessions()" style="background: #f44336;">🗑️ Clear All</button>
+                
+                <div class="color-picker-section">
+                    <h3 style="margin-bottom: 10px;">Choose Your Color</h3>
+                    <div class="color-options" id="colorOptions">
+                        <div class="color-option selected" style="background: #f44336;" data-color="#f44336" onclick="selectColor('#f44336')"></div>
+                        <div class="color-option" style="background: #ff5722;" data-color="#ff5722" onclick="selectColor('#ff5722')"></div>
+                        <div class="color-option" style="background: #ff9800;" data-color="#ff9800" onclick="selectColor('#ff9800')"></div>
+                        <div class="color-option" style="background: #ffc107;" data-color="#ffc107" onclick="selectColor('#ffc107')"></div>
+                        <div class="color-option" style="background: #4caf50;" data-color="#4caf50" onclick="selectColor('#4caf50')"></div>
+                        <div class="color-option" style="background: #2196f3;" data-color="#2196f3" onclick="selectColor('#2196f3')"></div>
+                        <div class="color-option" style="background: #3f51b5;" data-color="#3f51b5" onclick="selectColor('#3f51b5')"></div>
+                        <div class="color-option" style="background: #9c27b0;" data-color="#9c27b0" onclick="selectColor('#9c27b0')"></div>
+                        <div class="color-option" style="background: #e91e63;" data-color="#e91e63" onclick="selectColor('#e91e63')"></div>
+                        <div class="color-option" style="background: #795548;" data-color="#795548" onclick="selectColor('#795548')"></div>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="username">Your Name:</label>
+                    <input type="text" id="username" placeholder="Enter your name">
+                </div>
+                <div class="input-group">
+                    <label for="sessionCode">Session Code:</label>
+                    <input type="text" id="sessionCode" placeholder="Create or join a session">
+                </div>
+                <button class="btn" id="sessionBtn" onclick="joinSession()">Create Session</button>
+            </div>
+
+            <div id="dateSelector" class="selector-section hidden">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2>Select a Race Day</h2>
+                    <button class="btn" onclick="refreshRaces()">🔄 Refresh Races</button>
+                </div>
+                <div class="selector-grid" id="dateGrid"></div>
+            </div>
+
+            <div id="trackSelector" class="selector-section hidden">
+                <button class="btn back-btn" onclick="backToDateSelector()">← Back to Dates</button>
+                <h2 id="selectedDateTitle" style="margin-top: 15px;"></h2>
+                <div class="track-selector-grid" id="trackGrid"></div>
+            </div>
+
+            <div id="raceSelector" class="selector-section hidden">
+                <button class="btn back-btn" onclick="backToTrackSelector()">← Back to Tracks</button>
+                <h2 id="selectedTrackTitle" style="margin-top: 15px;"></h2>
+                <div class="race-list" id="raceList"></div>
+            </div>
+
+            <div id="raceDetail" class="race-detail hidden">
+                <button class="btn back-btn" onclick="backToRaceSelector()">← Back to Races</button>
+                <h2 id="selectedRaceTitle" style="margin-top: 15px;"></h2>
+                <p id="selectedRaceInfo"></p>
+                <div class="info-box">Pick your horse(s) below. Picks update automatically every 3 seconds!</div>
+                <div class="horse-list" id="horseList"></div>
+                <div class="action-buttons">
+                    <button class="btn" id="confirmPickBtn" onclick="confirmPicks()" disabled>Confirm My Picks</button>
                 </div>
             </div>
-            
-            <div class="color-picker-section">
-                <h3 style="margin-bottom: 10px;">Choose Your Color</h3>
-                <div class="color-options" id="colorOptions">
-                    <div class="color-option selected" style="background: #f44336;" data-color="#f44336" onclick="selectColor('#f44336')"></div>
-                    <div class="color-option" style="background: #ff5722;" data-color="#ff5722" onclick="selectColor('#ff5722')"></div>
-                    <div class="color-option" style="background: #ff9800;" data-color="#ff9800" onclick="selectColor('#ff9800')"></div>
-                    <div class="color-option" style="background: #ffc107;" data-color="#ffc107" onclick="selectColor('#ffc107')"></div>
-                    <div class="color-option" style="background: #4caf50;" data-color="#4caf50" onclick="selectColor('#4caf50')"></div>
-                    <div class="color-option" style="background: #2196f3;" data-color="#2196f3" onclick="selectColor('#2196f3')"></div>
-                    <div class="color-option" style="background: #3f51b5;" data-color="#3f51b5" onclick="selectColor('#3f51b5')"></div>
-                    <div class="color-option" style="background: #9c27b0;" data-color="#9c27b0" onclick="selectColor('#9c27b0')"></div>
-                    <div class="color-option" style="background: #e91e63;" data-color="#e91e63" onclick="selectColor('#e91e63')"></div>
-                    <div class="color-option" style="background: #795548;" data-color="#795548" onclick="selectColor('#795548')"></div>
+        </div>
+
+        <div id="tab-settings" class="tab-panel">
+            <div class="setup-section">
+                <h2>Settings</h2>
+                <div id="settingsInfo" style="margin-top: 20px;">
+                    <!-- Will be populated by JS -->
                 </div>
-            </div>
-            
-            <div class="input-group">
-                <label for="username">Your Name:</label>
-                <input type="text" id="username" placeholder="Enter your name">
-            </div>
-            <div class="input-group">
-                <label for="sessionCode">Session Code:</label>
-                <input type="text" id="sessionCode" placeholder="Create or join a session">
-            </div>
-            <button class="btn" id="sessionBtn" onclick="joinSession()">Create Session</button>
-        </div>
-
-        <div id="dateSelector" class="selector-section hidden">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>Select a Race Day</h2>
-                <button class="btn" onclick="refreshRaces()">🔄 Refresh Races</button>
-            </div>
-            <div class="selector-grid" id="dateGrid"></div>
-        </div>
-
-        <div id="trackSelector" class="selector-section hidden">
-            <button class="btn back-btn" onclick="backToDateSelector()">← Back to Dates</button>
-            <h2 id="selectedDateTitle" style="margin-top: 15px;"></h2>
-            <div class="track-selector-grid" id="trackGrid"></div>
-        </div>
-
-        <div id="raceSelector" class="selector-section hidden">
-            <button class="btn back-btn" onclick="backToTrackSelector()">← Back to Tracks</button>
-            <h2 id="selectedTrackTitle" style="margin-top: 15px;"></h2>
-            <div class="race-list" id="raceList"></div>
-        </div>
-
-        <div id="raceDetail" class="race-detail hidden">
-            <button class="btn back-btn" onclick="backToRaceSelector()">← Back to Races</button>
-            <h2 id="selectedRaceTitle" style="margin-top: 15px;"></h2>
-            <p id="selectedRaceInfo"></p>
-            <div class="info-box">Pick your horse(s) below. Picks update automatically every 3 seconds!</div>
-            <div class="horse-list" id="horseList"></div>
-            <div class="action-buttons">
-                <button class="btn" id="confirmPickBtn" onclick="confirmPicks()" disabled>Confirm My Picks</button>
+                <button class="btn" onclick="localStorage.clear(); location.reload();" style="margin-top: 20px; background: #666;">🚪 Leave Session</button>
             </div>
         </div>
     </div>
+
+    <nav id="bottomNav" class="bottom-nav hidden">
+        <button class="nav-btn active" id="nav-vote" onclick="switchTab('vote')">
+            <svg viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-2.34"/><path d="M18 4H6v7a6 6 0 0 0 12 0V4Z"/></svg>
+            Vote
+        </button>
+        <button class="nav-btn" id="nav-settings" onclick="switchTab('settings')">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            Settings
+        </button>
+    </nav>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script>
@@ -204,6 +247,8 @@ function applyTheme(c){
         e.style.borderColor=c;
         e.style.background=lighter
     });
+    const activeNav = document.querySelector('.nav-btn.active');
+    if(activeNav) activeNav.style.color = c;
 }
 
 function darkenColor(hex,amt){
@@ -687,6 +732,8 @@ function applyTheme(c){
         e.style.borderColor=c;
         e.style.background=lighter
     });
+    const activeNav = document.querySelector('.nav-btn.active');
+    if(activeNav) activeNav.style.color = c;
 }
 
 function darkenColor(hex,amt){
@@ -705,11 +752,10 @@ function lightenColor(hex,amt){
     return`#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`;
 }
 
-window.addEventListener('DOMContentLoaded',async()=>{
-    const c=localStorage.getItem('userColor');
-    c?(selectColor(c),applyTheme(c)):applyTheme('#f44336');
-    U=localStorage.getItem('currentUser')||'';S=localStorage.getItem('currentSession')||'';await autoClean();refreshSessions();document.getElementById('sessionCode').addEventListener('input',updateBtn);await renderViewFromUrl();
-});
+window.addEventListener('DOMContentLoaded',async()=>{const c=localStorage.getItem('userColor');c?(selectColor(c),applyTheme(c)):applyTheme('#f44336');U=localStorage.getItem('currentUser')||'';S=localStorage.getItem('currentSession')||'';if(U&&S)document.getElementById('bottomNav').classList.remove('hidden');await autoClean();refreshSessions();document.getElementById('sessionCode').addEventListener('input',updateBtn);await renderViewFromUrl();});
+
+function switchTab(tab){document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>{b.classList.remove('active');b.style.color='';});const activeBtn=document.getElementById('nav-'+tab);activeBtn.classList.add('active');activeBtn.style.color=C;document.getElementById('tab-'+tab).classList.add('active');if(tab==='settings')renderSettings();}
+function renderSettings(){const info=document.getElementById('settingsInfo');info.innerHTML=`<div style="text-align: left;"><p style="margin-bottom: 10px;"><strong>Logged in as:</strong> ${U}</p><p style="margin-bottom: 10px;"><strong>Active Session:</strong> ${S}</p><div style="display: flex; align-items: center; gap: 10px;"><strong>Theme Color:</strong><div style="width: 24px; height: 24px; border-radius: 50%; background: ${C}; border: 2px solid white; box-shadow: 0 0 0 1px #ccc;"></div></div></div>`;}
 
 window.addEventListener('popstate',async()=>{await renderViewFromUrl();});
 
@@ -835,9 +881,7 @@ async function joinSession(){
         alert('Enter both!');
         return;
     }
-    U=u;
-    S=s;
-    localStorage.setItem('currentUser',u);localStorage.setItem('currentSession',s);document.getElementById('setup').classList.add('hidden');await loadRaces();await loadAllSessionPicks();updateUrl('dateSelector');showDateSelector();
+    U=u;S=s;localStorage.setItem('currentUser',u);localStorage.setItem('currentSession',s);document.getElementById('setup').classList.add('hidden');document.getElementById('bottomNav').classList.remove('hidden');await loadRaces();await loadAllSessionPicks();updateUrl('dateSelector');showDateSelector();
 }
 
 async function loadRaces(){
