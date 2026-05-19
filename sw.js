@@ -1,4 +1,5 @@
-const CACHE_NAME = 'horsie-picker-v1';
+const VERSION = '1.0.1';
+const CACHE_NAME = `horsie-picker-${VERSION}`;
 const ASSETS = [
   './',
   'index.html',
@@ -19,6 +20,7 @@ self.addEventListener('activate', event => {
     caches.keys().then(keys => {
       return Promise.all(
         keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+        keys.filter(key => key.startsWith('horsie-picker-') && key !== CACHE_NAME).map(key => caches.delete(key))
       );
     })
   );
