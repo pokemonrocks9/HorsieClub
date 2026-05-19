@@ -433,7 +433,7 @@ function showRaceSelector(){
     document.getElementById('headerTitle').textContent='🏇 Select a Race';
     const rs=races.filter(r=>r.date===D&&r.track===T);
     rs.sort((a,b)=>(a.raceNumber||a.id)-(b.raceNumber||b.id));
-    document.getElementById('selectedTrackTitle').textContent=`${T} - ${new Date(D).toLocaleDateString('en-US',{month:'short',day:'numeric'})}`;
+    document.getElementById('selectedTrackTitle').textContent=`${T} - ${new Date(D + 'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})}`;
     const l=document.getElementById('raceList');
     l.innerHTML='';
     rs.forEach(r=>{
