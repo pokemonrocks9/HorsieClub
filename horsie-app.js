@@ -245,7 +245,7 @@ function showTrackSelector() {
         racesByTrack[race.track].push(race);
     });
     
-    const dateObj = new Date(selectedDate);
+    const dateObj = new Date(selectedDate + 'T00:00:00');
     document.getElementById('selectedDateTitle').textContent = dateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
     
     const grid = document.getElementById('trackGrid');
@@ -275,7 +275,7 @@ function showRaceSelector() {
         return aNum - bNum;
     });
     
-    document.getElementById('selectedTrackTitle').textContent = `${selectedTrack} - ${new Date(selectedDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+    document.getElementById('selectedTrackTitle').textContent = `${selectedTrack} - ${new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
     
     const list = document.getElementById('raceList');
     list.innerHTML = '';
