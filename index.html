@@ -219,9 +219,10 @@
         .horse-card.selected .horse-number { color: var(--accent); }
         .picker-badge { position: static; padding: 0; border-radius: 50%; font-size: 14px; font-weight: 600; color: white; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; }
         .action-buttons { display: flex; gap: 15px; margin-top: 20px; }
+        #homeSvgBtn { width: 40px; height: 40px; padding: 0; display: flex; align-items: center; justify-content: center; }
         .back-btn { background: var(--bg2); color: var(--text2); border-color: var(--border2); }
         .back-btn:hover { background: var(--gray-100); }
-        .hidden { display: none; }
+        .hidden { display: none !important; }
         .info-box { background: var(--gray-100); border-left: 4px solid var(--text3); padding: 12px 16px; margin: 16px 0; border-radius: 4px; font-size: 13px; color: var(--text2); }
 
         /* Styling for SVG icons within buttons */
@@ -244,7 +245,7 @@
                     <p class="subtitle">Choose the horses you think will win, spoiler free!</p>
                 </div>
                 <div style="display: flex; gap: 10px; align-items: center;">
-                    <button id="homeSvgBtn" class="btn hidden" style="width: 40px; height: 40px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                    <button id="homeSvgBtn" class="btn hidden">
                         <!-- Icon inserted by JS -->
                     </button>
                 </div>
@@ -874,6 +875,7 @@ async function renderViewFromUrl() {
     document.getElementById('raceSelector').classList.add('hidden');
     document.getElementById('raceDetail').classList.add('hidden');
     document.getElementById('homeSvgBtn').classList.add('hidden');
+    document.getElementById('homeSvgBtn').innerHTML = ''; // Clear icon content
     
     const p = new URLSearchParams(window.location.search);
     let uv = p.get('view');
