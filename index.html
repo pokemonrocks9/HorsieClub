@@ -230,16 +230,26 @@
         <div class="header">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
-                    <h1 id="headerTitle">🏇 Horsie Picker</h1>
+                    <h1 id="headerTitle" style="display: inline-block; margin-right: 10px;">🏇 Horsie Picker</h1>
                     <p class="subtitle">Choose the horses you think will win, spoiler free!</p>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 10px; align-items: stretch;">
-                    <button id="backToHomeBtn" class="btn back-btn hidden" onclick="backToHome()">🏠 Home</button>
-                    <a href="https://jra.jp/JRAEN/AP/common/main" target="_blank" style="text-decoration: none;">
-                        <button class="btn" style="white-space: nowrap; width: 100%;">📺 Watch JRA Races</button>
-                    </a>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button id="homeSvgBtn" class="btn hidden" onclick="goToSetupAndClearHistory()" style="width: 40px; height: 40px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    </button>
                 </div>
             </div>
+        </div>
+
+        <style>
+            /* Styling for SVG icons within buttons */
+            .btn svg {
+                stroke: currentColor; /* Make SVG color match button text color */
+                fill: none;
+                stroke-width: 2;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+            }
         </div>
 
         <div id="setup" class="setup-section">
@@ -252,7 +262,9 @@
                     <p style="color: var(--text3);">Loading sessions...</p>
                 </div>
                 <div style="display: flex; gap: 10px; margin-top: 10px;">
-                    <button class="btn" onclick="refreshSessions()">🔄 Refresh</button>
+                    <button class="btn" onclick="refreshSessions()" style="width: 40px; height: 40px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-cw"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.5 10c.5-2.3 2.3-4.2 4.9-4.7C12.3 4.5 16 7.1 17.5 10"></path><path d="M20.5 14c-.5 2.3-2.3 4.2-4.9 4.7C11.7 19.5 8 16.9 6.5 14"></path></svg>
+                    </button>
                     <button class="btn" onclick="clearAllSessions()" style="background: #f44336;">🗑️ Clear All</button>
                 </div>
             </div>
@@ -502,6 +514,7 @@ async function joinSession(){
     U=u;
     S=s;
     document.getElementById('setup').classList.add('hidden');
+    document.getElementById('homeSvgBtn').classList.remove('hidden');
     await loadRaces();
     await loadAllSessionPicks();
     showDateSelector();
@@ -526,7 +539,6 @@ async function refreshRaces(){
 
 function showDateSelector(){
     document.getElementById('headerTitle').textContent='🏇 Select a Race Day';
-    document.getElementById('backToHomeBtn').classList.remove('hidden');
     const byDate={};
     races.forEach(r=>{
         r.date&&(byDate[r.date]||(byDate[r.date]=[]),byDate[r.date].push(r));
@@ -775,6 +787,24 @@ async function loadExistingPicks(){
     });
 }
 
+function goToSetupAndClearHistory() {
+    stopPoll();
+    U = '';
+    S = '';
+    D = '';
+    T = '';
+    R = null;
+    P.clear();
+    races = [];
+    document.getElementById('setup').classList.remove('hidden');
+    document.getElementById('dateSelector').classList.add('hidden');
+    document.getElementById('trackSelector').classList.add('hidden');
+    document.getElementById('raceSelector').classList.add('hidden');
+    document.getElementById('raceDetail').classList.add('hidden');
+    document.getElementById('homeSvgBtn').classList.add('hidden');
+    history.replaceState({ view: 'setup' }, '', window.location.pathname);
+}
+
 function backToHome(){
     stopPoll();
     document.getElementById('trackSelector').classList.add('hidden');
@@ -803,7 +833,7 @@ function backToRaceSelector(){
     document.getElementById('raceDetail').classList.add('hidden');
     showRaceSelector();
 }
-let updateUrl=(v,d='',t='',r='')=>{const u=new URL(window.location.origin+window.location.pathname);if(d)u.searchParams.set('date',d);if(t)u.searchParams.set('track',t);if(r)u.searchParams.set('raceId',r);u.searchParams.set('view',v);history.pushState({view:v,date:d,track:t,raceId:r},'',u.toString())};async function renderViewFromUrl(){document.getElementById('setup').classList.add('hidden');document.getElementById('dateSelector').classList.add('hidden');document.getElementById('trackSelector').classList.add('hidden');document.getElementById('raceSelector').classList.add('hidden');document.getElementById('raceDetail').classList.add('hidden');document.getElementById('backToHomeBtn').classList.add('hidden');const p=new URLSearchParams(window.location.search);const ud=p.get('date');const ut=p.get('track');const ur=p.get('raceId');if(!U||!S){document.getElementById('setup').classList.remove('hidden');return}document.getElementById('headerTitle').textContent='🏇 Horsie Picker';if(races.length===0&&(ud||ut||ur)){await loadRaces()}if(S&&(ud||ut||ur)){await loadAllSessionPicks()}if(ur&&ud&&ut){D=ud;T=ut;R=races.find(e=>e.id==ur&&e.date===D&&e.track===T);if(R){selectRace(R)}else{console.warn('Race not found for URL, falling back to race selector.');showRaceSelector()}}else if(ut&&ud){D=ud;T=ut;showTrackSelector()}else if(ud){D=ud;showDateSelector()}else{showDateSelector()}}
+let updateUrl=(v,d='',t='',r='')=>{const u=new URL(window.location.origin+window.location.pathname);if(d)u.searchParams.set('date',d);if(t)u.searchParams.set('track',t);if(r)u.searchParams.set('raceId',r);u.searchParams.set('view',v);history.pushState({view:v,date:d,track:t,raceId:r},'',u.toString())};async function renderViewFromUrl(){document.getElementById('setup').classList.add('hidden');document.getElementById('dateSelector').classList.add('hidden');document.getElementById('trackSelector').classList.add('hidden');document.getElementById('raceSelector').classList.add('hidden');document.getElementById('raceDetail').classList.add('hidden');const p=new URLSearchParams(window.location.search);const ud=p.get('date');const ut=p.get('track');const ur=p.get('raceId');if(!U||!S){document.getElementById('setup').classList.remove('hidden');return}document.getElementById('headerTitle').textContent='🏇 Horsie Picker';document.getElementById('homeSvgBtn').classList.remove('hidden');if(races.length===0&&(ud||ut||ur)){await loadRaces()}if(S&&(ud||ut||ur)){await loadAllSessionPicks()}if(ur&&ud&&ut){D=ud;T=ut;R=races.find(e=>e.id==ur&&e.date===D&&e.track===T);if(R){selectRace(R)}else{console.warn('Race not found for URL, falling back to race selector.');showRaceSelector()}}else if(ut&&ud){D=ud;T=ut;showTrackSelector()}else if(ud){D=ud;showDateSelector()}else{showDateSelector()}}
     </script>
 </body>
 </html>
