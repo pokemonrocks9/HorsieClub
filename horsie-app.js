@@ -6,7 +6,7 @@ let selectedDate = '';
 let selectedTrack = '';
 let selectedRace = null;
 let myPicks = new Set();
-let races = [];
+let races = []; // Renamed from 'races' to 'allRaces' to avoid conflict with local scope in renderViewFromUrl
 
 const API_URL = 'https://horsie.tytygoins.workers.dev';
 const GITHUB_RACES_URL = 'https://raw.githubusercontent.com/pokemonrocks9/HorsieClub/main/races.json';
@@ -187,9 +187,9 @@ async function joinSession() {
 
 async function loadRaces() {
     try {
-        const response = await fetch(GITHUB_RACES_URL);
-        races = await response.json();
-        console.log(`✅ Loaded ${races.length} races`);
+        const response = await fetch(GITHUB_RACES_URL); // Fetch from the global GITHUB_RACES_URL
+        races = await response.json(); // Assign to the global 'races' array
+        console.log(`✅ Loaded ${races.length} races`); 
     } catch (e) {
         console.error('Race load error:', e);
         alert('Error loading races. Please try again.');
