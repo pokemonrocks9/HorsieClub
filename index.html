@@ -223,6 +223,16 @@
         .back-btn:hover { background: var(--gray-100); }
         .hidden { display: none; }
         .info-box { background: var(--gray-100); border-left: 4px solid var(--text3); padding: 12px 16px; margin: 16px 0; border-radius: 4px; font-size: 13px; color: var(--text2); }
+
+        /* Styling for SVG icons within buttons */
+        .btn svg {
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -239,17 +249,6 @@
                     </button>
                 </div>
             </div>
-        </div>
-
-        <style>
-            /* Styling for SVG icons within buttons */
-            .btn svg {
-                stroke: currentColor; /* Make SVG color match button text color */
-                fill: none;
-                stroke-width: 2;
-                stroke-linecap: round;
-                stroke-linejoin: round;
-            }
         </div>
 
         <div id="setup" class="setup-section">
