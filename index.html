@@ -211,7 +211,7 @@
             pointer-events: none;
         }
         .horse-card:hover { border-color: var(--accent); }
-        .horse-card.selected { border-color: var(--accent); background: var(--bg); }
+        .horse-card.selected { border-color: var(--accent); background: var(--bg); border-width: 2px; }
         .horse-number { font-size: 17px; font-weight: 500; min-width: 32px; transition: color 0.5s ease; color: var(--text3); }
         .horse-name { font-size: 14px; flex: 1; color: var(--text); }
         .horse-card.selected .horse-name { font-weight: 500; color: var(--accent); }
@@ -691,18 +691,18 @@ async function loadExistingPicks(){
     
     // Remove all badges first
     document.querySelectorAll('.picker-badge').forEach(b=>b.remove());
-    document.querySelectorAll('.picked-by-user2').forEach(c=>c.classList.remove('picked-by-user2'));
     
+    // Thorough reset of all horse card styles and classes
     // Reset all backgrounds and borders
     document.querySelectorAll('.horse-card').forEach(c=>{
         c.style.background='';
         c.style.backgroundImage='';
         c.style.backgroundOrigin='';
         c.style.backgroundClip='';
-        c.style.border='';
-        if(!c.classList.contains('selected')){
-            c.style.border='2px solid var(--border)';
-        }
+        c.style.border='2px solid var(--border)'; // Explicitly set default 2px border
+        c.classList.remove('selected'); // Remove selected class
+        c.classList.remove('gradient-border'); // Remove gradient border class
+        c.classList.remove('picked-by-user2'); // Remove other user pick class
     });
     
     // Track horses picked by multiple users
@@ -712,6 +712,15 @@ async function loadExistingPicks(){
             if(!horsePickCounts[n])horsePickCounts[n]=[];
             horsePickCounts[n].push({user:u,color:colors[u]||(u===U?C:'#ff9800')});
         });
+    });
+
+    // Re-apply current user's selections (P)
+    P.forEach(num => {
+        const card = document.querySelector(`[data-horse-number="${num}"]`);
+        if (card) {
+            card.classList.add('selected');
+            card.style.background = `${C}15`; // Apply light accent background
+        }
     });
     
     // Add badges for all picks
