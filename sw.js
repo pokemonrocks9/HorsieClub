@@ -12,8 +12,13 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(ASSETS))
-      .then(() => self.skipWaiting())
   );
+});
+
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener('activate', event => {
@@ -30,6 +35,14 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
+  // Handle SPA navigation: Redirect all navigation requests to index.html
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      caches.match('index.html').then(response => response || fetch(event.request))
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then(response => response || fetch(event.request))
   );
