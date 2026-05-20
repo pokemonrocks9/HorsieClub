@@ -244,8 +244,8 @@
                     <p class="subtitle">Choose the horses you think will win, spoiler free!</p>
                 </div>
                 <div style="display: flex; gap: 10px; align-items: center;">
-                    <button id="homeSvgBtn" class="btn hidden" onclick="goToSetupAndClearHistory()" style="width: 40px; height: 40px; padding: 0; display: flex; align-items: center; justify-content: center;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <button id="homeSvgBtn" class="btn hidden" style="width: 40px; height: 40px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                        <!-- Icon inserted by JS -->
                     </button>
                 </div>
             </div>
@@ -395,10 +395,18 @@ function lightenColor(hex,amt){
 window.addEventListener('DOMContentLoaded',async()=>{
     const c=localStorage.getItem('userColor');
     c?(selectColor(c),applyTheme(c)):applyTheme('#f44336');
+    
+    // Restore session for deep-linking/refresh support
+    U = localStorage.getItem('horsie_user') || '';
+    S = localStorage.getItem('horsie_session') || '';
+
     await autoClean();
     refreshSessions();
     document.getElementById('sessionCode').addEventListener('input',updateBtn);
+    renderViewFromUrl();
 });
+
+window.addEventListener('popstate', () => renderViewFromUrl());
 
 async function autoClean(){
     try{
@@ -516,7 +524,7 @@ async function clearAllSessions(){
     }
 }
 
-async function joinSession(){
+async function joinSession() {
     const u=document.getElementById('username').value.trim(),s=document.getElementById('sessionCode').value.trim();
     if(!u||!s){
         alert('Enter both!');
@@ -524,11 +532,13 @@ async function joinSession(){
     }
     U=u;
     S=s;
-    document.getElementById('setup').classList.add('hidden');
+    localStorage.setItem('horsie_user', u);
+    localStorage.setItem('horsie_session', s);
     document.getElementById('homeSvgBtn').classList.remove('hidden');
     await loadRaces();
     await loadAllSessionPicks();
-    showDateSelector();
+    // Use replace:true so back from dates exits rather than showing login form
+    updateUrl('date', '', '', '', true);
 }
 
 async function loadRaces(){
@@ -541,10 +551,7 @@ async function loadRaces(){
 
 async function refreshRaces(){
     await loadRaces();
-    document.getElementById('trackSelector').classList.add('hidden');
-    document.getElementById('raceSelector').classList.add('hidden');
-    document.getElementById('raceDetail').classList.add('hidden');
-    showDateSelector();
+    updateUrl('date'); // Re-render the date selector
     alert(`Loaded ${races.length} races`);
 }
 
@@ -569,8 +576,7 @@ function showDateSelector(){
 
 function selectDate(d){
     D=d;
-    document.getElementById('dateSelector').classList.add('hidden');
-    showTrackSelector();
+    updateUrl('track', d);
 }
 
 function showTrackSelector(){
@@ -598,8 +604,7 @@ function showTrackSelector(){
 
 function selectTrack(t){
     T=t;
-    document.getElementById('trackSelector').classList.add('hidden');
-    showRaceSelector();
+    updateUrl('race', D, t);
 }
 
 function showRaceSelector(){
@@ -622,10 +627,14 @@ function showRaceSelector(){
 }
 
 function selectRace(r){
+    R = r;
+    updateUrl('detail', D, T, r.id);
+}
+
+function renderRaceDetail(r) {
     document.getElementById('headerTitle').textContent='🏇 Pick Your Horses';
     R=r;
     P.clear();
-    document.getElementById('raceSelector').classList.add('hidden');
     const g=r.grade?`<span class="grade-badge">${r.grade}</span>`:'';
     document.getElementById('selectedRaceTitle').innerHTML=`${r.title} ${g}`;
     document.getElementById('selectedRaceInfo').textContent=`${r.track} - ${r.distance} ${r.surface}`;
@@ -798,6 +807,12 @@ async function loadExistingPicks(){
     });
 }
 
+function confirmExitSession() {
+    if (confirm('Are you sure you want to exit the session? Your picks will be saved, but you will need to re-enter your name and session code.')) {
+        goToSetupAndClearHistory();
+    }
+}
+
 function goToSetupAndClearHistory() {
     stopPoll();
     U = '';
@@ -807,44 +822,111 @@ function goToSetupAndClearHistory() {
     R = null;
     P.clear();
     races = [];
+    localStorage.removeItem('horsie_user');
+    localStorage.removeItem('horsie_session');
+
     document.getElementById('setup').classList.remove('hidden');
     document.getElementById('dateSelector').classList.add('hidden');
     document.getElementById('trackSelector').classList.add('hidden');
     document.getElementById('raceSelector').classList.add('hidden');
     document.getElementById('raceDetail').classList.add('hidden');
     document.getElementById('homeSvgBtn').classList.add('hidden');
+    document.getElementById('headerTitle').textContent = '🏇 Horsie Picker'; // Reset header title
     history.replaceState({ view: 'setup' }, '', window.location.pathname);
 }
 
 function backToHome(){
-    stopPoll();
-    document.getElementById('trackSelector').classList.add('hidden');
-    document.getElementById('raceSelector').classList.add('hidden');
-    document.getElementById('raceDetail').classList.add('hidden');
-    showDateSelector();
+    history.back();
 }
 
 function backToDateSelector(){
-    stopPoll();
-    document.getElementById('trackSelector').classList.add('hidden');
-    document.getElementById('raceSelector').classList.add('hidden');
-    document.getElementById('raceDetail').classList.add('hidden');
-    showDateSelector();
+    history.back();
 }
 
 function backToTrackSelector(){
-    stopPoll();
-    document.getElementById('raceSelector').classList.add('hidden');
-    document.getElementById('raceDetail').classList.add('hidden');
-    showTrackSelector();
+    history.back();
 }
 
 function backToRaceSelector(){
-    stopPoll();
-    document.getElementById('raceDetail').classList.add('hidden');
-    showRaceSelector();
+    history.back();
 }
-let updateUrl=(v,d='',t='',r='')=>{const u=new URL(window.location.origin+window.location.pathname);if(d)u.searchParams.set('date',d);if(t)u.searchParams.set('track',t);if(r)u.searchParams.set('raceId',r);u.searchParams.set('view',v);history.pushState({view:v,date:d,track:t,raceId:r},'',u.toString())};async function renderViewFromUrl(){document.getElementById('setup').classList.add('hidden');document.getElementById('dateSelector').classList.add('hidden');document.getElementById('trackSelector').classList.add('hidden');document.getElementById('raceSelector').classList.add('hidden');document.getElementById('raceDetail').classList.add('hidden');const p=new URLSearchParams(window.location.search);const ud=p.get('date');const ut=p.get('track');const ur=p.get('raceId');if(!U||!S){document.getElementById('setup').classList.remove('hidden');return}document.getElementById('headerTitle').textContent='🏇 Horsie Picker';document.getElementById('homeSvgBtn').classList.remove('hidden');if(races.length===0&&(ud||ut||ur)){await loadRaces()}if(S&&(ud||ut||ur)){await loadAllSessionPicks()}if(ur&&ud&&ut){D=ud;T=ut;R=races.find(e=>e.id==ur&&e.date===D&&e.track===T);if(R){selectRace(R)}else{console.warn('Race not found for URL, falling back to race selector.');showRaceSelector()}}else if(ut&&ud){D=ud;T=ut;showTrackSelector()}else if(ud){D=ud;showDateSelector()}else{showDateSelector()}}
+
+function updateUrl(v, d = '', t = '', r = '', replace = false) {
+    const u = new URL(window.location.origin + window.location.pathname);
+    u.searchParams.set('view', v);
+    if (d) u.searchParams.set('date', d);
+    if (t) u.searchParams.set('track', t);
+    if (r) u.searchParams.set('raceId', r);
+    const state = { view: v, date: d, track: t, raceId: r };
+    if (replace) {
+        history.replaceState(state, '', u.toString());
+    } else {
+        history.pushState(state, '', u.toString());
+    }
+    renderViewFromUrl();
+}
+
+async function renderViewFromUrl() {
+    stopPoll();
+    document.getElementById('setup').classList.add('hidden');
+    document.getElementById('dateSelector').classList.add('hidden');
+    document.getElementById('trackSelector').classList.add('hidden');
+    document.getElementById('raceSelector').classList.add('hidden');
+    document.getElementById('raceDetail').classList.add('hidden');
+    document.getElementById('homeSvgBtn').classList.add('hidden');
+    
+    const p = new URLSearchParams(window.location.search);
+    let uv = p.get('view');
+    const ud = p.get('date');
+    const ut = p.get('track');
+    const ur = p.get('raceId');
+
+    if (!U || !S) {
+        document.getElementById('setup').classList.remove('hidden');
+        document.getElementById('headerTitle').textContent = '🏇 Horsie Picker';
+        if (uv || ud || ut || ur) {
+            history.replaceState({ view: 'setup' }, '', window.location.pathname);
+        }
+        return;
+    }
+
+    if (uv === 'setup') {
+        if (confirm('Are you sure you want to exit the session?')) {
+            goToSetupAndClearHistory();
+            return;
+        } else {
+            history.pushState({ view: 'date' }, '', window.location.pathname + '?view=date');
+            uv = 'date';
+        }
+    }
+
+    if (races.length === 0) await loadRaces();
+    if (allSessionPicks.length === 0) await loadAllSessionPicks();
+
+    const homeBtn = document.getElementById('homeSvgBtn');
+    homeBtn.classList.remove('hidden');
+
+    if (uv === 'date' || !uv) {
+        homeBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+        homeBtn.onclick = confirmExitSession;
+    } else {
+        homeBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>`;
+        homeBtn.onclick = () => updateUrl('date');
+    }
+
+    if (uv === 'detail' && ur && ud && ut) {
+        D = ud; T = ut;
+        R = races.find(e => e.id == ur && e.date === D && e.track === T);
+        if (R) renderRaceDetail(R); else updateUrl('race', D, T, '', true);
+    } else if (uv === 'race' && ut && ud) {
+        D = ud; T = ut; showRaceSelector();
+    } else if (uv === 'track' && ud) {
+        D = ud; showTrackSelector();
+    } else {
+        showDateSelector();
+        if (!uv) history.replaceState({ view: 'date' }, '', window.location.pathname + '?view=date');
+    }
+}
     </script>
 </body>
 </html>
