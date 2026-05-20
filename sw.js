@@ -1,4 +1,4 @@
-const VERSION = '1.2.3';
+const VERSION = '1.2.4';
 const CACHE_NAME = `horsie-picker-${VERSION}`;
 const ASSETS = [
   './',
