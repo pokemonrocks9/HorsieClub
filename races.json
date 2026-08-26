@@ -2266,6 +2266,76 @@
   },
   {
     "title": "Field",
+    "raceNumber": 8,
+    "grade": "",
+    "date": "2026-08-23",
+    "track": "Sapporo",
+    "distance": "1800m",
+    "surface": "Turf",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Shinyanga",
+        "jockey": "M.Iwata"
+      },
+      {
+        "number": 2,
+        "name": "Sakura Adria",
+        "jockey": "Y.Take"
+      },
+      {
+        "number": 3,
+        "name": "Brun van Dyck",
+        "jockey": "D.Ozawa"
+      },
+      {
+        "number": 4,
+        "name": "Charme Green",
+        "jockey": "T.Yoshimura"
+      },
+      {
+        "number": 5,
+        "name": "Rarao",
+        "jockey": "M.Kobayashi"
+      },
+      {
+        "number": 6,
+        "name": "Pityrodia",
+        "jockey": "K.Ikezoe"
+      },
+      {
+        "number": 7,
+        "name": "Gerberoy",
+        "jockey": "K.Matsuyama"
+      },
+      {
+        "number": 8,
+        "name": "Danon Presage",
+        "jockey": "N.Yokoyama"
+      },
+      {
+        "number": 9,
+        "name": "Meiner Cymbeline",
+        "jockey": "Y.Tannai"
+      },
+      {
+        "number": 10,
+        "name": "Gold Jester",
+        "jockey": "H.Mayuzumi"
+      },
+      {
+        "number": 11,
+        "name": "Soin de Victor",
+        "jockey": "K.Nagahama"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020208",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020208",
+    "id": 269
+  },
+  {
+    "title": "Field",
     "raceNumber": 7,
     "grade": "",
     "date": "2026-08-23",
@@ -2332,7 +2402,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020207",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020207",
-    "id": 269
+    "id": 270
   },
   {
     "title": "Field",
@@ -2417,7 +2487,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020206",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020206",
-    "id": 270
+    "id": 271
   },
   {
     "title": "Field",
@@ -2467,7 +2537,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020205",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020205",
-    "id": 271
+    "id": 272
   },
   {
     "title": "Field",
@@ -2562,7 +2632,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020204",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020204",
-    "id": 272
+    "id": 273
   },
   {
     "title": "Field",
@@ -2647,76 +2717,6 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020203",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020203",
-    "id": 273
-  },
-  {
-    "title": "Field",
-    "raceNumber": 2,
-    "grade": "",
-    "date": "2026-08-23",
-    "track": "Sapporo",
-    "distance": "1500m",
-    "surface": "Turf",
-    "horses": [
-      {
-        "number": 1,
-        "name": "Desert Spirit",
-        "jockey": "C.Lemaire"
-      },
-      {
-        "number": 2,
-        "name": "Tom Curiosa",
-        "jockey": "D.Ozawa"
-      },
-      {
-        "number": 3,
-        "name": "Regent Ace",
-        "jockey": "K.Ikezoe"
-      },
-      {
-        "number": 4,
-        "name": "Cigales",
-        "jockey": "H.Wada"
-      },
-      {
-        "number": 5,
-        "name": "Tiaraed",
-        "jockey": "T.Yokoyama"
-      },
-      {
-        "number": 7,
-        "name": "Sun Silvery",
-        "jockey": "K.Kawamata"
-      },
-      {
-        "number": 8,
-        "name": "Sun Legato",
-        "jockey": "S.Hamanaka"
-      },
-      {
-        "number": 9,
-        "name": "Arde Shinzan",
-        "jockey": "Y.Tannai"
-      },
-      {
-        "number": 10,
-        "name": "Will Revia",
-        "jockey": "R.Yokoyama"
-      },
-      {
-        "number": 11,
-        "name": "Secret Tower",
-        "jockey": "N.Furukawa"
-      },
-      {
-        "number": 12,
-        "name": "Mutchiri Style",
-        "jockey": "M.Iwata"
-      }
-    ],
-    "videoUrl": "https://japanracing.jp/en/",
-    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020202",
-    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020202",
     "id": 274
   },
   {
