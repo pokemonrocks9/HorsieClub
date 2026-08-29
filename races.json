@@ -1,5 +1,375 @@
 [
   {
+    "title": "Field",
+    "raceNumber": 12,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Niigata",
+    "distance": "1200m",
+    "surface": "Dirt",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Gardino",
+        "jockey": "T.Ishida"
+      },
+      {
+        "number": 2,
+        "name": "Eifer Jet",
+        "jockey": "I.Kowata"
+      },
+      {
+        "number": 3,
+        "name": "Three Cause",
+        "jockey": "M.Iwata"
+      },
+      {
+        "number": 4,
+        "name": "Eteoclos",
+        "jockey": "M.Sugihara"
+      },
+      {
+        "number": 5,
+        "name": "Go Go Punch",
+        "jockey": "F.Ishigami"
+      },
+      {
+        "number": 6,
+        "name": "Jack Nadal",
+        "jockey": "Y.Kawada"
+      },
+      {
+        "number": 7,
+        "name": "Crown Freed",
+        "jockey": "N.Uezato"
+      },
+      {
+        "number": 8,
+        "name": "Satono Escape",
+        "jockey": "H.Tanabe"
+      },
+      {
+        "number": 9,
+        "name": "Smart Bull",
+        "jockey": "H.Uchida"
+      },
+      {
+        "number": 10,
+        "name": "Gambare Bear",
+        "jockey": "Y.Nonaka"
+      },
+      {
+        "number": 11,
+        "name": "Maltese Don",
+        "jockey": "J.Shimada"
+      },
+      {
+        "number": 12,
+        "name": "Nine of Letter",
+        "jockey": "Y.Hara"
+      },
+      {
+        "number": 13,
+        "name": "Compact Fight",
+        "jockey": "R.Sugahara"
+      },
+      {
+        "number": 14,
+        "name": "Lavender Haze",
+        "jockey": "R.Kozaki"
+      },
+      {
+        "number": 15,
+        "name": "J L Liner",
+        "jockey": "S.Kobayashi"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030412",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030412",
+    "id": 73
+  },
+  {
+    "title": "Field",
+    "raceNumber": 11,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Niigata",
+    "distance": "1800m",
+    "surface": "Turf",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Blu Bambina",
+        "jockey": "T.Ishida"
+      },
+      {
+        "number": 2,
+        "name": "Sheer Bliss",
+        "jockey": "K.Miura"
+      },
+      {
+        "number": 3,
+        "name": "Sky Dance Time",
+        "jockey": "F.Ishigami"
+      },
+      {
+        "number": 4,
+        "name": "Nac White",
+        "jockey": "Y.Nonaka"
+      },
+      {
+        "number": 5,
+        "name": "Cantina",
+        "jockey": "Y.Hara"
+      },
+      {
+        "number": 6,
+        "name": "Nisinokomatimusume",
+        "jockey": "K.Kikuzawa"
+      },
+      {
+        "number": 7,
+        "name": "Honey Orchestra",
+        "jockey": "R.Kozaki"
+      },
+      {
+        "number": 8,
+        "name": "Darlinghurst",
+        "jockey": "M.Iwata"
+      },
+      {
+        "number": 9,
+        "name": "K Two Rupiah",
+        "jockey": "N.Uezato"
+      },
+      {
+        "number": 10,
+        "name": "Tassel Knot",
+        "jockey": "K.Tosaki"
+      },
+      {
+        "number": 11,
+        "name": "Schon Stier",
+        "jockey": "M.Sugihara"
+      },
+      {
+        "number": 12,
+        "name": "Valles Marineris",
+        "jockey": "A.Tsumura"
+      },
+      {
+        "number": 13,
+        "name": "Coco Solare",
+        "jockey": "M.Muto"
+      },
+      {
+        "number": 14,
+        "name": "Aoi Haruka",
+        "jockey": "S.Imamura"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030411",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030411",
+    "id": 74
+  },
+  {
+    "title": "Field",
+    "raceNumber": 10,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Niigata",
+    "distance": "1800m",
+    "surface": "Dirt",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Cabo Frio",
+        "jockey": "M.Michel"
+      },
+      {
+        "number": 2,
+        "name": "Sonata Moonlight",
+        "jockey": "Y.Hara"
+      },
+      {
+        "number": 3,
+        "name": "Articulate",
+        "jockey": "H.Uchida"
+      },
+      {
+        "number": 4,
+        "name": "Pawa Poke Wars",
+        "jockey": "N.Uezato"
+      },
+      {
+        "number": 5,
+        "name": "Crying Now",
+        "jockey": "M.Iwata"
+      },
+      {
+        "number": 6,
+        "name": "Logi Kiseki",
+        "jockey": "K.Tosaki"
+      },
+      {
+        "number": 7,
+        "name": "Canopus",
+        "jockey": "T.Ishida"
+      },
+      {
+        "number": 8,
+        "name": "Zan Tesoro",
+        "jockey": "D.Shibata"
+      },
+      {
+        "number": 9,
+        "name": "Humorada Epica",
+        "jockey": "F.Ishigami"
+      },
+      {
+        "number": 10,
+        "name": "Sangrant",
+        "jockey": "K.Miura"
+      },
+      {
+        "number": 11,
+        "name": "Valk",
+        "jockey": "H.Kowata"
+      },
+      {
+        "number": 12,
+        "name": "Santa Peer",
+        "jockey": "K.Kikuzawa"
+      },
+      {
+        "number": 13,
+        "name": "A Shin Kiwi",
+        "jockey": "T.Eda"
+      },
+      {
+        "number": 14,
+        "name": "Majigire Curren",
+        "jockey": "Y.Nonaka"
+      },
+      {
+        "number": 15,
+        "name": "Cafe Proud",
+        "jockey": "G.Mizunuma"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030410",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030410",
+    "id": 75
+  },
+  {
+    "title": "SENKO TOKUBETSU (Allowance (2 Win)) Field",
+    "raceNumber": 9,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Niigata",
+    "distance": "1000m",
+    "surface": "Turf",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Calendula",
+        "jockey": "J.Shimada"
+      },
+      {
+        "number": 2,
+        "name": "Satono Arpeggio",
+        "jockey": "M.Michel"
+      },
+      {
+        "number": 3,
+        "name": "Zendan Taka",
+        "jockey": "M.Sugihara"
+      },
+      {
+        "number": 4,
+        "name": "Fresh Run",
+        "jockey": "T.Ishida"
+      },
+      {
+        "number": 5,
+        "name": "Fights On",
+        "jockey": "K.Miura"
+      },
+      {
+        "number": 6,
+        "name": "Erika Carina",
+        "jockey": "Y.Hara"
+      },
+      {
+        "number": 7,
+        "name": "Ryuno Tabuk",
+        "jockey": "N.Uezato"
+      },
+      {
+        "number": 8,
+        "name": "Honey Laurier",
+        "jockey": "K.Kikuzawa"
+      },
+      {
+        "number": 9,
+        "name": "Bandito",
+        "jockey": "R.Kozaki"
+      },
+      {
+        "number": 10,
+        "name": "Kintra Dancer",
+        "jockey": "Y.Nonaka"
+      },
+      {
+        "number": 11,
+        "name": "Vip Moulin",
+        "jockey": "G.Maruyama"
+      },
+      {
+        "number": 12,
+        "name": "Regina Rose",
+        "jockey": "A.Tsumura"
+      },
+      {
+        "number": 13,
+        "name": "B I Forte",
+        "jockey": "T.Eda"
+      },
+      {
+        "number": 14,
+        "name": "Kenkyo",
+        "jockey": "K.Maruta"
+      },
+      {
+        "number": 15,
+        "name": "Misueru",
+        "jockey": "M.Muto"
+      },
+      {
+        "number": 16,
+        "name": "Spellcaster",
+        "jockey": "S.Ishibashi"
+      },
+      {
+        "number": 17,
+        "name": "La Torche",
+        "jockey": "Y.Iwata"
+      },
+      {
+        "number": 18,
+        "name": "Ventura",
+        "jockey": "M.Iwata"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030409",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030409",
+    "id": 76
+  },
+  {
     "title": "NIIGATA KINEN Field",
     "raceNumber": 8,
     "grade": "G3",
@@ -67,7 +437,997 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030408",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030408",
-    "id": 72
+    "id": 77
+  },
+  {
+    "title": "NIHONKAI STAKES (Allowance (3 Win)) Field",
+    "raceNumber": 7,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Niigata",
+    "distance": "2200m",
+    "surface": "Turf",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Shadow Meteor",
+        "jockey": "K.Miura"
+      },
+      {
+        "number": 2,
+        "name": "Win Daisy",
+        "jockey": "Y.Iwata"
+      },
+      {
+        "number": 3,
+        "name": "Charing Cross",
+        "jockey": "K.Tosaki"
+      },
+      {
+        "number": 4,
+        "name": "Schwarz Masamune",
+        "jockey": "J.Takada"
+      },
+      {
+        "number": 5,
+        "name": "Sadamu Opsis",
+        "jockey": "C.Lemaire"
+      },
+      {
+        "number": 6,
+        "name": "Namura Hooker",
+        "jockey": "Y.Hara"
+      },
+      {
+        "number": 7,
+        "name": "Ostrava",
+        "jockey": "A.Tsumura"
+      },
+      {
+        "number": 8,
+        "name": "Bensalem",
+        "jockey": "M.Iwata"
+      },
+      {
+        "number": 9,
+        "name": "Taisei Feerique",
+        "jockey": "R.Kozaki"
+      },
+      {
+        "number": 10,
+        "name": "Satono Patriot",
+        "jockey": "Y.Kawada"
+      },
+      {
+        "number": 11,
+        "name": "Rinfrescante",
+        "jockey": "S.Ishibashi"
+      },
+      {
+        "number": 12,
+        "name": "Clini Clown",
+        "jockey": "K.Kikuzawa"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030407",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030407",
+    "id": 78
+  },
+  {
+    "title": "RYOTSUWAN TOKUBETSU (Allowance (2 Win)) Field",
+    "raceNumber": 6,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Niigata",
+    "distance": "1800m",
+    "surface": "Dirt",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Piko Sea",
+        "jockey": "H.Uchida"
+      },
+      {
+        "number": 2,
+        "name": "B B Agile",
+        "jockey": "C.Lemaire"
+      },
+      {
+        "number": 3,
+        "name": "October Nine",
+        "jockey": "K.Tosaki"
+      },
+      {
+        "number": 4,
+        "name": "Nishino Kentaman",
+        "jockey": "S.Imamura"
+      },
+      {
+        "number": 5,
+        "name": "Copano Evita",
+        "jockey": "J.Shimada"
+      },
+      {
+        "number": 6,
+        "name": "Alberic",
+        "jockey": "K.Miura"
+      },
+      {
+        "number": 7,
+        "name": "To the Moon",
+        "jockey": "Y.Iwata"
+      },
+      {
+        "number": 8,
+        "name": "Star Ship",
+        "jockey": "Y.Kawada"
+      },
+      {
+        "number": 9,
+        "name": "Vai Vai",
+        "jockey": "R.Kozaki"
+      },
+      {
+        "number": 10,
+        "name": "Flashing",
+        "jockey": "K.Maruta"
+      },
+      {
+        "number": 11,
+        "name": "J K Bomber",
+        "jockey": "K.Kikuzawa"
+      },
+      {
+        "number": 12,
+        "name": "Mahana",
+        "jockey": "S.Ishibashi"
+      },
+      {
+        "number": 13,
+        "name": "Clos de la Barre",
+        "jockey": "K.Ikezoe"
+      },
+      {
+        "number": 14,
+        "name": "Cosmo Conferma",
+        "jockey": "D.Shibata"
+      },
+      {
+        "number": 15,
+        "name": "Nord Ovest",
+        "jockey": "Y.Hara"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030406",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030406",
+    "id": 79
+  },
+  {
+    "title": "Field",
+    "raceNumber": 5,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Niigata",
+    "distance": "1400m",
+    "surface": "Turf",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Serienkonigin",
+        "jockey": "Y.Kawada"
+      },
+      {
+        "number": 2,
+        "name": "Choco Brownie",
+        "jockey": "Y.Hara"
+      },
+      {
+        "number": 3,
+        "name": "God Ray",
+        "jockey": "T.Ishida"
+      },
+      {
+        "number": 4,
+        "name": "Suteki Surprise",
+        "jockey": "S.Imamura"
+      },
+      {
+        "number": 5,
+        "name": "Enano Musume",
+        "jockey": "K.Maruta"
+      },
+      {
+        "number": 6,
+        "name": "Round Hill",
+        "jockey": "K.Kikuzawa"
+      },
+      {
+        "number": 7,
+        "name": "F T Vento",
+        "jockey": "F.Ishigami"
+      },
+      {
+        "number": 8,
+        "name": "Color of Success",
+        "jockey": "R.Kozaki"
+      },
+      {
+        "number": 9,
+        "name": "Arias",
+        "jockey": "K.Miura"
+      },
+      {
+        "number": 10,
+        "name": "Sol Tiara",
+        "jockey": "M.Michel"
+      },
+      {
+        "number": 11,
+        "name": "On N'a Qu'une Vie",
+        "jockey": "H.Tanabe"
+      },
+      {
+        "number": 12,
+        "name": "Neo Ambo",
+        "jockey": "Y.Nonaka"
+      },
+      {
+        "number": 13,
+        "name": "Win Terra Gina",
+        "jockey": "A.Tsumura"
+      },
+      {
+        "number": 14,
+        "name": "Wine Red Heart",
+        "jockey": "N.Uezato"
+      },
+      {
+        "number": 15,
+        "name": "Le Dit du Genji",
+        "jockey": "J.Shimada"
+      },
+      {
+        "number": 16,
+        "name": "Pervictor",
+        "jockey": "M.Iwata"
+      },
+      {
+        "number": 17,
+        "name": "A Shin Ikusaboshi",
+        "jockey": "H.Kowata"
+      },
+      {
+        "number": 18,
+        "name": "Mikros Gigas",
+        "jockey": "M.Sugihara"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030405",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030405",
+    "id": 80
+  },
+  {
+    "title": "Field",
+    "raceNumber": 4,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Niigata",
+    "distance": "1800m",
+    "surface": "Turf",
+    "horses": [
+      {
+        "number": 1,
+        "name": "His Story",
+        "jockey": "J.Shimada"
+      },
+      {
+        "number": 2,
+        "name": "Cestino",
+        "jockey": "C.Lemaire"
+      },
+      {
+        "number": 3,
+        "name": "Gaya's Samurai",
+        "jockey": "H.Tanabe"
+      },
+      {
+        "number": 4,
+        "name": "Catch Up",
+        "jockey": "K.Kikuzawa"
+      },
+      {
+        "number": 5,
+        "name": "Oruri",
+        "jockey": "Y.Hara"
+      },
+      {
+        "number": 6,
+        "name": "Pentozalis",
+        "jockey": "Y.Iwata"
+      },
+      {
+        "number": 7,
+        "name": "Meiner Vulcanus",
+        "jockey": "D.Shibata"
+      },
+      {
+        "number": 8,
+        "name": "Daddy's Regalia",
+        "jockey": "M.Iwata"
+      },
+      {
+        "number": 9,
+        "name": "Texas",
+        "jockey": "A.Tsumura"
+      },
+      {
+        "number": 10,
+        "name": "Rias Heart",
+        "jockey": "M.Muto"
+      },
+      {
+        "number": 11,
+        "name": "Live Tequila",
+        "jockey": "M.Sugihara"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030404",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030404",
+    "id": 81
+  },
+  {
+    "title": "Field",
+    "raceNumber": 3,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Niigata",
+    "distance": "2000m",
+    "surface": "Turf",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Queijada",
+        "jockey": "D.Shibata"
+      },
+      {
+        "number": 2,
+        "name": "Nishino Lyrics",
+        "jockey": "S.Ishibashi"
+      },
+      {
+        "number": 3,
+        "name": "Icarus Tesoro",
+        "jockey": "M.Iwata"
+      },
+      {
+        "number": 4,
+        "name": "Taisei Soaring",
+        "jockey": "K.Kikuzawa"
+      },
+      {
+        "number": 5,
+        "name": "Ex Machina",
+        "jockey": "A.Tsumura"
+      },
+      {
+        "number": 6,
+        "name": "Winning Ray",
+        "jockey": "Y.Iwata"
+      },
+      {
+        "number": 7,
+        "name": "Handen Blaze",
+        "jockey": "R.Kozaki"
+      },
+      {
+        "number": 8,
+        "name": "Lux Iterum",
+        "jockey": "F.Ishigami"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030403",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030403",
+    "id": 82
+  },
+  {
+    "title": "Field",
+    "raceNumber": 2,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Niigata",
+    "distance": "1800m",
+    "surface": "Dirt",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Gold Burning",
+        "jockey": "F.Ishigami"
+      },
+      {
+        "number": 2,
+        "name": "Gold Schon",
+        "jockey": "S.Imamura"
+      },
+      {
+        "number": 3,
+        "name": "Uranographia",
+        "jockey": "M.Iwata"
+      },
+      {
+        "number": 4,
+        "name": "Might Layer",
+        "jockey": "A.Tsumura"
+      },
+      {
+        "number": 5,
+        "name": "Michel Barows",
+        "jockey": "K.Miura"
+      },
+      {
+        "number": 6,
+        "name": "Nishino McIlroy",
+        "jockey": "Y.Nonaka"
+      },
+      {
+        "number": 7,
+        "name": "P M Linda",
+        "jockey": "M.Muto"
+      },
+      {
+        "number": 8,
+        "name": "Wizard City",
+        "jockey": "H.Kameda"
+      },
+      {
+        "number": 9,
+        "name": "Red Mau Loa",
+        "jockey": "Y.Kawada"
+      },
+      {
+        "number": 10,
+        "name": "Stare nel Vento",
+        "jockey": "Y.Hara"
+      },
+      {
+        "number": 11,
+        "name": "Gigant Schlag",
+        "jockey": "G.Maruyama"
+      },
+      {
+        "number": 12,
+        "name": "Ecoro Guerin",
+        "jockey": "K.Kikuzawa"
+      },
+      {
+        "number": 13,
+        "name": "Taisei Ritter",
+        "jockey": "T.Ishida"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030402",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030402",
+    "id": 83
+  },
+  {
+    "title": "Field",
+    "raceNumber": 1,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Niigata",
+    "distance": "Unknown",
+    "surface": "Turf",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Flame Joker",
+        "jockey": "K.Oehara"
+      },
+      {
+        "number": 2,
+        "name": "Nishino Invicta",
+        "jockey": "K.Ban"
+      },
+      {
+        "number": 3,
+        "name": "Nishinocoupdecoeur",
+        "jockey": "G.Mizunuma"
+      },
+      {
+        "number": 4,
+        "name": "Meisho Breguet",
+        "jockey": "M.Nakamura"
+      },
+      {
+        "number": 5,
+        "name": "Mar d'Irlanda",
+        "jockey": "S.Ueno"
+      },
+      {
+        "number": 6,
+        "name": "Epoca Spiga",
+        "jockey": "T.Inoue"
+      },
+      {
+        "number": 7,
+        "name": "Baton Road",
+        "jockey": "R.Kobayashi"
+      },
+      {
+        "number": 8,
+        "name": "Black Shield",
+        "jockey": "K.Komaki"
+      },
+      {
+        "number": 9,
+        "name": "Awesome Stroke",
+        "jockey": "T.Kusano"
+      },
+      {
+        "number": 10,
+        "name": "Yoshino Yattarude",
+        "jockey": "Y.Kuroiwa"
+      },
+      {
+        "number": 11,
+        "name": "Tramandare",
+        "jockey": "T.Sakaguchi"
+      },
+      {
+        "number": 12,
+        "name": "Snow Rin",
+        "jockey": "Y.Eda"
+      },
+      {
+        "number": 13,
+        "name": "Golden Step",
+        "jockey": "J.Takada"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030401",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030401",
+    "id": 84
+  },
+  {
+    "title": "Field",
+    "raceNumber": 12,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Chukyo",
+    "distance": "1200m",
+    "surface": "Dirt",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Vent Doux",
+        "jockey": "S.Morita"
+      },
+      {
+        "number": 2,
+        "name": "On the Noir",
+        "jockey": "H.Miyuki"
+      },
+      {
+        "number": 3,
+        "name": "Argyle Shore",
+        "jockey": "Y.Kitamura"
+      },
+      {
+        "number": 4,
+        "name": "Sayono Parallax",
+        "jockey": "H.Kawasu"
+      },
+      {
+        "number": 5,
+        "name": "Mononoke",
+        "jockey": "M.Sakai"
+      },
+      {
+        "number": 6,
+        "name": "Danon State",
+        "jockey": "Y.Tsunoda"
+      },
+      {
+        "number": 7,
+        "name": "Miss Henry",
+        "jockey": "Y.Shibata"
+      },
+      {
+        "number": 8,
+        "name": "Legendary Day",
+        "jockey": "Y.Hishida"
+      },
+      {
+        "number": 9,
+        "name": "Meravigliosa",
+        "jockey": "K.Kawabata"
+      },
+      {
+        "number": 10,
+        "name": "Glasgow",
+        "jockey": "O.Tayama"
+      },
+      {
+        "number": 11,
+        "name": "Hiruno Puglia",
+        "jockey": "T.Akiyama"
+      },
+      {
+        "number": 12,
+        "name": "Love Never Dies",
+        "jockey": "K.Matsuyama"
+      },
+      {
+        "number": 13,
+        "name": "Taisei Blow",
+        "jockey": "K.Taguchi"
+      },
+      {
+        "number": 14,
+        "name": "Pawa Poke Bee",
+        "jockey": "Y.Nakai"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030412",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030412",
+    "id": 193
+  },
+  {
+    "title": "Field",
+    "raceNumber": 11,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Chukyo",
+    "distance": "1400m",
+    "surface": "Turf",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Primo Mare",
+        "jockey": "Y.Nakai"
+      },
+      {
+        "number": 2,
+        "name": "Tokai Sieg",
+        "jockey": "Y.Hishida"
+      },
+      {
+        "number": 3,
+        "name": "Chant d'Eglise",
+        "jockey": "A.Tomita"
+      },
+      {
+        "number": 4,
+        "name": "Meisho Tri Io",
+        "jockey": "K.Dazai"
+      },
+      {
+        "number": 5,
+        "name": "Barfleur",
+        "jockey": "Y.Tsunoda"
+      },
+      {
+        "number": 6,
+        "name": "Lucent Moon",
+        "jockey": "S.Morita"
+      },
+      {
+        "number": 7,
+        "name": "Happiness Sunrise",
+        "jockey": "K.Matsuyama"
+      },
+      {
+        "number": 8,
+        "name": "Sweet Pomelo",
+        "jockey": "H.Kawasu"
+      },
+      {
+        "number": 9,
+        "name": "Dernier Joy",
+        "jockey": "K.Taguchi"
+      },
+      {
+        "number": 10,
+        "name": "Plus Eclat",
+        "jockey": "T.Danno"
+      },
+      {
+        "number": 11,
+        "name": "Lintu Laulu",
+        "jockey": "H.Miyuki"
+      },
+      {
+        "number": 12,
+        "name": "Nadeshiko Zakura",
+        "jockey": "T.Akiyama"
+      },
+      {
+        "number": 13,
+        "name": "Patronus",
+        "jockey": "S.Yoshimura"
+      },
+      {
+        "number": 14,
+        "name": "Mokapu Wing",
+        "jockey": "O.Tayama"
+      },
+      {
+        "number": 15,
+        "name": "Mikki la Vita",
+        "jockey": "A.Nishimura"
+      },
+      {
+        "number": 16,
+        "name": "Bold Peito",
+        "jockey": "F.Matsuwaka"
+      },
+      {
+        "number": 17,
+        "name": "Carlotto",
+        "jockey": "R.Sakai"
+      },
+      {
+        "number": 18,
+        "name": "Ecoro Dian",
+        "jockey": "M.Demuro"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030411",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030411",
+    "id": 194
+  },
+  {
+    "title": "Field",
+    "raceNumber": 10,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Chukyo",
+    "distance": "2000m",
+    "surface": "Turf",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Real Center",
+        "jockey": "T.Danno"
+      },
+      {
+        "number": 2,
+        "name": "Eterno Legame",
+        "jockey": "A.Tomita"
+      },
+      {
+        "number": 3,
+        "name": "Saimon Noble",
+        "jockey": "S.Morita"
+      },
+      {
+        "number": 4,
+        "name": "Barba Rap",
+        "jockey": "O.Tayama"
+      },
+      {
+        "number": 5,
+        "name": "Berkshire City",
+        "jockey": "F.Matsuwaka"
+      },
+      {
+        "number": 6,
+        "name": "Red Variato",
+        "jockey": "A.Nishimura"
+      },
+      {
+        "number": 7,
+        "name": "Chouette Amour",
+        "jockey": "Y.Tsunoda"
+      },
+      {
+        "number": 8,
+        "name": "Zenno Invoke",
+        "jockey": "H.Miyuki"
+      },
+      {
+        "number": 9,
+        "name": "Lord Merveille",
+        "jockey": "S.Yoshimura"
+      },
+      {
+        "number": 10,
+        "name": "Lord Stunning",
+        "jockey": "R.Sakai"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030410",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030410",
+    "id": 195
+  },
+  {
+    "title": "Field",
+    "raceNumber": 9,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Chukyo",
+    "distance": "1800m",
+    "surface": "Dirt",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Very Very Happy",
+        "jockey": "K.Kokubun"
+      },
+      {
+        "number": 2,
+        "name": "Splendore",
+        "jockey": "Y.Kokubun"
+      },
+      {
+        "number": 3,
+        "name": "Kimiga Sukida",
+        "jockey": "S.Yoshimura"
+      },
+      {
+        "number": 4,
+        "name": "Aube Fraiche",
+        "jockey": "Y.Nagaoka"
+      },
+      {
+        "number": 5,
+        "name": "Tamamo Parfum",
+        "jockey": "Y.Shibata"
+      },
+      {
+        "number": 6,
+        "name": "Tagano Artemis",
+        "jockey": "K.Matsuyama"
+      },
+      {
+        "number": 7,
+        "name": "Danon Prelude",
+        "jockey": "Y.Tsunoda"
+      },
+      {
+        "number": 8,
+        "name": "Anne Growth",
+        "jockey": "M.Nagashima"
+      },
+      {
+        "number": 9,
+        "name": "Smile Garden",
+        "jockey": "A.Nishimura"
+      },
+      {
+        "number": 10,
+        "name": "Akino Beauty",
+        "jockey": "R.Sameshima"
+      },
+      {
+        "number": 11,
+        "name": "Smart Etoile",
+        "jockey": "K.Kawabata"
+      },
+      {
+        "number": 12,
+        "name": "Rose Raffine",
+        "jockey": "R.Sakai"
+      },
+      {
+        "number": 13,
+        "name": "Battle Selene",
+        "jockey": "K.Taguchi"
+      },
+      {
+        "number": 14,
+        "name": "Leukothea",
+        "jockey": "A.Tomita"
+      },
+      {
+        "number": 15,
+        "name": "La Mia Speranza",
+        "jockey": "Y.Kitamura"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030409",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030409",
+    "id": 196
+  },
+  {
+    "title": "KUMANO TOKUBETSU (Allowance (2 Win)) Field",
+    "raceNumber": 8,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Chukyo",
+    "distance": "2200m",
+    "surface": "Turf",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Bullet Pass",
+        "jockey": "S.Yoshimura"
+      },
+      {
+        "number": 2,
+        "name": "Sagarmatha",
+        "jockey": "K.Matsuyama"
+      },
+      {
+        "number": 3,
+        "name": "Noche Cerrada",
+        "jockey": "A.Nishimura"
+      },
+      {
+        "number": 4,
+        "name": "Shonan Howl",
+        "jockey": "A.Tomita"
+      },
+      {
+        "number": 5,
+        "name": "Sorpassare",
+        "jockey": "T.Danno"
+      },
+      {
+        "number": 6,
+        "name": "New Credo",
+        "jockey": "F.Matsuwaka"
+      },
+      {
+        "number": 7,
+        "name": "Kafuji Emmental",
+        "jockey": "R.Sakai"
+      },
+      {
+        "number": 8,
+        "name": "Yamanin Loop",
+        "jockey": "K.Dazai"
+      },
+      {
+        "number": 9,
+        "name": "Jet Blade",
+        "jockey": "K.Taguchi"
+      },
+      {
+        "number": 10,
+        "name": "Shadow Master",
+        "jockey": "Y.Kitamura"
+      },
+      {
+        "number": 11,
+        "name": "Vip Chase",
+        "jockey": "Y.Hishida"
+      },
+      {
+        "number": 12,
+        "name": "Sweet Orange",
+        "jockey": "T.Akiyama"
+      },
+      {
+        "number": 13,
+        "name": "Hortus Palatium",
+        "jockey": "O.Tayama"
+      },
+      {
+        "number": 14,
+        "name": "Jun Raiden",
+        "jockey": "M.Demuro"
+      },
+      {
+        "number": 15,
+        "name": "Meisho Narukami",
+        "jockey": "H.Miyuki"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030408",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030408",
+    "id": 197
   },
   {
     "title": "CHUKYO NISAI STAKES Field",
@@ -127,7 +1487,1452 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030407",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030407",
-    "id": 181
+    "id": 198
+  },
+  {
+    "title": "SHIRAKAWAGO STAKES (Allowance (3 Win)) Field",
+    "raceNumber": 6,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Chukyo",
+    "distance": "1900m",
+    "surface": "Dirt",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Sunset Bright",
+        "jockey": "T.Akiyama"
+      },
+      {
+        "number": 2,
+        "name": "Penna Veloce",
+        "jockey": "Y.Kitamura"
+      },
+      {
+        "number": 3,
+        "name": "Dantsu Shitan",
+        "jockey": "K.Dazai"
+      },
+      {
+        "number": 4,
+        "name": "Vip Scorpion",
+        "jockey": "M.Demuro"
+      },
+      {
+        "number": 5,
+        "name": "Schalkhaft",
+        "jockey": "S.Yoshimura"
+      },
+      {
+        "number": 6,
+        "name": "B B Closer",
+        "jockey": "R.Sakai"
+      },
+      {
+        "number": 7,
+        "name": "Taisei Kaiser",
+        "jockey": "T.Danno"
+      },
+      {
+        "number": 8,
+        "name": "In the Moment",
+        "jockey": "O.Tayama"
+      },
+      {
+        "number": 9,
+        "name": "Rudesheim",
+        "jockey": "A.Nishimura"
+      },
+      {
+        "number": 10,
+        "name": "Indicator",
+        "jockey": "M.Sakai"
+      },
+      {
+        "number": 11,
+        "name": "Fumus Mut",
+        "jockey": "Y.Hishida"
+      },
+      {
+        "number": 12,
+        "name": "Quantum Wave",
+        "jockey": "H.Miyuki"
+      },
+      {
+        "number": 13,
+        "name": "Meisho Shinano",
+        "jockey": "K.Taguchi"
+      },
+      {
+        "number": 14,
+        "name": "Levante City",
+        "jockey": "K.Matsuyama"
+      },
+      {
+        "number": 15,
+        "name": "Kichi Parfait",
+        "jockey": "F.Matsuwaka"
+      },
+      {
+        "number": 16,
+        "name": "God Espada",
+        "jockey": "Y.Tsunoda"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030406",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030406",
+    "id": 199
+  },
+  {
+    "title": "Field",
+    "raceNumber": 5,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Chukyo",
+    "distance": "1800m",
+    "surface": "Dirt",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Magic Blue",
+        "jockey": "K.Dazai"
+      },
+      {
+        "number": 2,
+        "name": "Scorpion Imeru",
+        "jockey": "R.Takakura"
+      },
+      {
+        "number": 3,
+        "name": "Boom Bap Beat",
+        "jockey": "R.Sakai"
+      },
+      {
+        "number": 4,
+        "name": "Crackshot",
+        "jockey": "Y.Kitamura"
+      },
+      {
+        "number": 5,
+        "name": "Talis Man",
+        "jockey": "T.Ito"
+      },
+      {
+        "number": 6,
+        "name": "Aurea Mist",
+        "jockey": "H.Miyuki"
+      },
+      {
+        "number": 7,
+        "name": "Twilight Sight",
+        "jockey": "Y.Hishida"
+      },
+      {
+        "number": 8,
+        "name": "B B Berzerk",
+        "jockey": "A.Nishimura"
+      },
+      {
+        "number": 9,
+        "name": "Meisho Matroos",
+        "jockey": "T.Danno"
+      },
+      {
+        "number": 10,
+        "name": "Atmos",
+        "jockey": "Y.Tsunoda"
+      },
+      {
+        "number": 11,
+        "name": "Stake All",
+        "jockey": "A.Tomita"
+      },
+      {
+        "number": 12,
+        "name": "Lusitania",
+        "jockey": "S.Morita"
+      },
+      {
+        "number": 13,
+        "name": "Shingitai",
+        "jockey": "K.Taguchi"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030405",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030405",
+    "id": 200
+  },
+  {
+    "title": "Field",
+    "raceNumber": 4,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Chukyo",
+    "distance": "1400m",
+    "surface": "Dirt",
+    "horses": [
+      {
+        "number": 1,
+        "name": "King's Tale",
+        "jockey": "K.Matsuyama"
+      },
+      {
+        "number": 2,
+        "name": "Poupee en Biscuit",
+        "jockey": "R.Sakai"
+      },
+      {
+        "number": 3,
+        "name": "Aurora Borealis",
+        "jockey": "Y.Kitamura"
+      },
+      {
+        "number": 4,
+        "name": "Katsura Komachi",
+        "jockey": "K.Kokubun"
+      },
+      {
+        "number": 5,
+        "name": "Hatsuakane",
+        "jockey": "F.Matsuwaka"
+      },
+      {
+        "number": 6,
+        "name": "Grand Brise",
+        "jockey": "S.Kato"
+      },
+      {
+        "number": 7,
+        "name": "Sesshu",
+        "jockey": "T.Danno"
+      },
+      {
+        "number": 8,
+        "name": "Meisho Hitakami",
+        "jockey": "Y.Tsunoda"
+      },
+      {
+        "number": 9,
+        "name": "Dewdrop",
+        "jockey": "M.Nagashima"
+      },
+      {
+        "number": 10,
+        "name": "Lucky Vogue",
+        "jockey": "A.Nishimura"
+      },
+      {
+        "number": 11,
+        "name": "Meisho Dokyo",
+        "jockey": "A.Tomita"
+      },
+      {
+        "number": 12,
+        "name": "Sound Vivant",
+        "jockey": "S.Morita"
+      },
+      {
+        "number": 13,
+        "name": "Sakatoku Faith",
+        "jockey": "Y.Nagaoka"
+      },
+      {
+        "number": 14,
+        "name": "Wenlock",
+        "jockey": "O.Tayama"
+      },
+      {
+        "number": 15,
+        "name": "Sans l'Ombre",
+        "jockey": "M.Demuro"
+      },
+      {
+        "number": 16,
+        "name": "Meisho Kengo",
+        "jockey": "K.Dazai"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030404",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030404",
+    "id": 201
+  },
+  {
+    "title": "Field",
+    "raceNumber": 3,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Chukyo",
+    "distance": "2000m",
+    "surface": "Turf",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Saimon Djoser",
+        "jockey": "K.Matsuyama"
+      },
+      {
+        "number": 2,
+        "name": "Blaze Fort",
+        "jockey": "Y.Kitamura"
+      },
+      {
+        "number": 3,
+        "name": "Gentle",
+        "jockey": "T.Danno"
+      },
+      {
+        "number": 4,
+        "name": "Pokapoka Yoki",
+        "jockey": "F.Matsuwaka"
+      },
+      {
+        "number": 5,
+        "name": "Colchis",
+        "jockey": "A.Nishimura"
+      },
+      {
+        "number": 6,
+        "name": "Amo l'Oro Puro",
+        "jockey": "M.Nagashima"
+      },
+      {
+        "number": 7,
+        "name": "Goin to Nova",
+        "jockey": "R.Sakai"
+      },
+      {
+        "number": 8,
+        "name": "Ether Wyrm",
+        "jockey": "S.Yoshimura"
+      },
+      {
+        "number": 9,
+        "name": "Lord Floris",
+        "jockey": "K.Taguchi"
+      },
+      {
+        "number": 10,
+        "name": "Lux Alcard",
+        "jockey": "A.Tomita"
+      },
+      {
+        "number": 11,
+        "name": "Wonder Lovegood",
+        "jockey": "M.Sakai"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030403",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030403",
+    "id": 202
+  },
+  {
+    "title": "Field",
+    "raceNumber": 2,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Chukyo",
+    "distance": "1600m",
+    "surface": "Turf",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Satono Vortex",
+        "jockey": "H.Miyuki"
+      },
+      {
+        "number": 2,
+        "name": "Shirah State",
+        "jockey": "R.Sakai"
+      },
+      {
+        "number": 3,
+        "name": "Bellagio Seven",
+        "jockey": "K.Kokubun"
+      },
+      {
+        "number": 4,
+        "name": "Cosmo Crown",
+        "jockey": "K.Matsuyama"
+      },
+      {
+        "number": 5,
+        "name": "Chaton Danse",
+        "jockey": "S.Yoshimura"
+      },
+      {
+        "number": 6,
+        "name": "Night in Tunis",
+        "jockey": "T.Danno"
+      },
+      {
+        "number": 7,
+        "name": "La Gatta Reale",
+        "jockey": "Y.Kitamura"
+      },
+      {
+        "number": 8,
+        "name": "Meisho Seiku",
+        "jockey": "F.Matsuwaka"
+      },
+      {
+        "number": 9,
+        "name": "Meisho Spark",
+        "jockey": "K.Dazai"
+      },
+      {
+        "number": 10,
+        "name": "Kafuji Pawpaw",
+        "jockey": "O.Tayama"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030402",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030402",
+    "id": 203
+  },
+  {
+    "title": "Field",
+    "raceNumber": 1,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Chukyo",
+    "distance": "1400m",
+    "surface": "Turf",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Vip Luce",
+        "jockey": "M.Nagashima"
+      },
+      {
+        "number": 2,
+        "name": "Napoli",
+        "jockey": "K.Kawabata"
+      },
+      {
+        "number": 3,
+        "name": "Speedy Spin",
+        "jockey": "O.Tayama"
+      },
+      {
+        "number": 4,
+        "name": "Koji Un",
+        "jockey": "S.Yoshimura"
+      },
+      {
+        "number": 5,
+        "name": "Cosmo Lumina",
+        "jockey": "T.Danno"
+      },
+      {
+        "number": 6,
+        "name": "Daimei Again",
+        "jockey": "H.Kawasu"
+      },
+      {
+        "number": 7,
+        "name": "Lonely Man",
+        "jockey": "K.Dazai"
+      },
+      {
+        "number": 8,
+        "name": "Viverone",
+        "jockey": "K.Matsuyama"
+      },
+      {
+        "number": 9,
+        "name": "Star of the Year",
+        "jockey": "F.Matsuwaka"
+      },
+      {
+        "number": 10,
+        "name": "Yamato du Nord",
+        "jockey": "S.Morita"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030401",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030401",
+    "id": 204
+  },
+  {
+    "title": "HOKUSHIN TOKUBETSU (Allowance (1 Win)) Field",
+    "raceNumber": 12,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Sapporo",
+    "distance": "2600m",
+    "surface": "Turf",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Nori Maru",
+        "jockey": "Y.Tannai"
+      },
+      {
+        "number": 2,
+        "name": "Habataku Jiyuni",
+        "jockey": "K.Kawamata"
+      },
+      {
+        "number": 3,
+        "name": "Morbido",
+        "jockey": "D.Ozawa"
+      },
+      {
+        "number": 4,
+        "name": "Quantum Star",
+        "jockey": "K.Sameshima"
+      },
+      {
+        "number": 5,
+        "name": "Dee Rerise",
+        "jockey": "S.Hamanaka"
+      },
+      {
+        "number": 6,
+        "name": "Midtown Night",
+        "jockey": "T.Ogino"
+      },
+      {
+        "number": 7,
+        "name": "New Alive",
+        "jockey": "Y.Ishikawa"
+      },
+      {
+        "number": 8,
+        "name": "Thatbyinnyu",
+        "jockey": "H.Matsumoto"
+      },
+      {
+        "number": 9,
+        "name": "Scene of Dream",
+        "jockey": "H.Wada"
+      },
+      {
+        "number": 10,
+        "name": "Wonderful Days",
+        "jockey": "T.Yokoyama"
+      },
+      {
+        "number": 11,
+        "name": "Divertissement",
+        "jockey": "N.Yokoyama"
+      },
+      {
+        "number": 12,
+        "name": "Take the Crown",
+        "jockey": "H.Yoshida"
+      },
+      {
+        "number": 13,
+        "name": "Takeru Focus",
+        "jockey": "Y.Furukawa"
+      },
+      {
+        "number": 14,
+        "name": "Don't Testa Master",
+        "jockey": "A.Saito"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020412",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020412",
+    "id": 312
+  },
+  {
+    "title": "HIDAKA STAKES (Allowance (3 Win)) Field",
+    "raceNumber": 11,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Sapporo",
+    "distance": "1500m",
+    "surface": "Turf",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Ambivalent",
+        "jockey": "Y.Tannai"
+      },
+      {
+        "number": 2,
+        "name": "Watashi Matsuwa",
+        "jockey": "M.Kobayashi"
+      },
+      {
+        "number": 3,
+        "name": "Magic Rose",
+        "jockey": "Y.Take"
+      },
+      {
+        "number": 4,
+        "name": "Effortless",
+        "jockey": "K.Yokoyama"
+      },
+      {
+        "number": 5,
+        "name": "Resort Island",
+        "jockey": "T.Yokoyama"
+      },
+      {
+        "number": 6,
+        "name": "Emanuele",
+        "jockey": "S.Hamanaka"
+      },
+      {
+        "number": 7,
+        "name": "Success Ai",
+        "jockey": "T.Fujikake"
+      },
+      {
+        "number": 8,
+        "name": "Trapeziste",
+        "jockey": "H.Yoshida"
+      },
+      {
+        "number": 9,
+        "name": "Danon Mission",
+        "jockey": "Y.Ishikawa"
+      },
+      {
+        "number": 10,
+        "name": "El Mago",
+        "jockey": "K.Sameshima"
+      },
+      {
+        "number": 11,
+        "name": "Santa Anita",
+        "jockey": "A.Saito"
+      },
+      {
+        "number": 12,
+        "name": "Power Hall",
+        "jockey": "Y.Furukawa"
+      },
+      {
+        "number": 13,
+        "name": "Mondo dell'Amore",
+        "jockey": "T.Ono"
+      },
+      {
+        "number": 14,
+        "name": "Matenro Son",
+        "jockey": "N.Yokoyama"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020411",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020411",
+    "id": 313
+  },
+  {
+    "title": "HBC SHO (Allowance (2 Win)) Field",
+    "raceNumber": 10,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Sapporo",
+    "distance": "1200m",
+    "surface": "Turf",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Kaga Rapunzel",
+        "jockey": "K.Harada"
+      },
+      {
+        "number": 2,
+        "name": "Shonan Charis",
+        "jockey": "H.Yoshida"
+      },
+      {
+        "number": 3,
+        "name": "Basileus City",
+        "jockey": "D.Ozawa"
+      },
+      {
+        "number": 4,
+        "name": "Rouge Velvet",
+        "jockey": "S.Hamanaka"
+      },
+      {
+        "number": 5,
+        "name": "Swimmy Yunibansu",
+        "jockey": "K.Sameshima"
+      },
+      {
+        "number": 6,
+        "name": "Coq au Vin",
+        "jockey": "T.Endo"
+      },
+      {
+        "number": 7,
+        "name": "Seiun Deseo",
+        "jockey": "Y.Take"
+      },
+      {
+        "number": 8,
+        "name": "Muchas Gracias",
+        "jockey": "S.Sato"
+      },
+      {
+        "number": 9,
+        "name": "Presepio",
+        "jockey": "K.Kawamata"
+      },
+      {
+        "number": 10,
+        "name": "La La Banyuls",
+        "jockey": "T.Fujikake"
+      },
+      {
+        "number": 11,
+        "name": "Fabulous Star",
+        "jockey": "Y.Tannai"
+      },
+      {
+        "number": 12,
+        "name": "Dempsey",
+        "jockey": "K.Yokoyama"
+      },
+      {
+        "number": 13,
+        "name": "Fumi Sound",
+        "jockey": "T.Ono"
+      },
+      {
+        "number": 14,
+        "name": "Ho O Booster",
+        "jockey": "Y.Ishikawa"
+      },
+      {
+        "number": 15,
+        "name": "Sigur Ros",
+        "jockey": "M.Kobayashi"
+      },
+      {
+        "number": 16,
+        "name": "Satono Wagner",
+        "jockey": "T.Yokoyama"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020410",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020410",
+    "id": 314
+  },
+  {
+    "title": "Field",
+    "raceNumber": 9,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Sapporo",
+    "distance": "1700m",
+    "surface": "Dirt",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Matenro Kanaloa",
+        "jockey": "K.Yokoyama"
+      },
+      {
+        "number": 2,
+        "name": "Unuboreyasan",
+        "jockey": "K.Nagahama"
+      },
+      {
+        "number": 3,
+        "name": "Fukushima Brilham",
+        "jockey": "R.Yokoyama"
+      },
+      {
+        "number": 4,
+        "name": "Stella de Lux",
+        "jockey": "T.Yokoyama"
+      },
+      {
+        "number": 5,
+        "name": "Ho O Barolo",
+        "jockey": "Y.Ishikawa"
+      },
+      {
+        "number": 6,
+        "name": "Derma Hodaka",
+        "jockey": "T.Endo"
+      },
+      {
+        "number": 7,
+        "name": "Isagi",
+        "jockey": "D.Ozawa"
+      },
+      {
+        "number": 8,
+        "name": "Summer Night",
+        "jockey": "N.Kawaharada"
+      },
+      {
+        "number": 9,
+        "name": "Chaser",
+        "jockey": "S.Sato"
+      },
+      {
+        "number": 10,
+        "name": "Brio Mente",
+        "jockey": "Y.Take"
+      },
+      {
+        "number": 11,
+        "name": "Six Pack",
+        "jockey": "N.Furukawa"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020409",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020409",
+    "id": 315
+  },
+  {
+    "title": "Field",
+    "raceNumber": 8,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Sapporo",
+    "distance": "1500m",
+    "surface": "Turf",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Haneman",
+        "jockey": "K.Harada"
+      },
+      {
+        "number": 2,
+        "name": "Meme Boss",
+        "jockey": "Y.Furukawa"
+      },
+      {
+        "number": 3,
+        "name": "Triste",
+        "jockey": "S.Sato"
+      },
+      {
+        "number": 4,
+        "name": "Crown R C",
+        "jockey": "Y.Ishikawa"
+      },
+      {
+        "number": 5,
+        "name": "Ut Journey",
+        "jockey": "K.Nagahama"
+      },
+      {
+        "number": 6,
+        "name": "Function",
+        "jockey": "A.Saito"
+      },
+      {
+        "number": 7,
+        "name": "Tenyu",
+        "jockey": "Y.Tannai"
+      },
+      {
+        "number": 8,
+        "name": "Tokushi General",
+        "jockey": "R.Yokoyama"
+      },
+      {
+        "number": 9,
+        "name": "Meisho Hodawara",
+        "jockey": "H.Yoshida"
+      },
+      {
+        "number": 10,
+        "name": "Starred Mason",
+        "jockey": "H.Wada"
+      },
+      {
+        "number": 11,
+        "name": "Dora Rhythm",
+        "jockey": "H.Mayuzumi"
+      },
+      {
+        "number": 12,
+        "name": "Nettaiya Rai",
+        "jockey": "T.Yokoyama"
+      },
+      {
+        "number": 13,
+        "name": "Schon Ruska",
+        "jockey": "T.Endo"
+      },
+      {
+        "number": 14,
+        "name": "Lux Adler",
+        "jockey": "N.Yokoyama"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020408",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020408",
+    "id": 316
+  },
+  {
+    "title": "Field",
+    "raceNumber": 7,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Sapporo",
+    "distance": "1000m",
+    "surface": "Dirt",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Briar Hill",
+        "jockey": "Y.Okubo"
+      },
+      {
+        "number": 2,
+        "name": "Cappuccio",
+        "jockey": "H.Mayuzumi"
+      },
+      {
+        "number": 3,
+        "name": "Yodono Gold",
+        "jockey": "Y.Ishikawa"
+      },
+      {
+        "number": 4,
+        "name": "Ascot Eye",
+        "jockey": "Y.Furukawa"
+      },
+      {
+        "number": 5,
+        "name": "Las Vegas Sign",
+        "jockey": "R.Yokoyama"
+      },
+      {
+        "number": 6,
+        "name": "Seiun Basilisk",
+        "jockey": "H.Wada"
+      },
+      {
+        "number": 7,
+        "name": "Stella Nova",
+        "jockey": "K.Nagahama"
+      },
+      {
+        "number": 8,
+        "name": "Wide Decoration",
+        "jockey": "T.Yokoyama"
+      },
+      {
+        "number": 9,
+        "name": "Sailrocket",
+        "jockey": "T.Ono"
+      },
+      {
+        "number": 10,
+        "name": "Sparkle Joy",
+        "jockey": "D.Ozawa"
+      },
+      {
+        "number": 11,
+        "name": "Premiere Pas",
+        "jockey": "K.Kawamata"
+      },
+      {
+        "number": 12,
+        "name": "Meisho Hubble",
+        "jockey": "N.Furukawa"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020407",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020407",
+    "id": 317
+  },
+  {
+    "title": "Field",
+    "raceNumber": 6,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Sapporo",
+    "distance": "1700m",
+    "surface": "Dirt",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Kuromi",
+        "jockey": "T.Fujikake"
+      },
+      {
+        "number": 2,
+        "name": "Rouge Riviera",
+        "jockey": "S.Sato"
+      },
+      {
+        "number": 3,
+        "name": "Lilac Dune",
+        "jockey": "Y.Furukawa"
+      },
+      {
+        "number": 4,
+        "name": "Saimon Irohoney",
+        "jockey": "N.Kawaharada"
+      },
+      {
+        "number": 5,
+        "name": "Summer Splash",
+        "jockey": "H.Wada"
+      },
+      {
+        "number": 6,
+        "name": "Derma Sakura Saku",
+        "jockey": "K.Yokoyama"
+      },
+      {
+        "number": 7,
+        "name": "Taisei Ruby",
+        "jockey": "M.Kobayashi"
+      },
+      {
+        "number": 8,
+        "name": "Yamaya Road",
+        "jockey": "N.Furukawa"
+      },
+      {
+        "number": 9,
+        "name": "Winter Garden",
+        "jockey": "D.Ozawa"
+      },
+      {
+        "number": 10,
+        "name": "Verre Muse",
+        "jockey": "K.Sameshima"
+      },
+      {
+        "number": 11,
+        "name": "Three Kei",
+        "jockey": "A.Saito"
+      },
+      {
+        "number": 12,
+        "name": "Rouge Bonito",
+        "jockey": "T.Yokoyama"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020406",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020406",
+    "id": 318
+  },
+  {
+    "title": "Field",
+    "raceNumber": 5,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Sapporo",
+    "distance": "1800m",
+    "surface": "Turf",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Cosmo Nautilus",
+        "jockey": "Y.Tannai"
+      },
+      {
+        "number": 2,
+        "name": "I Am Igainimo",
+        "jockey": "Y.Furukawa"
+      },
+      {
+        "number": 3,
+        "name": "Van Cry",
+        "jockey": "Y.Take"
+      },
+      {
+        "number": 4,
+        "name": "Co's Ulurun",
+        "jockey": "Y.Ishikawa"
+      },
+      {
+        "number": 5,
+        "name": "Tosen Irun",
+        "jockey": "K.Nagahama"
+      },
+      {
+        "number": 6,
+        "name": "Ilulissat",
+        "jockey": "T.Yokoyama"
+      },
+      {
+        "number": 7,
+        "name": "Gol Tan",
+        "jockey": "H.Yoshida"
+      },
+      {
+        "number": 8,
+        "name": "Twilight Rose",
+        "jockey": "S.Hamanaka"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020405",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020405",
+    "id": 319
+  },
+  {
+    "title": "Field",
+    "raceNumber": 4,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Sapporo",
+    "distance": "2000m",
+    "surface": "Turf",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Daishin Pulse",
+        "jockey": "R.Yokoyama"
+      },
+      {
+        "number": 2,
+        "name": "Gigliato",
+        "jockey": "H.Yoshida"
+      },
+      {
+        "number": 3,
+        "name": "Cosmo Helianthus",
+        "jockey": "Y.Tannai"
+      },
+      {
+        "number": 4,
+        "name": "Derma Fuji",
+        "jockey": "S.Hamanaka"
+      },
+      {
+        "number": 5,
+        "name": "Idea Juin Hija",
+        "jockey": "T.Endo"
+      },
+      {
+        "number": 6,
+        "name": "Giombayashi",
+        "jockey": "Y.Take"
+      },
+      {
+        "number": 7,
+        "name": "Wadatsumi",
+        "jockey": "M.Kobayashi"
+      },
+      {
+        "number": 8,
+        "name": "Next Door",
+        "jockey": "Y.Furukawa"
+      },
+      {
+        "number": 9,
+        "name": "Cosmo Classic",
+        "jockey": "T.Yokoyama"
+      },
+      {
+        "number": 10,
+        "name": "Meisho Raiga",
+        "jockey": "H.Wada"
+      },
+      {
+        "number": 11,
+        "name": "Art",
+        "jockey": "K.Sameshima"
+      },
+      {
+        "number": 12,
+        "name": "Kalli Dora",
+        "jockey": "D.Ozawa"
+      },
+      {
+        "number": 13,
+        "name": "Rock Flour",
+        "jockey": "Y.Ishikawa"
+      },
+      {
+        "number": 14,
+        "name": "Intense Gaze",
+        "jockey": "A.Saito"
+      },
+      {
+        "number": 15,
+        "name": "A Shin Regal",
+        "jockey": "H.Matsumoto"
+      },
+      {
+        "number": 16,
+        "name": "Meisho Rose",
+        "jockey": "T.Fujikake"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020404",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020404",
+    "id": 320
+  },
+  {
+    "title": "Field",
+    "raceNumber": 3,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Sapporo",
+    "distance": "1700m",
+    "surface": "Dirt",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Pegasus Wind",
+        "jockey": "K.Sameshima"
+      },
+      {
+        "number": 2,
+        "name": "Success Blue",
+        "jockey": "Y.Tannai"
+      },
+      {
+        "number": 3,
+        "name": "Luster Verse",
+        "jockey": "K.Nagahama"
+      },
+      {
+        "number": 4,
+        "name": "Pop Up",
+        "jockey": "N.Kawaharada"
+      },
+      {
+        "number": 5,
+        "name": "Derma Teine",
+        "jockey": "H.Matoba"
+      },
+      {
+        "number": 6,
+        "name": "Yodono Sapphire",
+        "jockey": "Y.Ishikawa"
+      },
+      {
+        "number": 7,
+        "name": "Churchill Deuce",
+        "jockey": "Y.Take"
+      },
+      {
+        "number": 8,
+        "name": "Sun Angels",
+        "jockey": "S.Hamanaka"
+      },
+      {
+        "number": 9,
+        "name": "Monteur",
+        "jockey": "A.Saito"
+      },
+      {
+        "number": 10,
+        "name": "Miaette",
+        "jockey": "R.Yokoyama"
+      },
+      {
+        "number": 11,
+        "name": "Dantsu Alarm",
+        "jockey": "H.Mayuzumi"
+      },
+      {
+        "number": 12,
+        "name": "Kuriko Iko",
+        "jockey": "H.Yoshida"
+      },
+      {
+        "number": 13,
+        "name": "Just Grace",
+        "jockey": "Y.Furukawa"
+      },
+      {
+        "number": 14,
+        "name": "Ho O Pharoah",
+        "jockey": "T.Yokoyama"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020403",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020403",
+    "id": 321
+  },
+  {
+    "title": "Field",
+    "raceNumber": 2,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Sapporo",
+    "distance": "1200m",
+    "surface": "Turf",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Our Dreams",
+        "jockey": "Y.Ishikawa"
+      },
+      {
+        "number": 2,
+        "name": "Vivien Reach",
+        "jockey": "A.Saito"
+      },
+      {
+        "number": 3,
+        "name": "Chopin Concours",
+        "jockey": "Y.Tannai"
+      },
+      {
+        "number": 4,
+        "name": "Tosca",
+        "jockey": "D.Ozawa"
+      },
+      {
+        "number": 5,
+        "name": "Mihatenu Yume",
+        "jockey": "M.Kobayashi"
+      },
+      {
+        "number": 6,
+        "name": "Candle",
+        "jockey": "R.Yokoyama"
+      },
+      {
+        "number": 7,
+        "name": "Game Changer",
+        "jockey": "K.Harada"
+      },
+      {
+        "number": 8,
+        "name": "Arte Queen",
+        "jockey": "K.Sameshima"
+      },
+      {
+        "number": 9,
+        "name": "Parfect Game",
+        "jockey": "K.Yokoyama"
+      },
+      {
+        "number": 10,
+        "name": "Ascot Pesca",
+        "jockey": "H.Wada"
+      },
+      {
+        "number": 11,
+        "name": "Inside Storm",
+        "jockey": "Y.Furukawa"
+      },
+      {
+        "number": 12,
+        "name": "Sonic Isle",
+        "jockey": "T.Yokoyama"
+      },
+      {
+        "number": 13,
+        "name": "Gal's Mind",
+        "jockey": "S.Hamanaka"
+      },
+      {
+        "number": 14,
+        "name": "Tosen Lourdes",
+        "jockey": "Y.Take"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020402",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020402",
+    "id": 322
+  },
+  {
+    "title": "Field",
+    "raceNumber": 1,
+    "grade": "",
+    "date": "2026-08-30",
+    "track": "Sapporo",
+    "distance": "1700m",
+    "surface": "Dirt",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Tagano Sylphy",
+        "jockey": "K.Yokoyama"
+      },
+      {
+        "number": 2,
+        "name": "Margot Krug",
+        "jockey": "H.Matsumoto"
+      },
+      {
+        "number": 3,
+        "name": "Go Go Amy",
+        "jockey": "A.Saito"
+      },
+      {
+        "number": 4,
+        "name": "Ten Red Sun",
+        "jockey": "T.Yokoyama"
+      },
+      {
+        "number": 5,
+        "name": "Sincerite",
+        "jockey": "Y.Take"
+      },
+      {
+        "number": 6,
+        "name": "Village Luisa",
+        "jockey": "Y.Tannai"
+      },
+      {
+        "number": 7,
+        "name": "Erika Biarritz",
+        "jockey": "K.Sameshima"
+      },
+      {
+        "number": 8,
+        "name": "Tagano Loves One",
+        "jockey": "H.Wada"
+      },
+      {
+        "number": 9,
+        "name": "Cent Pure Bass",
+        "jockey": "T.Ogino"
+      },
+      {
+        "number": 10,
+        "name": "Monte Pastel",
+        "jockey": "Y.Furukawa"
+      },
+      {
+        "number": 11,
+        "name": "Waterspout",
+        "jockey": "H.Yoshida"
+      },
+      {
+        "number": 12,
+        "name": "Bright Angel",
+        "jockey": "K.Kawamata"
+      },
+      {
+        "number": 13,
+        "name": "G T Bikini",
+        "jockey": "M.Kobayashi"
+      },
+      {
+        "number": 14,
+        "name": "Koibana",
+        "jockey": "S.Hamanaka"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020401",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020401",
+    "id": 323
   },
   {
     "title": "Field",
@@ -211,13 +3016,13 @@
       {
         "number": 15,
         "name": "Live Martini",
-        "jockey": "Y.Tanihara"
+        "jockey": "S.Imamura"
       }
     ],
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030312",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030312",
-    "id": 73
+    "id": 85
   },
   {
     "title": "Field",
@@ -322,7 +3127,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030311",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030311",
-    "id": 74
+    "id": 86
   },
   {
     "title": "Field",
@@ -391,7 +3196,7 @@
       {
         "number": 12,
         "name": "Kashino Rihanna",
-        "jockey": "Y.Tanihara"
+        "jockey": "S.Sato"
       },
       {
         "number": 13,
@@ -427,7 +3232,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030310",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030310",
-    "id": 75
+    "id": 87
   },
   {
     "title": "Field",
@@ -507,7 +3312,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030309",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030309",
-    "id": 76
+    "id": 88
   },
   {
     "title": "BSN SHO (L) Field",
@@ -577,7 +3382,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030308",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030308",
-    "id": 77
+    "id": 89
   },
   {
     "title": "AKAKURA TOKUBETSU (Allowance (2 Win)) Field",
@@ -677,7 +3482,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030307",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030307",
-    "id": 78
+    "id": 90
   },
   {
     "title": "SHIBATAJO TOKUBETSU (Allowance (1 Win)) Field",
@@ -767,7 +3572,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030306",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030306",
-    "id": 79
+    "id": 91
   },
   {
     "title": "Field",
@@ -872,7 +3677,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030305",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030305",
-    "id": 80
+    "id": 92
   },
   {
     "title": "Field",
@@ -977,7 +3782,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030304",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030304",
-    "id": 81
+    "id": 93
   },
   {
     "title": "Field",
@@ -1047,7 +3852,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030303",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030303",
-    "id": 82
+    "id": 94
   },
   {
     "title": "Field",
@@ -1137,7 +3942,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030302",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030302",
-    "id": 83
+    "id": 95
   },
   {
     "title": "Field",
@@ -1212,7 +4017,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030301",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030301",
-    "id": 84
+    "id": 96
   },
   {
     "title": "Field",
@@ -1297,7 +4102,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030312",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030312",
-    "id": 182
+    "id": 205
   },
   {
     "title": "Field",
@@ -1377,7 +4182,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030311",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030311",
-    "id": 183
+    "id": 206
   },
   {
     "title": "Field",
@@ -1472,7 +4277,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030310",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030310",
-    "id": 184
+    "id": 207
   },
   {
     "title": "Field",
@@ -1532,7 +4337,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030309",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030309",
-    "id": 185
+    "id": 208
   },
   {
     "title": "KUWANA TOKUBETSU (Allowance (2 Win)) Field",
@@ -1617,7 +4422,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030308",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030308",
-    "id": 186
+    "id": 209
   },
   {
     "title": "NAGASHINO STAKES (Allowance (3 Win)) Field",
@@ -1707,7 +4512,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030307",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030307",
-    "id": 187
+    "id": 210
   },
   {
     "title": "KIYOSU TOKUBETSU (Allowance (2 Win)) Field",
@@ -1787,7 +4592,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030306",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030306",
-    "id": 188
+    "id": 211
   },
   {
     "title": "Field",
@@ -1867,7 +4672,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030305",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030305",
-    "id": 189
+    "id": 212
   },
   {
     "title": "Field",
@@ -1962,7 +4767,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030304",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030304",
-    "id": 190
+    "id": 213
   },
   {
     "title": "Field",
@@ -2037,7 +4842,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030303",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030303",
-    "id": 191
+    "id": 214
   },
   {
     "title": "Field",
@@ -2112,7 +4917,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030302",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030302",
-    "id": 192
+    "id": 215
   },
   {
     "title": "Field",
@@ -2182,7 +4987,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030301",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030301",
-    "id": 193
+    "id": 216
   },
   {
     "title": "CHITOSE TOKUBETSU (Allowance (2 Win)) Field",
@@ -2257,7 +5062,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020312",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020312",
-    "id": 290
+    "id": 324
   },
   {
     "title": "SAPPORO NIKKAN SPORTS HAI (Allowance (2 Win)) Field",
@@ -2342,7 +5147,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020311",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020311",
-    "id": 291
+    "id": 325
   },
   {
     "title": "SUZURAN SHO (OP) Field",
@@ -2387,7 +5192,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020310",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020310",
-    "id": 292
+    "id": 326
   },
   {
     "title": "Field",
@@ -2462,7 +5267,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020309",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020309",
-    "id": 293
+    "id": 327
   },
   {
     "title": "Field",
@@ -2504,11 +5309,6 @@
         "jockey": "N.Kawaharada"
       },
       {
-        "number": 7,
-        "name": "Glory Barows",
-        "jockey": "K.Sameshima"
-      },
-      {
         "number": 8,
         "name": "Piena Orca",
         "jockey": "Y.Furukawa"
@@ -2532,7 +5332,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020308",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020308",
-    "id": 294
+    "id": 328
   },
   {
     "title": "Field",
@@ -2627,7 +5427,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020307",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020307",
-    "id": 295
+    "id": 329
   },
   {
     "title": "Field",
@@ -2712,7 +5512,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020306",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020306",
-    "id": 296
+    "id": 330
   },
   {
     "title": "Field",
@@ -2797,7 +5597,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020305",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020305",
-    "id": 297
+    "id": 331
   },
   {
     "title": "Field",
@@ -2872,7 +5672,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020304",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020304",
-    "id": 298
+    "id": 332
   },
   {
     "title": "Field",
@@ -2942,7 +5742,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020303",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020303",
-    "id": 299
+    "id": 333
   },
   {
     "title": "Field",
@@ -3022,7 +5822,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020302",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020302",
-    "id": 300
+    "id": 334
   },
   {
     "title": "Field",
@@ -3107,7 +5907,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020301",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020301",
-    "id": 301
+    "id": 335
   },
   {
     "title": "Field",
@@ -3182,7 +5982,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030212",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030212",
-    "id": 85
+    "id": 97
   },
   {
     "title": "Field",
@@ -3282,7 +6082,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030211",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030211",
-    "id": 86
+    "id": 98
   },
   {
     "title": "Field",
@@ -3357,7 +6157,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030210",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030210",
-    "id": 87
+    "id": 99
   },
   {
     "title": "Field",
@@ -3447,7 +6247,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030209",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030209",
-    "id": 88
+    "id": 100
   },
   {
     "title": "IIDE TOKUBETSU (Allowance (2 Win)) Field",
@@ -3522,7 +6322,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030208",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030208",
-    "id": 89
+    "id": 101
   },
   {
     "title": "NIIGATA NISAI STAKES Field",
@@ -3587,7 +6387,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030207",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030207",
-    "id": 90
+    "id": 102
   },
   {
     "title": "FURUMACHI STAKES (Allowance (3 Win)) Field",
@@ -3677,7 +6477,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030206",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030206",
-    "id": 91
+    "id": 103
   },
   {
     "title": "Field",
@@ -3782,7 +6582,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030205",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030205",
-    "id": 92
+    "id": 104
   },
   {
     "title": "Field",
@@ -3872,7 +6672,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030204",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030204",
-    "id": 93
+    "id": 105
   },
   {
     "title": "Field",
@@ -3947,7 +6747,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030203",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030203",
-    "id": 94
+    "id": 106
   },
   {
     "title": "Field",
@@ -4017,7 +6817,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030202",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030202",
-    "id": 95
+    "id": 107
   },
   {
     "title": "Field",
@@ -4092,7 +6892,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030201",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030201",
-    "id": 96
+    "id": 108
   },
   {
     "title": "Field",
@@ -4187,7 +6987,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030212",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030212",
-    "id": 194
+    "id": 217
   },
   {
     "title": "Field",
@@ -4287,7 +7087,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030211",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030211",
-    "id": 195
+    "id": 218
   },
   {
     "title": "Field",
@@ -4372,7 +7172,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030210",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030210",
-    "id": 196
+    "id": 219
   },
   {
     "title": "Field",
@@ -4427,7 +7227,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030209",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030209",
-    "id": 197
+    "id": 220
   },
   {
     "title": "TOYOKAWA TOKUBETSU (Allowance (1 Win)) Field",
@@ -4522,7 +7322,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030208",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030208",
-    "id": 198
+    "id": 221
   },
   {
     "title": "NAGOYAJO STAKES (OP) Field",
@@ -4617,7 +7417,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030207",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030207",
-    "id": 199
+    "id": 222
   },
   {
     "title": "ARIMATSU TOKUBETSU (Allowance (2 Win)) Field",
@@ -4702,7 +7502,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030206",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030206",
-    "id": 200
+    "id": 223
   },
   {
     "title": "Field",
@@ -4772,7 +7572,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030205",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030205",
-    "id": 201
+    "id": 224
   },
   {
     "title": "Field",
@@ -4862,7 +7662,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030204",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030204",
-    "id": 202
+    "id": 225
   },
   {
     "title": "Field",
@@ -4922,7 +7722,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030203",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030203",
-    "id": 203
+    "id": 226
   },
   {
     "title": "Field",
@@ -4977,7 +7777,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030202",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030202",
-    "id": 204
+    "id": 227
   },
   {
     "title": "Field",
@@ -5027,7 +7827,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030201",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030201",
-    "id": 205
+    "id": 228
   },
   {
     "title": "2026 WORLD ALL-STAR JOCKEYS 4TH LEG (Allowance (2 Win)) Field",
@@ -5112,7 +7912,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020212",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020212",
-    "id": 302
+    "id": 336
   },
   {
     "title": "KEENELAND CUP Field",
@@ -5207,7 +8007,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020211",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020211",
-    "id": 303
+    "id": 337
   },
   {
     "title": "2026 WORLD ALL-STAR JOCKEYS 3RD LEG (Allowance (2 Win)) Field",
@@ -5292,7 +8092,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020210",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020210",
-    "id": 304
+    "id": 338
   },
   {
     "title": "RUSUTSU TOKUBETSU (Allowance (1 Win)) Field",
@@ -5372,7 +8172,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020209",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020209",
-    "id": 305
+    "id": 339
   },
   {
     "title": "Field",
@@ -5442,7 +8242,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020208",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020208",
-    "id": 306
+    "id": 340
   },
   {
     "title": "Field",
@@ -5512,7 +8312,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020207",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020207",
-    "id": 307
+    "id": 341
   },
   {
     "title": "Field",
@@ -5597,7 +8397,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020206",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020206",
-    "id": 308
+    "id": 342
   },
   {
     "title": "Field",
@@ -5647,7 +8447,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020205",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020205",
-    "id": 309
+    "id": 343
   },
   {
     "title": "Field",
@@ -5742,7 +8542,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020204",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020204",
-    "id": 310
+    "id": 344
   },
   {
     "title": "Field",
@@ -5827,7 +8627,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020203",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020203",
-    "id": 311
+    "id": 345
   },
   {
     "title": "Field",
@@ -5897,7 +8697,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020202",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020202",
-    "id": 312
+    "id": 346
   },
   {
     "title": "Field",
@@ -5972,7 +8772,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020201",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020201",
-    "id": 313
+    "id": 347
   },
   {
     "title": "Field",
@@ -6062,7 +8862,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030112",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030112",
-    "id": 97
+    "id": 109
   },
   {
     "title": "Field",
@@ -6137,7 +8937,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030111",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030111",
-    "id": 98
+    "id": 110
   },
   {
     "title": "Field",
@@ -6227,7 +9027,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030110",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030110",
-    "id": 99
+    "id": 111
   },
   {
     "title": "Field",
@@ -6307,7 +9107,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030109",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030109",
-    "id": 100
+    "id": 112
   },
   {
     "title": "IWAMUROONSEN TOKUBETSU (Allowance (2 Win)) Field",
@@ -6397,7 +9197,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030108",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030108",
-    "id": 101
+    "id": 113
   },
   {
     "title": "TOKI STAKES (L) Field",
@@ -6502,7 +9302,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030107",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030107",
-    "id": 102
+    "id": 114
   },
   {
     "title": "NAGAOKA STAKES (Allowance (3 Win)) Field",
@@ -6607,7 +9407,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030106",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030106",
-    "id": 103
+    "id": 115
   },
   {
     "title": "Field",
@@ -6712,7 +9512,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030105",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030105",
-    "id": 104
+    "id": 116
   },
   {
     "title": "Field",
@@ -6802,7 +9602,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030104",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030104",
-    "id": 105
+    "id": 117
   },
   {
     "title": "Field",
@@ -6877,7 +9677,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030103",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030103",
-    "id": 106
+    "id": 118
   },
   {
     "title": "Field",
@@ -6952,7 +9752,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030102",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030102",
-    "id": 107
+    "id": 119
   },
   {
     "title": "Field",
@@ -7002,7 +9802,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604030101",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604030101",
-    "id": 108
+    "id": 120
   },
   {
     "title": "Field",
@@ -7102,7 +9902,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030112",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030112",
-    "id": 206
+    "id": 229
   },
   {
     "title": "Field",
@@ -7192,7 +9992,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030111",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030111",
-    "id": 207
+    "id": 230
   },
   {
     "title": "Field",
@@ -7267,7 +10067,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030110",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030110",
-    "id": 208
+    "id": 231
   },
   {
     "title": "(OP) Field",
@@ -7312,7 +10112,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030109",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030109",
-    "id": 209
+    "id": 232
   },
   {
     "title": "SETO TOKUBETSU (Allowance (1 Win)) Field",
@@ -7377,7 +10177,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030108",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030108",
-    "id": 210
+    "id": 233
   },
   {
     "title": "IGA STAKES (Allowance (3 Win)) Field",
@@ -7472,92 +10272,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030107",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030107",
-    "id": 211
-  },
-  {
-    "title": "OBU TOKUBETSU (Allowance (2 Win)) Field",
-    "raceNumber": 6,
-    "grade": "",
-    "date": "2026-08-22",
-    "track": "Chukyo",
-    "distance": "1800m",
-    "surface": "Dirt",
-    "horses": [
-      {
-        "number": 1,
-        "name": "Nishino Jedi",
-        "jockey": "O.Tayama"
-      },
-      {
-        "number": 2,
-        "name": "Dura Eterno",
-        "jockey": "J.Collett"
-      },
-      {
-        "number": 3,
-        "name": "Ma Vie",
-        "jockey": "M.Demuro"
-      },
-      {
-        "number": 4,
-        "name": "Sorte Areia",
-        "jockey": "H.Miyuki"
-      },
-      {
-        "number": 5,
-        "name": "Smart Spear",
-        "jockey": "S.Yoshimura"
-      },
-      {
-        "number": 6,
-        "name": "La Manche",
-        "jockey": "F.Matsuwaka"
-      },
-      {
-        "number": 7,
-        "name": "Tiger Spark",
-        "jockey": "K.Taguchi"
-      },
-      {
-        "number": 8,
-        "name": "Birnbaum",
-        "jockey": "K.Dazai"
-      },
-      {
-        "number": 9,
-        "name": "Rhino",
-        "jockey": "A.Nishimura"
-      },
-      {
-        "number": 10,
-        "name": "Tagano Animacion",
-        "jockey": "Y.Kido"
-      },
-      {
-        "number": 11,
-        "name": "Brooklyn Dance",
-        "jockey": "H.Kameda"
-      },
-      {
-        "number": 12,
-        "name": "Soul and Jazz",
-        "jockey": "H.Kawasu"
-      },
-      {
-        "number": 13,
-        "name": "Loistaa",
-        "jockey": "Y.Tsunoda"
-      },
-      {
-        "number": 14,
-        "name": "Nobori Clever",
-        "jockey": "T.Danno"
-      }
-    ],
-    "videoUrl": "https://japanracing.jp/en/",
-    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030106",
-    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030106",
-    "id": 212
+    "id": 234
   },
   {
     "title": "Field",
@@ -7652,7 +10367,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030105",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030105",
-    "id": 213
+    "id": 235
   },
   {
     "title": "Field",
@@ -7757,7 +10472,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030104",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030104",
-    "id": 214
+    "id": 236
   },
   {
     "title": "Field",
@@ -7812,7 +10527,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030103",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030103",
-    "id": 215
+    "id": 237
   },
   {
     "title": "Field",
@@ -7877,7 +10592,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030102",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030102",
-    "id": 216
+    "id": 238
   },
   {
     "title": "Field",
@@ -7937,7 +10652,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607030101",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607030101",
-    "id": 217
+    "id": 239
   },
   {
     "title": "NISEKO TOKUBETSU (Allowance (1 Win)) Field",
@@ -8007,7 +10722,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020112",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020112",
-    "id": 314
+    "id": 348
   },
   {
     "title": "2026 WORLD ALL-STAR JOCKEYS 2ND LEG (Allowance (3 Win)) Field",
@@ -8092,7 +10807,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020111",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020111",
-    "id": 315
+    "id": 349
   },
   {
     "title": "2026 WORLD ALL-STAR JOCKEYS 1ST LEG (Allowance (2 Win)) Field",
@@ -8177,7 +10892,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020110",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020110",
-    "id": 316
+    "id": 350
   },
   {
     "title": "CLOVER SHO (OP) Field",
@@ -8262,7 +10977,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020109",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020109",
-    "id": 317
+    "id": 351
   },
   {
     "title": "Field",
@@ -8327,7 +11042,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020108",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020108",
-    "id": 318
+    "id": 352
   },
   {
     "title": "Field",
@@ -8402,7 +11117,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020107",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020107",
-    "id": 319
+    "id": 353
   },
   {
     "title": "Field",
@@ -8482,7 +11197,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020106",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020106",
-    "id": 320
+    "id": 354
   },
   {
     "title": "Field",
@@ -8567,7 +11282,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020105",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020105",
-    "id": 321
+    "id": 355
   },
   {
     "title": "Field",
@@ -8662,7 +11377,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020104",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020104",
-    "id": 322
+    "id": 356
   },
   {
     "title": "Field",
@@ -8747,7 +11462,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020103",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020103",
-    "id": 323
+    "id": 357
   },
   {
     "title": "Field",
@@ -8792,7 +11507,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020102",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020102",
-    "id": 324
+    "id": 358
   },
   {
     "title": "Field",
@@ -8867,7 +11582,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601020101",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601020101",
-    "id": 325
+    "id": 359
   },
   {
     "title": "Field",
@@ -9110,6 +11825,81 @@
     "id": 3
   },
   {
+    "title": "Field",
+    "raceNumber": 9,
+    "grade": "",
+    "date": "2026-08-16",
+    "track": "Niigata",
+    "distance": "Unknown",
+    "surface": "Turf",
+    "horses": [
+      {
+        "number": 1,
+        "name": "Lucky Dance",
+        "jockey": "Y.Eda"
+      },
+      {
+        "number": 2,
+        "name": "Auswahl",
+        "jockey": "K.Mori"
+      },
+      {
+        "number": 3,
+        "name": "Girolata",
+        "jockey": "T.Kusano"
+      },
+      {
+        "number": 4,
+        "name": "Meisho Tom",
+        "jockey": "Y.Namba"
+      },
+      {
+        "number": 5,
+        "name": "Bijou Brillante",
+        "jockey": "T.Sakaguchi"
+      },
+      {
+        "number": 6,
+        "name": "Noble Cry",
+        "jockey": "Y.Igarashi"
+      },
+      {
+        "number": 7,
+        "name": "Spade Un",
+        "jockey": "S.Ueno"
+      },
+      {
+        "number": 8,
+        "name": "Clarity",
+        "jockey": "K.Ban"
+      },
+      {
+        "number": 9,
+        "name": "Seiun Big Bang",
+        "jockey": "G.Mizunuma"
+      },
+      {
+        "number": 10,
+        "name": "Psammead",
+        "jockey": "K.Oehara"
+      },
+      {
+        "number": 11,
+        "name": "Taisei Response",
+        "jockey": "K.Komaki"
+      },
+      {
+        "number": 12,
+        "name": "Premier Blue",
+        "jockey": "M.Nakamura"
+      }
+    ],
+    "videoUrl": "https://japanracing.jp/en/",
+    "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020809",
+    "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020809",
+    "id": 4
+  },
+  {
     "title": "SENAMIONSEN TOKUBETSU (Allowance (2 Win)) Field",
     "raceNumber": 8,
     "grade": "",
@@ -9187,7 +11977,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020808",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020808",
-    "id": 4
+    "id": 5
   },
   {
     "title": "NST SHO (OP) Field",
@@ -9277,7 +12067,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020807",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020807",
-    "id": 5
+    "id": 6
   },
   {
     "title": "INAZUMA STAKES (Allowance (3 Win)) Field",
@@ -9357,7 +12147,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020806",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020806",
-    "id": 6
+    "id": 7
   },
   {
     "title": "Field",
@@ -9432,7 +12222,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020805",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020805",
-    "id": 7
+    "id": 8
   },
   {
     "title": "Field",
@@ -9512,7 +12302,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020804",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020804",
-    "id": 8
+    "id": 9
   },
   {
     "title": "Field",
@@ -9602,7 +12392,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020803",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020803",
-    "id": 9
+    "id": 10
   },
   {
     "title": "Field",
@@ -9702,7 +12492,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020802",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020802",
-    "id": 10
+    "id": 11
   },
   {
     "title": "Field",
@@ -9782,7 +12572,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020801",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020801",
-    "id": 11
+    "id": 12
   },
   {
     "title": "Field",
@@ -9877,7 +12667,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020812",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020812",
-    "id": 109
+    "id": 121
   },
   {
     "title": "Field",
@@ -9972,7 +12762,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020811",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020811",
-    "id": 110
+    "id": 122
   },
   {
     "title": "Field",
@@ -10067,7 +12857,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020810",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020810",
-    "id": 111
+    "id": 123
   },
   {
     "title": "Field",
@@ -10172,7 +12962,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020809",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020809",
-    "id": 112
+    "id": 124
   },
   {
     "title": "OGAKI TOKUBETSU (Allowance (2 Win)) Field",
@@ -10267,7 +13057,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020808",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020808",
-    "id": 113
+    "id": 125
   },
   {
     "title": "CHUKYO KINEN Field",
@@ -10362,7 +13152,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020807",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020807",
-    "id": 114
+    "id": 126
   },
   {
     "title": "NAGAKUTE TOKUBETSU (Allowance (2 Win)) Field",
@@ -10412,7 +13202,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020806",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020806",
-    "id": 115
+    "id": 127
   },
   {
     "title": "Field",
@@ -10507,7 +13297,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020805",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020805",
-    "id": 116
+    "id": 128
   },
   {
     "title": "Field",
@@ -10612,7 +13402,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020804",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020804",
-    "id": 117
+    "id": 129
   },
   {
     "title": "Field",
@@ -10667,7 +13457,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020803",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020803",
-    "id": 118
+    "id": 130
   },
   {
     "title": "Field",
@@ -10742,7 +13532,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020802",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020802",
-    "id": 119
+    "id": 131
   },
   {
     "title": "Field",
@@ -10807,7 +13597,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020801",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020801",
-    "id": 120
+    "id": 132
   },
   {
     "title": "AKANKO TOKUBETSU (Allowance (2 Win)) Field",
@@ -10892,7 +13682,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010812",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010812",
-    "id": 218
+    "id": 240
   },
   {
     "title": "SAPPORO KINEN Field",
@@ -10987,7 +13777,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010811",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010811",
-    "id": 219
+    "id": 241
   },
   {
     "title": "ODORIKOEN TOKUBETSU (Allowance (2 Win)) Field",
@@ -11062,7 +13852,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010810",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010810",
-    "id": 220
+    "id": 242
   },
   {
     "title": "OTARU TOKUBETSU (Allowance (1 Win)) Field",
@@ -11157,7 +13947,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010809",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010809",
-    "id": 221
+    "id": 243
   },
   {
     "title": "Field",
@@ -11227,7 +14017,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010808",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010808",
-    "id": 222
+    "id": 244
   },
   {
     "title": "Field",
@@ -11322,7 +14112,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010807",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010807",
-    "id": 223
+    "id": 245
   },
   {
     "title": "Field",
@@ -11397,7 +14187,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010806",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010806",
-    "id": 224
+    "id": 246
   },
   {
     "title": "Field",
@@ -11472,7 +14262,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010805",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010805",
-    "id": 225
+    "id": 247
   },
   {
     "title": "Field",
@@ -11557,7 +14347,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010804",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010804",
-    "id": 226
+    "id": 248
   },
   {
     "title": "Field",
@@ -11642,7 +14432,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010803",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010803",
-    "id": 227
+    "id": 249
   },
   {
     "title": "Field",
@@ -11697,7 +14487,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010802",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010802",
-    "id": 228
+    "id": 250
   },
   {
     "title": "Field",
@@ -11782,7 +14572,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010801",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010801",
-    "id": 229
+    "id": 251
   },
   {
     "title": "Field",
@@ -11887,7 +14677,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020712",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020712",
-    "id": 12
+    "id": 13
   },
   {
     "title": "Field",
@@ -11992,7 +14782,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020711",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020711",
-    "id": 13
+    "id": 14
   },
   {
     "title": "Field",
@@ -12082,7 +14872,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020710",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020710",
-    "id": 14
+    "id": 15
   },
   {
     "title": "NIIGATA JUMP STAKES (JG3) Field",
@@ -12152,7 +14942,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020709",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020709",
-    "id": 15
+    "id": 16
   },
   {
     "title": "MIKUNI TOKUBETSU (Allowance (1 Win)) Field",
@@ -12242,7 +15032,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020708",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020708",
-    "id": 16
+    "id": 17
   },
   {
     "title": "JOETSU STAKES (Allowance (3 Win)) Field",
@@ -12332,7 +15122,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020707",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020707",
-    "id": 17
+    "id": 18
   },
   {
     "title": "AGANOGAWA TOKUBETSU (Allowance (2 Win)) Field",
@@ -12417,7 +15207,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020706",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020706",
-    "id": 18
+    "id": 19
   },
   {
     "title": "Field",
@@ -12522,7 +15312,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020705",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020705",
-    "id": 19
+    "id": 20
   },
   {
     "title": "Field",
@@ -12612,7 +15402,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020704",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020704",
-    "id": 20
+    "id": 21
   },
   {
     "title": "Field",
@@ -12687,7 +15477,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020703",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020703",
-    "id": 21
+    "id": 22
   },
   {
     "title": "Field",
@@ -12777,7 +15567,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020702",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020702",
-    "id": 22
+    "id": 23
   },
   {
     "title": "Field",
@@ -12837,7 +15627,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020701",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020701",
-    "id": 23
+    "id": 24
   },
   {
     "title": "Field",
@@ -12932,7 +15722,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020712",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020712",
-    "id": 121
+    "id": 133
   },
   {
     "title": "Field",
@@ -13022,7 +15812,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020711",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020711",
-    "id": 122
+    "id": 134
   },
   {
     "title": "Field",
@@ -13117,7 +15907,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020710",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020710",
-    "id": 123
+    "id": 135
   },
   {
     "title": "Field",
@@ -13212,7 +16002,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020709",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020709",
-    "id": 124
+    "id": 136
   },
   {
     "title": "TOKONAME TOKUBETSU (Allowance (1 Win)) Field",
@@ -13277,7 +16067,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020708",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020708",
-    "id": 125
+    "id": 137
   },
   {
     "title": "TAKAYAMA STAKES (Allowance (3 Win)) Field",
@@ -13332,7 +16122,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020707",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020707",
-    "id": 126
+    "id": 138
   },
   {
     "title": "CHITA TOKUBETSU (Allowance (2 Win)) Field",
@@ -13402,7 +16192,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020706",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020706",
-    "id": 127
+    "id": 139
   },
   {
     "title": "Field",
@@ -13497,7 +16287,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020705",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020705",
-    "id": 128
+    "id": 140
   },
   {
     "title": "Field",
@@ -13582,7 +16372,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020704",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020704",
-    "id": 129
+    "id": 141
   },
   {
     "title": "Field",
@@ -13632,7 +16422,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020703",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020703",
-    "id": 130
+    "id": 142
   },
   {
     "title": "Field",
@@ -13722,7 +16512,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020702",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020702",
-    "id": 131
+    "id": 143
   },
   {
     "title": "Field",
@@ -13817,7 +16607,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020701",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020701",
-    "id": 132
+    "id": 144
   },
   {
     "title": "SHAKOTAN TOKUBETSU (Allowance (1 Win)) Field",
@@ -13902,7 +16692,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010712",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010712",
-    "id": 230
+    "id": 252
   },
   {
     "title": "HOCHI HAI DAISETSU HANDICAP (Allowance (3 Win)) Field",
@@ -13987,7 +16777,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010711",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010711",
-    "id": 231
+    "id": 253
   },
   {
     "title": "SHIRETOKO TOKUBETSU (Allowance (2 Win)) Field",
@@ -14082,7 +16872,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010710",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010710",
-    "id": 232
+    "id": 254
   },
   {
     "title": "COSMOS SHO (OP) Field",
@@ -14137,7 +16927,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010709",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010709",
-    "id": 233
+    "id": 255
   },
   {
     "title": "Field",
@@ -14207,7 +16997,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010708",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010708",
-    "id": 234
+    "id": 256
   },
   {
     "title": "Field",
@@ -14297,7 +17087,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010707",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010707",
-    "id": 235
+    "id": 257
   },
   {
     "title": "Field",
@@ -14382,7 +17172,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010706",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010706",
-    "id": 236
+    "id": 258
   },
   {
     "title": "Field",
@@ -14457,7 +17247,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010705",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010705",
-    "id": 237
+    "id": 259
   },
   {
     "title": "Field",
@@ -14532,7 +17322,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010704",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010704",
-    "id": 238
+    "id": 260
   },
   {
     "title": "Field",
@@ -14607,7 +17397,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010703",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010703",
-    "id": 239
+    "id": 261
   },
   {
     "title": "Field",
@@ -14672,7 +17462,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010702",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010702",
-    "id": 240
+    "id": 262
   },
   {
     "title": "Field",
@@ -14747,7 +17537,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010701",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010701",
-    "id": 241
+    "id": 263
   },
   {
     "title": "Field",
@@ -14852,7 +17642,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020612",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020612",
-    "id": 24
+    "id": 25
   },
   {
     "title": "Field",
@@ -14957,7 +17747,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020611",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020611",
-    "id": 25
+    "id": 26
   },
   {
     "title": "Field",
@@ -15007,7 +17797,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020610",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020610",
-    "id": 26
+    "id": 27
   },
   {
     "title": "Field",
@@ -15097,7 +17887,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020609",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020609",
-    "id": 27
+    "id": 28
   },
   {
     "title": "BAKUSHIN TOKUBETSU (Allowance (2 Win)) Field",
@@ -15197,7 +17987,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020608",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020608",
-    "id": 28
+    "id": 29
   },
   {
     "title": "LEOPARD STAKES Field",
@@ -15272,7 +18062,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020607",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020607",
-    "id": 29
+    "id": 30
   },
   {
     "title": "SADO STAKES (Allowance (3 Win)) Field",
@@ -15352,7 +18142,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020606",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020606",
-    "id": 30
+    "id": 31
   },
   {
     "title": "Field",
@@ -15442,7 +18232,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020605",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020605",
-    "id": 31
+    "id": 32
   },
   {
     "title": "Field",
@@ -15532,7 +18322,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020604",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020604",
-    "id": 32
+    "id": 33
   },
   {
     "title": "Field",
@@ -15622,7 +18412,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020603",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020603",
-    "id": 33
+    "id": 34
   },
   {
     "title": "Field",
@@ -15692,7 +18482,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020602",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020602",
-    "id": 34
+    "id": 35
   },
   {
     "title": "Field",
@@ -15787,7 +18577,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020601",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020601",
-    "id": 35
+    "id": 36
   },
   {
     "title": "Field",
@@ -15877,7 +18667,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020612",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020612",
-    "id": 133
+    "id": 145
   },
   {
     "title": "Field",
@@ -15977,7 +18767,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020611",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020611",
-    "id": 134
+    "id": 146
   },
   {
     "title": "Field",
@@ -16072,7 +18862,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020610",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020610",
-    "id": 135
+    "id": 147
   },
   {
     "title": "Field",
@@ -16152,7 +18942,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020609",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020609",
-    "id": 136
+    "id": 148
   },
   {
     "title": "IBIGAWA TOKUBETSU (Allowance (2 Win)) Field",
@@ -16222,7 +19012,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020608",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020608",
-    "id": 137
+    "id": 149
   },
   {
     "title": "CBC SHO Field",
@@ -16327,7 +19117,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020607",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020607",
-    "id": 138
+    "id": 150
   },
   {
     "title": "HAMANAKO TOKUBETSU (Allowance (2 Win)) Field",
@@ -16377,7 +19167,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020606",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020606",
-    "id": 139
+    "id": 151
   },
   {
     "title": "Field",
@@ -16472,7 +19262,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020605",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020605",
-    "id": 140
+    "id": 152
   },
   {
     "title": "Field",
@@ -16567,7 +19357,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020604",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020604",
-    "id": 141
+    "id": 153
   },
   {
     "title": "Field",
@@ -16622,7 +19412,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020603",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020603",
-    "id": 142
+    "id": 154
   },
   {
     "title": "Field",
@@ -16682,7 +19472,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020602",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020602",
-    "id": 143
+    "id": 155
   },
   {
     "title": "Field",
@@ -16777,7 +19567,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020601",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020601",
-    "id": 144
+    "id": 156
   },
   {
     "title": "ISHIKARI TOKUBETSU (Allowance (1 Win)) Field",
@@ -16832,7 +19622,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010612",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010612",
-    "id": 242
+    "id": 264
   },
   {
     "title": "UHB SHO (OP) Field",
@@ -16927,7 +19717,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010611",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010611",
-    "id": 243
+    "id": 265
   },
   {
     "title": "FURANO TOKUBETSU (Allowance (2 Win)) Field",
@@ -17012,7 +19802,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010610",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010610",
-    "id": 244
+    "id": 266
   },
   {
     "title": "Field",
@@ -17107,7 +19897,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010609",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010609",
-    "id": 245
+    "id": 267
   },
   {
     "title": "Field",
@@ -17192,7 +19982,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010608",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010608",
-    "id": 246
+    "id": 268
   },
   {
     "title": "Field",
@@ -17287,7 +20077,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010607",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010607",
-    "id": 247
+    "id": 269
   },
   {
     "title": "Field",
@@ -17372,7 +20162,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010606",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010606",
-    "id": 248
+    "id": 270
   },
   {
     "title": "Field",
@@ -17452,7 +20242,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010605",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010605",
-    "id": 249
+    "id": 271
   },
   {
     "title": "Field",
@@ -17537,7 +20327,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010604",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010604",
-    "id": 250
+    "id": 272
   },
   {
     "title": "Field",
@@ -17602,7 +20392,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010603",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010603",
-    "id": 251
+    "id": 273
   },
   {
     "title": "Field",
@@ -17672,7 +20462,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010602",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010602",
-    "id": 252
+    "id": 274
   },
   {
     "title": "Field",
@@ -17747,7 +20537,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010601",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010601",
-    "id": 253
+    "id": 275
   },
   {
     "title": "Field",
@@ -17842,7 +20632,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020512",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020512",
-    "id": 36
+    "id": 37
   },
   {
     "title": "Field",
@@ -17947,7 +20737,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020511",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020511",
-    "id": 37
+    "id": 38
   },
   {
     "title": "Field",
@@ -18027,7 +20817,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020510",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020510",
-    "id": 38
+    "id": 39
   },
   {
     "title": "Field",
@@ -18117,7 +20907,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020509",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020509",
-    "id": 39
+    "id": 40
   },
   {
     "title": "DAHLIA SHO (OP) Field",
@@ -18177,7 +20967,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020508",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020508",
-    "id": 40
+    "id": 41
   },
   {
     "title": "KANETSU STAKES (OP) Field",
@@ -18272,7 +21062,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020507",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020507",
-    "id": 41
+    "id": 42
   },
   {
     "title": "MIOMOTEGAWA TOKUBETSU (Allowance (2 Win)) Field",
@@ -18337,7 +21127,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020506",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020506",
-    "id": 42
+    "id": 43
   },
   {
     "title": "Field",
@@ -18427,7 +21217,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020505",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020505",
-    "id": 43
+    "id": 44
   },
   {
     "title": "Field",
@@ -18512,7 +21302,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020504",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020504",
-    "id": 44
+    "id": 45
   },
   {
     "title": "Field",
@@ -18587,7 +21377,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020503",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020503",
-    "id": 45
+    "id": 46
   },
   {
     "title": "Field",
@@ -18652,7 +21442,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020502",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020502",
-    "id": 46
+    "id": 47
   },
   {
     "title": "Field",
@@ -18732,7 +21522,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020501",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020501",
-    "id": 47
+    "id": 48
   },
   {
     "title": "Field",
@@ -18837,7 +21627,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020512",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020512",
-    "id": 145
+    "id": 157
   },
   {
     "title": "Field",
@@ -18912,7 +21702,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020511",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020511",
-    "id": 146
+    "id": 158
   },
   {
     "title": "Field",
@@ -19007,7 +21797,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020510",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020510",
-    "id": 147
+    "id": 159
   },
   {
     "title": "(OP) Field",
@@ -19072,7 +21862,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020509",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020509",
-    "id": 148
+    "id": 160
   },
   {
     "title": "ENA TOKUBETSU (Allowance (1 Win)) Field",
@@ -19147,7 +21937,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020508",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020508",
-    "id": 149
+    "id": 161
   },
   {
     "title": "MIKAWA STAKES (Allowance (3 Win)) Field",
@@ -19202,7 +21992,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020507",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020507",
-    "id": 150
+    "id": 162
   },
   {
     "title": "NAYABASHI TOKUBETSU (Allowance (2 Win)) Field",
@@ -19272,7 +22062,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020506",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020506",
-    "id": 151
+    "id": 163
   },
   {
     "title": "Field",
@@ -19327,7 +22117,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020505",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020505",
-    "id": 152
+    "id": 164
   },
   {
     "title": "Field",
@@ -19422,7 +22212,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020504",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020504",
-    "id": 153
+    "id": 165
   },
   {
     "title": "Field",
@@ -19517,7 +22307,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020503",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020503",
-    "id": 154
+    "id": 166
   },
   {
     "title": "Field",
@@ -19567,7 +22357,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020502",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020502",
-    "id": 155
+    "id": 167
   },
   {
     "title": "Field",
@@ -19627,7 +22417,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020501",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020501",
-    "id": 156
+    "id": 168
   },
   {
     "title": "MASHUKO TOKUBETSU (Allowance (2 Win)) Field",
@@ -19707,7 +22497,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010512",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010512",
-    "id": 254
+    "id": 276
   },
   {
     "title": "ELM STAKES Field",
@@ -19777,7 +22567,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010511",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010511",
-    "id": 255
+    "id": 277
   },
   {
     "title": "MOIWAYAMA TOKUBETSU (Allowance (2 Win)) Field",
@@ -19832,7 +22622,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010510",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010510",
-    "id": 256
+    "id": 278
   },
   {
     "title": "Field",
@@ -19912,7 +22702,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010509",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010509",
-    "id": 257
+    "id": 279
   },
   {
     "title": "Field",
@@ -20007,7 +22797,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010508",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010508",
-    "id": 258
+    "id": 280
   },
   {
     "title": "Field",
@@ -20082,7 +22872,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010507",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010507",
-    "id": 259
+    "id": 281
   },
   {
     "title": "Field",
@@ -20177,7 +22967,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010506",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010506",
-    "id": 260
+    "id": 282
   },
   {
     "title": "Field",
@@ -20252,7 +23042,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010505",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010505",
-    "id": 261
+    "id": 283
   },
   {
     "title": "Field",
@@ -20337,7 +23127,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010504",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010504",
-    "id": 262
+    "id": 284
   },
   {
     "title": "Field",
@@ -20422,7 +23212,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010503",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010503",
-    "id": 263
+    "id": 285
   },
   {
     "title": "Field",
@@ -20502,7 +23292,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010502",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010502",
-    "id": 264
+    "id": 286
   },
   {
     "title": "Field",
@@ -20587,7 +23377,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010501",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010501",
-    "id": 265
+    "id": 287
   },
   {
     "title": "Field",
@@ -20687,7 +23477,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020412",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020412",
-    "id": 48
+    "id": 49
   },
   {
     "title": "Field",
@@ -20772,7 +23562,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020411",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020411",
-    "id": 49
+    "id": 50
   },
   {
     "title": "Field",
@@ -20857,7 +23647,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020410",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020410",
-    "id": 50
+    "id": 51
   },
   {
     "title": "Field",
@@ -20947,7 +23737,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020409",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020409",
-    "id": 51
+    "id": 52
   },
   {
     "title": "GOZUREMPO TOKUBETSU (Allowance (1 Win)) Field",
@@ -21032,7 +23822,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020408",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020408",
-    "id": 52
+    "id": 53
   },
   {
     "title": "IBIS SUMMER DASH Field",
@@ -21132,7 +23922,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020407",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020407",
-    "id": 53
+    "id": 54
   },
   {
     "title": "NAEBA TOKUBETSU (Allowance (2 Win)) Field",
@@ -21222,7 +24012,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020406",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020406",
-    "id": 54
+    "id": 55
   },
   {
     "title": "Field",
@@ -21327,7 +24117,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020405",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020405",
-    "id": 55
+    "id": 56
   },
   {
     "title": "Field",
@@ -21417,7 +24207,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020404",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020404",
-    "id": 56
+    "id": 57
   },
   {
     "title": "Field",
@@ -21497,7 +24287,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020403",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020403",
-    "id": 57
+    "id": 58
   },
   {
     "title": "Field",
@@ -21572,7 +24362,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020402",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020402",
-    "id": 58
+    "id": 59
   },
   {
     "title": "Field",
@@ -21647,7 +24437,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020401",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020401",
-    "id": 59
+    "id": 60
   },
   {
     "title": "Field",
@@ -21752,7 +24542,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020412",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020412",
-    "id": 157
+    "id": 169
   },
   {
     "title": "Field",
@@ -21797,7 +24587,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020411",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020411",
-    "id": 158
+    "id": 170
   },
   {
     "title": "Field",
@@ -21882,7 +24672,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020410",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020410",
-    "id": 159
+    "id": 171
   },
   {
     "title": "Field",
@@ -21947,7 +24737,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020409",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020409",
-    "id": 160
+    "id": 172
   },
   {
     "title": "HAMAMATSU TOKUBETSU (Allowance (2 Win)) Field",
@@ -22017,7 +24807,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020408",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020408",
-    "id": 161
+    "id": 173
   },
   {
     "title": "MEITETSU HAI (L) Field",
@@ -22077,7 +24867,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020407",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020407",
-    "id": 162
+    "id": 174
   },
   {
     "title": "CHUKYO SPONICHI SHO (Allowance (2 Win)) Field",
@@ -22137,7 +24927,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020406",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020406",
-    "id": 163
+    "id": 175
   },
   {
     "title": "Field",
@@ -22197,7 +24987,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020405",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020405",
-    "id": 164
+    "id": 176
   },
   {
     "title": "Field",
@@ -22292,7 +25082,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020404",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020404",
-    "id": 165
+    "id": 177
   },
   {
     "title": "Field",
@@ -22357,7 +25147,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020403",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020403",
-    "id": 166
+    "id": 178
   },
   {
     "title": "Field",
@@ -22412,7 +25202,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020402",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020402",
-    "id": 167
+    "id": 179
   },
   {
     "title": "Field",
@@ -22517,7 +25307,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020401",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020401",
-    "id": 168
+    "id": 180
   },
   {
     "title": "TOMAKOMAI TOKUBETSU (Allowance (2 Win)) Field",
@@ -22602,7 +25392,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010412",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010412",
-    "id": 266
+    "id": 288
   },
   {
     "title": "HOKKAIDO SHIMBUN HAI QUEEN STAKES Field",
@@ -22687,7 +25477,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010411",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010411",
-    "id": 267
+    "id": 289
   },
   {
     "title": "POPLAR STAKES (Allowance (3 Win)) Field",
@@ -22752,7 +25542,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010410",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010410",
-    "id": 268
+    "id": 290
   },
   {
     "title": "Field",
@@ -22827,7 +25617,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010409",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010409",
-    "id": 269
+    "id": 291
   },
   {
     "title": "Field",
@@ -22912,7 +25702,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010408",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010408",
-    "id": 270
+    "id": 292
   },
   {
     "title": "Field",
@@ -22987,7 +25777,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010407",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010407",
-    "id": 271
+    "id": 293
   },
   {
     "title": "Field",
@@ -23052,7 +25842,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010406",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010406",
-    "id": 272
+    "id": 294
   },
   {
     "title": "Field",
@@ -23117,7 +25907,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010405",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010405",
-    "id": 273
+    "id": 295
   },
   {
     "title": "Field",
@@ -23197,7 +25987,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010404",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010404",
-    "id": 274
+    "id": 296
   },
   {
     "title": "Field",
@@ -23267,7 +26057,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010403",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010403",
-    "id": 275
+    "id": 297
   },
   {
     "title": "Field",
@@ -23352,7 +26142,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010402",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010402",
-    "id": 276
+    "id": 298
   },
   {
     "title": "Field",
@@ -23437,7 +26227,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010401",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010401",
-    "id": 277
+    "id": 299
   },
   {
     "title": "Field",
@@ -23537,7 +26327,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020312",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020312",
-    "id": 60
+    "id": 61
   },
   {
     "title": "Field",
@@ -23642,7 +26432,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020311",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020311",
-    "id": 61
+    "id": 62
   },
   {
     "title": "Field",
@@ -23727,7 +26517,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020310",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020310",
-    "id": 62
+    "id": 63
   },
   {
     "title": "Field",
@@ -23812,7 +26602,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020309",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020309",
-    "id": 63
+    "id": 64
   },
   {
     "title": "TSUBAME TOKUBETSU (Allowance (1 Win)) Field",
@@ -23887,7 +26677,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020308",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020308",
-    "id": 64
+    "id": 65
   },
   {
     "title": "RYUTO STAKES (Allowance (3 Win)) Field",
@@ -23977,7 +26767,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020307",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020307",
-    "id": 65
+    "id": 66
   },
   {
     "title": "TSUKIOKAONSEN TOKUBETSU (Allowance (2 Win)) Field",
@@ -24052,7 +26842,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020306",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020306",
-    "id": 66
+    "id": 67
   },
   {
     "title": "Field",
@@ -24142,7 +26932,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020305",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020305",
-    "id": 67
+    "id": 68
   },
   {
     "title": "Field",
@@ -24227,7 +27017,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020304",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020304",
-    "id": 68
+    "id": 69
   },
   {
     "title": "Field",
@@ -24332,7 +27122,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020303",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020303",
-    "id": 69
+    "id": 70
   },
   {
     "title": "Field",
@@ -24387,7 +27177,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020302",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020302",
-    "id": 70
+    "id": 71
   },
   {
     "title": "Field",
@@ -24457,7 +27247,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202604020301",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202604020301",
-    "id": 71
+    "id": 72
   },
   {
     "title": "Field",
@@ -24527,7 +27317,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020312",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020312",
-    "id": 169
+    "id": 181
   },
   {
     "title": "Field",
@@ -24587,7 +27377,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020311",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020311",
-    "id": 170
+    "id": 182
   },
   {
     "title": "Field",
@@ -24682,7 +27472,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020310",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020310",
-    "id": 171
+    "id": 183
   },
   {
     "title": "Field",
@@ -24752,7 +27542,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020309",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020309",
-    "id": 172
+    "id": 184
   },
   {
     "title": "NISSHIN TOKUBETSU (Allowance (2 Win)) Field",
@@ -24832,7 +27622,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020308",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020308",
-    "id": 173
+    "id": 185
   },
   {
     "title": "TOYOHASHI STAKES (Allowance (3 Win)) Field",
@@ -24902,7 +27692,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020307",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020307",
-    "id": 174
+    "id": 186
   },
   {
     "title": "OKEHAZAMA STAKES (Allowance (3 Win)) Field",
@@ -24997,7 +27787,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020306",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020306",
-    "id": 175
+    "id": 187
   },
   {
     "title": "Field",
@@ -25092,7 +27882,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020305",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020305",
-    "id": 176
+    "id": 188
   },
   {
     "title": "Field",
@@ -25187,7 +27977,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020304",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020304",
-    "id": 177
+    "id": 189
   },
   {
     "title": "Field",
@@ -25282,7 +28072,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020303",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020303",
-    "id": 178
+    "id": 190
   },
   {
     "title": "Field",
@@ -25362,7 +28152,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020302",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020302",
-    "id": 179
+    "id": 191
   },
   {
     "title": "Field",
@@ -25427,7 +28217,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202607020301",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202607020301",
-    "id": 180
+    "id": 192
   },
   {
     "title": "OKURAYAMA TOKUBETSU (Allowance (2 Win)) Field",
@@ -25482,7 +28272,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010312",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010312",
-    "id": 278
+    "id": 300
   },
   {
     "title": "STV SHO (Allowance (3 Win)) Field",
@@ -25577,7 +28367,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010311",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010311",
-    "id": 279
+    "id": 301
   },
   {
     "title": "Field",
@@ -25662,7 +28452,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010310",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010310",
-    "id": 280
+    "id": 302
   },
   {
     "title": "KUSHIROSHITSUGEN TOKUBETSU (Allowance (2 Win)) Field",
@@ -25712,7 +28502,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010309",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010309",
-    "id": 281
+    "id": 303
   },
   {
     "title": "Field",
@@ -25782,7 +28572,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010308",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010308",
-    "id": 282
+    "id": 304
   },
   {
     "title": "Field",
@@ -25857,7 +28647,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010307",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010307",
-    "id": 283
+    "id": 305
   },
   {
     "title": "Field",
@@ -25917,7 +28707,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010306",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010306",
-    "id": 284
+    "id": 306
   },
   {
     "title": "Field",
@@ -25992,7 +28782,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010305",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010305",
-    "id": 285
+    "id": 307
   },
   {
     "title": "Field",
@@ -26062,7 +28852,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010304",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010304",
-    "id": 286
+    "id": 308
   },
   {
     "title": "Field",
@@ -26132,7 +28922,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010303",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010303",
-    "id": 287
+    "id": 309
   },
   {
     "title": "Field",
@@ -26192,7 +28982,7 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010302",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010302",
-    "id": 288
+    "id": 310
   },
   {
     "title": "Field",
@@ -26267,6 +29057,6 @@
     "videoUrl": "https://japanracing.jp/en/",
     "resultsUrl": "https://en.netkeiba.com/race/result.html?race_id=202601010301",
     "entriesUrl": "https://en.netkeiba.com/race/shutuba.html?race_id=202601010301",
-    "id": 289
+    "id": 311
   }
 ]
